@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import ImageComponent from '../components/Images';
 import { FaEnvelope, FaEyeSlash, FaGoogle, FaFacebookF, FaApple } from 'react-icons/fa';
+import Link from 'next/link';
 
 export default function SignIn() {
   const [formData, setFormData] = useState({
@@ -93,10 +94,11 @@ export default function SignIn() {
               <label className="text-base font-normal leading-5 text-[#282828] font-['SF_Pro_Display']">
                 Remember me
               </label>
-            </div>
-            <a href="#" className="text-base font-normal leading-5 text-[#9B2033] font-['SF_Pro_Display']">
+            </div> <Link href="/ForgetPassword">
+            <span  className="text-base font-normal leading-5 text-[#9B2033] font-['SF_Pro_Display']">
               Forget Password?
-            </a>
+            </span>
+            </Link>
           </div>
 
           {/* Sign In Button */}

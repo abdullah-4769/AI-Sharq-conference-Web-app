@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import ImageComponent from '../components/Images';
 import { FaEnvelope, FaEyeSlash, FaGoogle, FaFacebookF, FaApple } from 'react-icons/fa';
+import Link from 'next/link';
 
 export default function SignIn() {
   const [formData, setFormData] = useState({
@@ -111,9 +112,13 @@ export default function SignIn() {
         <div className="flex flex-row items-center gap-[10px] w-[405px] h-[59px]">
           {/* Frame 8 */}
           <button className="flex flex-row justify-center items-center p-[40px_10px] gap-[10px] w-[405px] h-[59px] bg-[#9B2033] rounded-[12px] flex-1 border-none outline-none">
+            
+            
+            <Link href="/SetNewPassword">
             <span className="w-[83px] h-[11px] font-['IBM_Plex_Sans'] font-medium text-[16px] leading-[21px] text-center text-white">
               Verify Code
             </span>
+            </Link>
           </button>
         </div>
 

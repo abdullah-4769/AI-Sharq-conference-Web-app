@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import ImageComponent from '../components/Images';
 import { FaUser, FaEnvelope, FaEyeSlash, FaGoogle, FaFacebookF, FaApple } from 'react-icons/fa';
+import Link from 'next/link';
 
 export default function SignUp() {
   const [formData, setFormData] = useState({
@@ -138,7 +139,11 @@ export default function SignUp() {
 
             {/* Sign In Link */}
             <p className="text-base text-gray-800 text-center">
-              Already have an account? <a href="#" className="text-blue-600 hover:underline">Sign In</a>
+              Already have an account?   <Link href="/SignIn">
+    <span className="text-blue-600 hover:underline cursor-pointer">
+      Sign In
+    </span>
+  </Link>
             </p>
           </div>
         </div>

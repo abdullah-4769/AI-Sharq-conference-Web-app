@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import ImageComponent from '../components/Images';
 import { FaEnvelope, FaEyeSlash, FaExclamationCircle, FaGoogle, FaFacebookF, FaApple } from 'react-icons/fa';
+import Link from 'next/link';
 
 export default function SetNewPassword() {
   const [formData, setFormData] = useState({
@@ -150,9 +151,11 @@ export default function SetNewPassword() {
           onClick={handleSubmit}
           className="flex flex-row justify-center items-center p-[40px] gap-[10px] w-[405px] h-[54px] bg-[#9B2033] rounded-[12px] border-none outline-none"
         >
+          <Link href="/SetUpYourProfile">
           <span className="w-[93px] h-[11px] font-['IBM_Plex_Sans'] font-medium text-[16px] leading-[21px] text-center tracking-[-0.01em] text-white">
             Save Change
           </span>
+          </Link>
         </button>
       </div>
 
