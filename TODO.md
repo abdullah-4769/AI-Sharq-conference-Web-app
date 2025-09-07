@@ -1,0 +1,9 @@
+- Update SetNewPassword page component to match provided CSS styles
+- Replace right side container styles with provided CSS
+- Update form structure to include New Password and Confirm New Password inputs
+- Add password visibility toggle icons
+- Add password requirements warning message
+- Update button text to "Save Change"
+- Update title to "Setup New Password"
+- Update description text
+- Test the form visually to ensure it looks good
