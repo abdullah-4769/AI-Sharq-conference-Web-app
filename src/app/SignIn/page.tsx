@@ -136,7 +136,7 @@ export default function SignIn() {
 
         {/* Already have an account */}
         <p className="text-base font-normal leading-8 text-center text-[#282828] font-['IBM_Plex_Sans']">
-          Already have an account? Sign In
+          Already have an account? <a href='/SignIn'>Sign In</a>
         </p>
       </div>
       <Image src="/images/line.png" alt="Logo" width={1729} height={127} className="absolute top-[1010px]" />
