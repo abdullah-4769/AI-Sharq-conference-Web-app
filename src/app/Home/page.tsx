@@ -6,6 +6,7 @@ import { FaCalendarAlt, FaUserTie, FaHandshake, FaComments, FaUsers, FaRegCalend
 import TodaysSchedule from '../components/TodaysSchedule';
 import QuickAccess from '../components/QuickAcess';
 import ToolsAndConnections from '../components/ToolsAndConnections';
+import Image from 'next/image';
 
 
 export default function Home() {
@@ -28,7 +29,7 @@ export default function Home() {
     <TodaysSchedule />
     <QuickAccess />
     <ToolsAndConnections />
-
+ <Image src="/images/line.png" alt="Line" width={1729} height={127} className="absolute top-[1310px]" />
     
     </main>
   );

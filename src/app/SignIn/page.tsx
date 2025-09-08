@@ -28,15 +28,15 @@ export default function SignIn() {
 
       {/* Right side - Form Container */}
       <div className="absolute w-[450px] max-w-full h-auto left-[935px] top-[calc(50%-676px/2)] bg-white border border-gray-300 rounded-[20px] shadow-[0px_4px_110.3px_rgba(68,68,68,0.25)] p-8 flex flex-col gap-10">
-        {/* Logo and Title */}
-        <div className="flex flex-col items-center gap-8 w-full max-w-[358px]">
-          <Image
-            src="/images/logo2.png"
-            alt="Al Sharq Logo"
-            width={157}
-            height={47}
-            className="w-[157px] h-[47px]"
-          />
+       {/* Logo and Title */}
+               <div className="flex flex-col items-center mb-4">
+                 <Image
+                   src="/images/logo2.png"
+                   alt="Al Sharq Logo"
+                   width={500}
+                   height={100}
+                   className="object-contain mr-[150px]"
+                 />
           {/* Title */}
           <h1 className="text-2xl font-medium text-gray-800 text-center leading-tight">
             Sign In to <br/> <strong className='text-[#9B2033]'>AL SHARQ CONFERENCE</strong>

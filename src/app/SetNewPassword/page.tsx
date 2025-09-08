@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Image from 'next/image';
 import ImageComponent from '../components/Images';
 import { FaEnvelope, FaEyeSlash, FaExclamationCircle, FaGoogle, FaFacebookF, FaApple } from 'react-icons/fa';
-import Link from 'next/link';
 
 export default function SetNewPassword() {
   const [formData, setFormData] = useState({
@@ -58,109 +57,109 @@ export default function SetNewPassword() {
   };
 
   return (
-    <div className="flex gap-20 p-10 mt-10">
+    <div className="min-h-screen flex flex-col md:flex-row items-center justify-center gap-30 p-4 bg-gray-50 relative">
       {/* Need help? Contact Support */}
       <span className="absolute w-[191px] h-[11px] left-[calc(50%-191px/2+0.5px)] top-[916px] font-['SF_Pro_Display'] font-normal text-[16px] leading-[30px] text-center text-[#282828]">
         Need help? <strong className='text-red-700'>Contact Support</strong>
       </span>
       {/* Left side - Image */}
-      <ImageComponent />
-
-      {/* Right side - Form Container */}
-    <div className="box-border flex flex-col items-center py-[42px] px-[60px] gap-[42px] absolute w-[525px] h-[615px] left-[835px] top-[calc(50%-615px/2+0.5px)] bg-white border border-gray-300 shadow-[0px_4px_110.3px_rgba(68,68,68,0.25)] rounded-[20px]">
-      {/* Frame 1000004789 */}
-      <div className="flex flex-col items-center p-0 gap-[30px] w-[358px] h-[94px]">
-        {/* al sharq guidelines-3 copy */}
-        <Image
-          src="/images/logo2.png"
-          alt="Al Sharq Logo"
-          width={157}
-          height={47}
-        />
-        {/* Setup New Password */}
-        <h1 className="w-[229px] h-[17px] font-['IBM_Plex_Sans'] font-medium text-[24px] leading-[24px] text-center tracking-[-0.01em] text-[#282828]">
-          Setup New Password
-        </h1>
+      <div className="hidden md:block flex-shrink-0 mt-[100px]">
+        <ImageComponent />
       </div>
 
-      {/* Choose a strong password... */}
-      <p className="w-[381px] h-[35px] font-['IBM_Plex_Sans'] font-normal text-[16px] leading-[150%] text-center text-[#282828]">
-        Choose a strong password to secure your account. Make sure it's something you'll remember.
-      </p>
-
-      {/* Input */}
-      <div className="flex flex-col justify-center items-center p-0 gap-[24px] w-[405px] h-[318px]">
-        {/* New Password */}
-        <div className="flex flex-col items-start p-0 gap-[12px] w-[405px] h-[76px]">
-          <label className="w-[405px] h-[11px] font-['IBM_Plex_Sans'] font-normal text-[16px] leading-[21px] text-[#262626]">
-            New Password*
-          </label>
-          <div className="flex flex-row items-start p-0 gap-[6px] w-[405px] h-[53px]">
-            <div className="box-border flex flex-col justify-center items-start py-[17px] px-[19px] gap-[10px] w-[405px] h-[53px] border border-[#DEDEDE] rounded-[10px]">
-              <div className="flex flex-row items-center p-0 gap-[12px] w-[367px] h-[20px]">
-                <input
-                  type="password"
-                  name="newPassword"
-                  value={formData.newPassword}
-                  onChange={handleChange}
-                  placeholder="Enter new password"
-                  className="w-[335px] h-[5.73px] text-[#546056] border-none outline-none"
-                />
-                <FaEyeSlash size={20} color="#9C9C9C" />
-              </div>
-            </div>
-          </div>
+      {/* Right side - Form Container */}
+      <div className="bg-white border border-gray-300 shadow-lg rounded-2xl p-8 max-w-md w-full">
+        {/* Logo and Title */}
+        <div className="flex flex-col items-center mb-4">
+          <Image
+            src="/images/logo2.png"
+            alt="Al Sharq Logo"
+            width={500}
+            height={100}
+            className="object-contain mr-[150px]"
+          />
+          <h1 className="mt-2 text-2xl font-semibold text-gray-800 text-center">
+            Setup New Password
+          </h1>
         </div>
 
-        {/* Confirm New Password */}
-        <div className="flex flex-col items-start p-0 gap-[12px] w-[405px] h-[76px]">
-          <label className="w-[405px] h-[11px] font-['IBM_Plex_Sans'] font-normal text-[16px] leading-[21px] text-[#262626]">
-            Confirm New Password*
-          </label>
-          <div className="flex flex-row items-start p-0 gap-[6px] w-[405px] h-[53px]">
-            <div className="box-border flex flex-col justify-center items-start py-[17px] px-[19px] gap-[10px] w-[405px] h-[53px] border border-[#DEDEDE] rounded-[10px]">
-              <div className="flex flex-row items-center p-0 gap-[12px] w-[367px] h-[20px]">
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  placeholder="Confirm new password"
-                  className="w-[335px] h-[5.73px] text-[#546056] border-none outline-none"
-                />
-                <FaEyeSlash size={20} color="#9C9C9C" />
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Description */}
+        <p className="mb-6 text-center text-gray-700 text-base leading-relaxed">
+          Choose a strong password to secure your account. Make sure it's something you'll remember.
+        </p>
 
-        {/* Password requirements */}
-        <div className="flex flex-col items-start p-0 gap-[18px] w-[405px] h-[118px]">
-          <div className="flex flex-row items-start p-0 gap-[6px] w-[405px] h-[46px]">
-            <FaExclamationCircle size={20} color="#9B2033" />
-            <p className="w-[379px] h-[46px] font-['IBM_Plex_Sans'] font-normal text-[14px] leading-[18px] text-[#9C9C9C]">
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* New Password */}
+          <div>
+            <label htmlFor="newPassword" className="block text-gray-700 font-medium mb-2">
+              New Password*
+            </label>
+            <div className="relative">
+              <input
+                type="password"
+                id="newPassword"
+                name="newPassword"
+                value={formData.newPassword}
+                onChange={handleChange}
+                placeholder="Enter new password"
+                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-700 ${
+                  errors.newPassword ? 'border-red-600' : 'border-gray-300'
+                }`}
+              />
+              <FaEyeSlash className="absolute right-3 top-3 text-gray-400" size={20} />
+            </div>
+            {errors.newPassword && (
+              <p className="mt-1 text-red-600 text-sm flex items-center gap-1">
+                <FaExclamationCircle /> {errors.newPassword}
+              </p>
+            )}
+          </div>
+
+          {/* Confirm New Password */}
+          <div>
+            <label htmlFor="confirmPassword" className="block text-gray-700 font-medium mb-2">
+              Confirm New Password*
+            </label>
+            <div className="relative">
+              <input
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                placeholder="Confirm new password"
+                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-700 ${
+                  errors.confirmPassword ? 'border-red-600' : 'border-gray-300'
+                }`}
+              />
+              <FaEyeSlash className="absolute right-3 top-3 text-gray-400" size={20} />
+            </div>
+            {errors.confirmPassword && (
+              <p className="mt-1 text-red-600 text-sm flex items-center gap-1">
+                <FaExclamationCircle /> {errors.confirmPassword}
+              </p>
+            )}
+          </div>
+
+          {/* Password requirements */}
+          <div className="flex items-start gap-2 text-gray-500 text-sm mb-6">
+            <FaExclamationCircle className="mt-1 text-red-700" size={20} />
+            <p>
               Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.
             </p>
           </div>
-        </div>
-      </div>
 
-      {/* Save Change Button */}
-      <div className="flex flex-row items-center p-0 gap-[10px] w-[405px] h-[44px]"   >
-        <button
-          onClick={handleSubmit}
-          className="flex flex-row justify-center items-center p-[40px] gap-[10px] w-[405px] h-[54px] bg-[#9B2033] rounded-[12px] border-none outline-none"
-        >
-          <Link href="/SetUpYourProfile">
-          <span className="w-[93px] h-[11px] font-['IBM_Plex_Sans'] font-medium text-[16px] leading-[21px] text-center tracking-[-0.01em] text-white">
+          {/* Save Change Button */}
+          <button
+            type="submit"
+            className="w-full bg-red-700 hover:bg-red-800 text-white font-semibold py-3 rounded-lg transition-colors"
+          >
             Save Change
-          </span>
-          </Link>
-        </button>
+          </button>
+        </form>
       </div>
-
-    </div>
-      <Image src="/images/line.png" alt="Logo" width={1729} height={127} className="absolute top-[1010px]" />
+      <Image src="/images/line.png" alt="Line" width={1729} height={127} className="absolute top-[1010px]" />
     </div>
   );
 }
