@@ -17,25 +17,25 @@ const quickAccessItems = [
     label: 'Speakers',
     desc: 'Expert profiles',
     img: '/images/div (2).png',
-    Link: '/speakers'
+    Link: '/Speakers'
   },
   {
     label: 'Sponsors',
     desc: 'Partners & exhibits',
     img: '/images/div (3).png',
-    Link: '/sponsors'
+    Link: '/Sponsors&Exhibitors'
   },
   {
     label: 'Networking',
     desc: 'Connect & chat',
     img: '/images/div (4).png',
-    Link: '/networking'
+    Link: '/Networking'
   },
   {
     label: 'Forums',
     desc: 'Discussions',
     img: '/images/div (5).png',
-    Link: '/forums'
+    Link: '/Forums'
   },
 ];
 

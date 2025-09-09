@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 type ActionButtonsProps = {
@@ -34,13 +35,11 @@ export default function ActionButtons({
 
         <span>Add to Calendar</span>
       </button>
-
-      <button
-        onClick={onAttend}
-        className="bg-red-900 text-white px-10 py-1 rounded-lg text-sm hover:bg-red-800 transition"
-      >
-        I’m Attending
-      </button>
+    <Link href="/LiveSession">
+  <div className="bg-red-900 text-white px-10 py-1 rounded-lg text-sm hover:bg-red-800 transition text-center cursor-pointer">
+    I’m Attending
+  </div>
+</Link>
     </div>
   );
 }

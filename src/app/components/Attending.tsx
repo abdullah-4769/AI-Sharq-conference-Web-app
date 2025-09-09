@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 // Dummy attendee images array (replace src with real images)
@@ -59,9 +60,11 @@ export default function WhosAttending() {
           <span>Add to Calendar</span>
         </button>
 
-        <button className="bg-[#9B2033] text-white text-xs font-semibold px-4 py-2 rounded-md hover:bg-[#80192b]">
-          I'm Attending
-        </button>
+       <Link href="/LiveSession">
+  <div className="bg-red-900 text-white px-10 py-1 rounded-lg text-sm hover:bg-red-800 transition text-center cursor-pointer">
+    I’m Attending
+  </div>
+</Link>
       </div>
 
     </section>

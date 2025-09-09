@@ -2,6 +2,7 @@
 import React,{useState} from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { FaArrowLeft } from 'react-icons/fa';
 
 const tags = ["Networking", "AI", "Innovation", "Sustainability", "Bussinuss"];
 const discussions = [
@@ -79,18 +80,9 @@ export default function ForumsPage() {
       {/* Header */}
       <div className="flex items-center gap-2 mb-5 ml-5">
         {/* Icon */}
-        <svg
-          width="30"
-          height="26"
-          viewBox="0 0 30 26"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0.627825 11.4704C-0.209275 12.3164 -0.209275 13.6904 0.627825 14.5364L11.3427 25.3655C12.1798 26.2115 13.5393 26.2115 14.3764 25.3655C15.2135 24.5195 15.2135 23.1455 14.3764 22.2995L7.31123 15.1658H27.857C29.0424 15.1658 30 14.198 30 13C30 11.802 29.0424 10.8342 27.857 10.8342H7.31793L14.3697 3.70051C15.2068 2.85448 15.2068 1.48054 14.3697 0.634518C13.5326 -0.211506 12.1731 -0.211506 11.336 0.634518L0.621128 11.4636L0.627825 11.4704Z"
-            fill="#9B2033"
-          />
-        </svg>
+        <Link href="/Home">
+    <FaArrowLeft className="text-red-800 w-[20px] h-[20px] cursor-pointer" />
+  </Link>
         <h1 className="text-xl font-semibold text-black ml-4">Chats</h1>
       </div>
 
