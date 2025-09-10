@@ -18,7 +18,7 @@ export default function SessionForums() {
                     <h2 className="text-lg font-semibold text-[#9B2033]">Chats List</h2>
                   </div>
                 
-<Link href="/Masseges">
+<Link href="/participants/Masseges">
   <FaArrowRight className="text-[#9B2033] text-2xl ml-auto" />
 </Link>
                 </div>

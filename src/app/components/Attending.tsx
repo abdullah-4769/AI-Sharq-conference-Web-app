@@ -60,7 +60,7 @@ export default function WhosAttending() {
           <span>Add to Calendar</span>
         </button>
 
-       <Link href="/LiveSession">
+       <Link href="/participants/LiveSession">
   <div className="bg-red-900 text-white px-10 py-1 rounded-lg text-sm hover:bg-red-800 transition text-center cursor-pointer">
     I’m Attending
   </div>

@@ -5,37 +5,37 @@ const quickAccessItems = [
     label: 'Schedule',
     desc: 'Full program',
     img: '/images/div.png',
-    Link: '/Schedule'
+    Link: '/participants/Schedule'
   },
   {
     label: 'My Agenda',
     desc: 'Personal schedule',
     img: '/images/div (1).png',
-    Link: '/MyAgenda'
+    Link: '/participants/MyAgenda'
   },
   {
     label: 'Speakers',
     desc: 'Expert profiles',
     img: '/images/div (2).png',
-    Link: '/Speakers'
+    Link: '/participants/Speakers'
   },
   {
     label: 'Sponsors',
     desc: 'Partners & exhibits',
     img: '/images/div (3).png',
-    Link: '/Sponsors&Exhibitors'
+    Link: '/participants/Sponsors&Exhibitors'
   },
   {
     label: 'Networking',
     desc: 'Connect & chat',
     img: '/images/div (4).png',
-    Link: '/Networking'
+    Link: '/participants/Networking'
   },
   {
     label: 'Forums',
     desc: 'Discussions',
     img: '/images/div (5).png',
-    Link: '/Forums'
+    Link: '/participants/Forums'
   },
 ];
 

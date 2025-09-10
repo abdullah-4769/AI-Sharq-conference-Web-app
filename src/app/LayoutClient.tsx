@@ -7,7 +7,7 @@ export default function LayoutClient({ children }: { children: React.ReactNode }
   const pathname = usePathname();
 
   // Hide Navbar on auth pages
-  const hideNavbarOn = ["/SignIn", "/SignUp","/SetUpYourProfile","/SetNewPassword","/Loginpage","/ForgetPassword","/Code","/"];
+  const hideNavbarOn = ["/authentication/SignIn", "/authentication/SignUp","/authentication/SetUpYourProfile","/authentication/SetNewPassword","/authentication/Loginpage","/authentication/ForgetPassword","/authentication/Code","/"];
   const shouldShowNavbar = !hideNavbarOn.includes(pathname);
 
   return (
