@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
 import { FaArrowLeft } from 'react-icons/fa'
+import Image from "next/image"
 
 export default function page() {
   return (
@@ -14,7 +15,7 @@ export default function page() {
       </div>
 
   {/* Workshop Card */}
-    <div className="mb-6 p-4 max-w-7xl ml-10 py-8 border border-gray-200 rounded-xl bg-white">
+    <div className="mb-6 p-4 max-w-8xl ml-5 py-8 border border-gray-200 rounded-xl bg-white">
     <div className="flex justify-between items-start mb-">
       <span className="bg-purple-100 text-purple-600 text-xs font-medium px-3 py-1 rounded-full">Workshop</span>
       <div className="text-right text-sm text-red-700 font-semibold">
@@ -49,7 +50,7 @@ export default function page() {
 </div>
 
   {/* Networking Card */}
-    <div className="mb-6 p-4 max-w-7xl ml-10 py-8 border border-gray-200 rounded-xl bg-white">
+    <div className="mb-6 p-4 max-w-8xl ml-5 py-8 border border-gray-200 rounded-xl bg-white">
     <div className="flex justify-between items-start mb-2">
       <span className="bg-blue-100 text-blue-600 text-xs font-medium px-3 py-1 rounded-full">Networking</span>
     </div>
@@ -86,40 +87,56 @@ export default function page() {
     <div className="inline-block bg-pink-100 text-pink-700 text-xs font-medium px-3 py-1 rounded-full">
       You Joined the forum 10:35 AM
     </div>
-  </div>
+  </div><br></br>
   <div className="space-y-6">
 
   {/* === Comment Box 1 === */}
-  <div className="bg-white border rounded-lg p-4 shadow-sm text-sm max-w-7xl ml-0">
+  <div className="bg-white border rounded-lg p-4 shadow-sm text-sm max-w-8xl ml-4">
     <div className="flex items-start space-x-3">
-      <img src="https://ui-avatars.com/api/?name=Dr+Johnathan" alt="avatar" className="w-8 h-8 rounded-full" />
+      <img src="/images/img (13).png" alt="avatar" className="w-8 h-8 rounded-full" />
       <div className="flex-1">
         <div className="flex justify-between items-center">
           <span className="font-semibold text-gray-800">Dr. Johnathan</span>
           <span className="text-xs text-gray-400">1 hour ago</span>
         </div>
-        <div className="mt-1 text-gray-700">
+        <div className="mt-1 mb-3 mr-5 text-gray-700">
           Great question Sarah! From my experience, the biggest challenges are:
-          <br /><br />
-          <strong>Data Privacy Regulations:</strong> GDPR compliance and local data protection laws<br />
-          <strong>Talent Shortage:</strong> Limited AI/ML specialists in the region<br />
-          <strong>Infrastructure:</strong> Legacy systems integration challenges
+          <br />
+          <span className='font-extrabold text-md mt-2'>Data Privacy Regulations:</span> <span className='text-sm'>GDPR compliance and local data protection laws<br />
+          <strong className='font-extrabold text-md mt-2'>Talent Shortage:</strong> Limited AI/ML specialists in the region<br /></span>
+          <strong className='font-extrabold text-md mt-2'>Infrastructure:</strong> Legacy systems integration challenges
           <br /><br />
           We've had success with gradual implementation and extensive training programs. What’s been your experience with stakeholder buy-in?
         </div>
         <div className="flex items-center space-x-6 text-xs text-gray-500 mt-3">
           <button className="flex items-center space-x-1 hover:text-red-600">
-            <span>❤️</span><span>12</span>
+            <span><svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.56953 0.27668C9.28047 0.418867 9.74258 1.11066 9.60039 1.8216L9.5375 2.13332C9.39258 2.8634 9.12461 3.55793 8.75 4.18957H12.6875C13.4121 4.18957 14 4.77746 14 5.50207C14 6.00793 13.7129 6.44816 13.2918 6.66691C13.5898 6.90754 13.7812 7.27668 13.7812 7.68957C13.7812 8.32941 13.3219 8.86262 12.7176 8.97746C12.8379 9.17707 12.9062 9.40949 12.9062 9.65832C12.9062 10.2407 12.5262 10.7357 12.0012 10.9052C12.0203 10.9954 12.0312 11.0911 12.0312 11.1896C12.0312 11.9142 11.4434 12.5021 10.7188 12.5021H8.05273C7.5332 12.5021 7.02734 12.3489 6.59531 12.0618L5.54258 11.3591C4.8125 10.8724 4.375 10.0521 4.375 9.17434V8.12707V6.81457V6.13371C4.375 5.33527 4.73867 4.58332 5.35938 4.08293L5.56172 3.9216C6.28633 3.34191 6.78125 2.52707 6.96172 1.61926L7.02461 1.30754C7.1668 0.596601 7.85859 0.134492 8.56953 0.27668ZM0.875 4.62707H2.625C3.10898 4.62707 3.5 5.01809 3.5 5.50207V11.6271C3.5 12.1111 3.10898 12.5021 2.625 12.5021H0.875C0.391016 12.5021 0 12.1111 0 11.6271V5.50207C0 5.01809 0.391016 4.62707 0.875 4.62707Z" fill="#9B2033"/>
+</svg>
+</span><span>12</span>
           </button>
-          <button className="hover:text-blue-600">Reply</button>
-          <button className="hover:text-blue-600">Share</button>
+          <button className="flex items-center space-x-1 hover:text-red-600">
+          <span>
+<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M5.60547 0.328578C5.91992 0.468031 6.125 0.782484 6.125 1.12702V2.87702H9.1875C11.8453 2.87702 14 5.0317 14 7.68952C14 10.7876 11.7715 12.1712 11.2602 12.4501C11.1918 12.4883 11.1152 12.502 11.0387 12.502C10.7406 12.502 10.5 12.2587 10.5 11.9633C10.5 11.7583 10.6176 11.5696 10.768 11.4301C11.025 11.1895 11.375 10.7083 11.375 9.87975C11.375 8.43053 10.1992 7.25475 8.75 7.25475H6.125V9.00475C6.125 9.34928 5.92266 9.66373 5.60547 9.80319C5.28828 9.94264 4.92188 9.88522 4.66484 9.65553L0.289844 5.71803C0.106641 5.5485 0 5.31334 0 5.06452C0 4.81569 0.106641 4.58053 0.289844 4.41373L4.66484 0.476235C4.92188 0.243813 5.29102 0.186391 5.60547 0.328578Z" fill="#9B2033"/>
+</svg>
+
+</span><span>Replies</span></button>
+              <button className="flex items-center space-x-1 hover:text-red-600">
+
+          <span><svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.39453 0.328578C8.08008 0.468031 7.875 0.782484 7.875 1.12702V2.87702H4.8125C2.15469 2.87702 0 5.0317 0 7.68952C0 10.7876 2.22852 12.1712 2.73984 12.4501C2.8082 12.4883 2.88477 12.502 2.96133 12.502C3.25937 12.502 3.5 12.2587 3.5 11.9633C3.5 11.7583 3.38242 11.5696 3.23203 11.4301C2.975 11.1895 2.625 10.7083 2.625 9.87975C2.625 8.43053 3.80078 7.25475 5.25 7.25475H7.875V9.00475C7.875 9.34928 8.07734 9.66373 8.39453 9.80319C8.71172 9.94264 9.07812 9.88522 9.33516 9.65553L13.7102 5.71803C13.8934 5.5485 14 5.31334 14 5.06452C14 4.81569 13.8934 4.58053 13.7102 4.41373L9.33516 0.476235C9.07812 0.243813 8.70898 0.186391 8.39453 0.328578Z" fill="#9B2033"/>
+</svg>
+
+</span><span>Share</span></button>
+
         </div>
 
         {/* Replies */}
-        <div className="mt-4 space-y-3 pl-4 border-l border-gray-200">
+        <div className="mt-4 space-y-3 pl-4">
           {/* Reply 1 */}
           <div className="flex items-start space-x-3">
-            <img src="https://ui-avatars.com/api/?name=Dr+Johnathan" alt="avatar" className="w-7 h-7 rounded-full" />
+            <img src="/images/img (13).png" alt="avatar" className="w-7 h-7 rounded-full" />
             <div className="flex-1">
               <div className="flex justify-between items-center">
                 <span className="font-semibold text-gray-800">Dr. Johnathan</span>
@@ -133,7 +150,7 @@ export default function page() {
 
           {/* Reply 2 */}
           <div className="flex items-start space-x-3">
-            <img src="https://ui-avatars.com/api/?name=Layla+Hassan" alt="avatar" className="w-7 h-7 rounded-full" />
+            <img src="/images/img16.jpg" alt="avatar" className="w-7 h-7 rounded-full" />
             <div className="flex-1">
               <div className="flex justify-between items-center">
                 <span className="font-semibold text-gray-800">Layla Hassan</span>
@@ -149,88 +166,74 @@ export default function page() {
     </div>
   </div>
 
-  {/* === Comment Box 2 (Clone) === */}
-  <div className="bg-white border rounded-lg p-4 shadow-sm text-sm">
+   {/* === Comment Box 1 === */}
+  <div className="bg-white border rounded-lg p-4 shadow-sm text-sm max-w-8xl ml-4">
     <div className="flex items-start space-x-3">
-      <img src="https://ui-avatars.com/api/?name=Dr+Johnathan" alt="avatar" className="w-8 h-8 rounded-full" />
+      <img src="/images/img (13).png" alt="avatar" className="w-8 h-8 rounded-full" />
       <div className="flex-1">
         <div className="flex justify-between items-center">
           <span className="font-semibold text-gray-800">Dr. Johnathan</span>
           <span className="text-xs text-gray-400">1 hour ago</span>
         </div>
-        <div className="mt-1 text-gray-700">
+        <div className="mt-1 mb-3 mr-5 text-gray-700">
           Great question Sarah! From my experience, the biggest challenges are:
-          <br /><br />
-          <strong>Data Privacy Regulations:</strong> GDPR compliance and local data protection laws<br />
-          <strong>Talent Shortage:</strong> Limited AI/ML specialists in the region<br />
-          <strong>Infrastructure:</strong> Legacy systems integration challenges
+          <br />
+          <span className='font-extrabold text-md mt-2'>Data Privacy Regulations:</span> <span className='text-sm'>GDPR compliance and local data protection laws<br />
+          <strong className='font-extrabold text-md mt-2'>Talent Shortage:</strong> Limited AI/ML specialists in the region<br /></span>
+          <strong className='font-extrabold text-md mt-2'>Infrastructure:</strong> Legacy systems integration challenges
           <br /><br />
           We've had success with gradual implementation and extensive training programs. What’s been your experience with stakeholder buy-in?
         </div>
         <div className="flex items-center space-x-6 text-xs text-gray-500 mt-3">
           <button className="flex items-center space-x-1 hover:text-red-600">
-            <span>❤️</span><span>12</span>
+            <span><svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.56953 0.27668C9.28047 0.418867 9.74258 1.11066 9.60039 1.8216L9.5375 2.13332C9.39258 2.8634 9.12461 3.55793 8.75 4.18957H12.6875C13.4121 4.18957 14 4.77746 14 5.50207C14 6.00793 13.7129 6.44816 13.2918 6.66691C13.5898 6.90754 13.7812 7.27668 13.7812 7.68957C13.7812 8.32941 13.3219 8.86262 12.7176 8.97746C12.8379 9.17707 12.9062 9.40949 12.9062 9.65832C12.9062 10.2407 12.5262 10.7357 12.0012 10.9052C12.0203 10.9954 12.0312 11.0911 12.0312 11.1896C12.0312 11.9142 11.4434 12.5021 10.7188 12.5021H8.05273C7.5332 12.5021 7.02734 12.3489 6.59531 12.0618L5.54258 11.3591C4.8125 10.8724 4.375 10.0521 4.375 9.17434V8.12707V6.81457V6.13371C4.375 5.33527 4.73867 4.58332 5.35938 4.08293L5.56172 3.9216C6.28633 3.34191 6.78125 2.52707 6.96172 1.61926L7.02461 1.30754C7.1668 0.596601 7.85859 0.134492 8.56953 0.27668ZM0.875 4.62707H2.625C3.10898 4.62707 3.5 5.01809 3.5 5.50207V11.6271C3.5 12.1111 3.10898 12.5021 2.625 12.5021H0.875C0.391016 12.5021 0 12.1111 0 11.6271V5.50207C0 5.01809 0.391016 4.62707 0.875 4.62707Z" fill="#9B2033"/>
+</svg>
+</span><span>12</span>
           </button>
-          <button className="hover:text-blue-600">Reply</button>
-          <button className="hover:text-blue-600">Share</button>
+          <button className="flex items-center space-x-1 hover:text-red-600">
+          <span>
+<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M5.60547 0.328578C5.91992 0.468031 6.125 0.782484 6.125 1.12702V2.87702H9.1875C11.8453 2.87702 14 5.0317 14 7.68952C14 10.7876 11.7715 12.1712 11.2602 12.4501C11.1918 12.4883 11.1152 12.502 11.0387 12.502C10.7406 12.502 10.5 12.2587 10.5 11.9633C10.5 11.7583 10.6176 11.5696 10.768 11.4301C11.025 11.1895 11.375 10.7083 11.375 9.87975C11.375 8.43053 10.1992 7.25475 8.75 7.25475H6.125V9.00475C6.125 9.34928 5.92266 9.66373 5.60547 9.80319C5.28828 9.94264 4.92188 9.88522 4.66484 9.65553L0.289844 5.71803C0.106641 5.5485 0 5.31334 0 5.06452C0 4.81569 0.106641 4.58053 0.289844 4.41373L4.66484 0.476235C4.92188 0.243813 5.29102 0.186391 5.60547 0.328578Z" fill="#9B2033"/>
+</svg>
+
+</span><span>Replies</span></button>
+              <button className="flex items-center space-x-1 hover:text-red-600">
+
+          <span><svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.39453 0.328578C8.08008 0.468031 7.875 0.782484 7.875 1.12702V2.87702H4.8125C2.15469 2.87702 0 5.0317 0 7.68952C0 10.7876 2.22852 12.1712 2.73984 12.4501C2.8082 12.4883 2.88477 12.502 2.96133 12.502C3.25937 12.502 3.5 12.2587 3.5 11.9633C3.5 11.7583 3.38242 11.5696 3.23203 11.4301C2.975 11.1895 2.625 10.7083 2.625 9.87975C2.625 8.43053 3.80078 7.25475 5.25 7.25475H7.875V9.00475C7.875 9.34928 8.07734 9.66373 8.39453 9.80319C8.71172 9.94264 9.07812 9.88522 9.33516 9.65553L13.7102 5.71803C13.8934 5.5485 14 5.31334 14 5.06452C14 4.81569 13.8934 4.58053 13.7102 4.41373L9.33516 0.476235C9.07812 0.243813 8.70898 0.186391 8.39453 0.328578Z" fill="#9B2033"/>
+</svg>
+
+</span><span>Share</span></button>
+
         </div>
 
         {/* Replies */}
-        <div className="mt-4 space-y-3 pl-4 border-l border-gray-200">
+        <div className="mt-4 space-y-3 pl-4">
+          {/* Reply 1 */}
           <div className="flex items-start space-x-3">
-            <img src="https://ui-avatars.com/api/?name=Dr+Johnathan" alt="avatar" className="w-7 h-7 rounded-full" />
+            <img src="/images/img (13).png" alt="avatar" className="w-7 h-7 rounded-full" />
             <div className="flex-1">
               <div className="flex justify-between items-center">
                 <span className="font-semibold text-gray-800">Dr. Johnathan</span>
                 <span className="text-xs text-gray-400">1 hour ago</span>
               </div>
               <div className="mt-1 text-gray-700">
-                I agree, Emma. I especially liked how they tied the framework back to real-world applications...
+                I agree, Emma. I especially liked how they tied the framework back to real-world applications. Too often sessions are just theory, but here I actually feel like I can take the model and use it with my team right away. Did you also find the group activity helpful?
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  {/* === Comment Box 3 (Clone) === */}
-  <div className="bg-white border rounded-lg p-4 shadow-sm text-sm">
-    <div className="flex items-start space-x-3">
-      <img src="https://ui-avatars.com/api/?name=Dr+Johnathan" alt="avatar" className="w-8 h-8 rounded-full" />
-      <div className="flex-1">
-        <div className="flex justify-between items-center">
-          <span className="font-semibold text-gray-800">Dr. Johnathan</span>
-          <span className="text-xs text-gray-400">1 hour ago</span>
-        </div>
-        <div className="mt-1 text-gray-700">
-          Great question Sarah! From my experience, the biggest challenges are:
-          <br /><br />
-          <strong>Data Privacy Regulations:</strong> GDPR compliance and local data protection laws<br />
-          <strong>Talent Shortage:</strong> Limited AI/ML specialists in the region<br />
-          <strong>Infrastructure:</strong> Legacy systems integration challenges
-          <br /><br />
-          We've had success with gradual implementation and extensive training programs.
-        </div>
-        <div className="flex items-center space-x-6 text-xs text-gray-500 mt-3">
-          <button className="flex items-center space-x-1 hover:text-red-600">
-            <span>❤️</span><span>12</span>
-          </button>
-          <button className="hover:text-blue-600">Reply</button>
-          <button className="hover:text-blue-600">Share</button>
-        </div>
-
-        {/* Replies */}
-        <div className="mt-4 space-y-3 pl-4 border-l border-gray-200">
+          {/* Reply 2 */}
           <div className="flex items-start space-x-3">
-            <img src="https://ui-avatars.com/api/?name=Layla+Hassan" alt="avatar" className="w-7 h-7 rounded-full" />
+            <img src="/images/img16.jpg" alt="avatar" className="w-7 h-7 rounded-full" />
             <div className="flex-1">
               <div className="flex justify-between items-center">
                 <span className="font-semibold text-gray-800">Layla Hassan</span>
                 <span className="text-xs text-gray-400">1 hour ago</span>
               </div>
               <div className="mt-1 text-gray-700">
-                The talent shortage is real! We’ve been partnering with local universities to create AI training programs...
+                The talent shortage is real! We’ve been partnering with local universities to create AI training programs. It’s a long-term investment but necessary.
               </div>
             </div>
           </div>
@@ -239,7 +242,85 @@ export default function page() {
     </div>
   </div>
 
-</div>
+   {/* === Comment Box 1 === */}
+  <div className="bg-white border rounded-lg p-4 shadow-sm text-sm max-w-8xl ml-4">
+    <div className="flex items-start space-x-3">
+      <img src="/images/img (13).png" alt="avatar" className="w-8 h-8 rounded-full" />
+      <div className="flex-1">
+        <div className="flex justify-between items-center">
+          <span className="font-semibold text-gray-800">Dr. Johnathan</span>
+          <span className="text-xs text-gray-400">1 hour ago</span>
+        </div>
+        <div className="mt-1 mb-3 mr-5 text-gray-700">
+          Great question Sarah! From my experience, the biggest challenges are:
+          <br />
+          <span className='font-extrabold text-md mt-2'>Data Privacy Regulations:</span> <span className='text-sm'>GDPR compliance and local data protection laws<br />
+          <strong className='font-extrabold text-md mt-2'>Talent Shortage:</strong> Limited AI/ML specialists in the region<br /></span>
+          <strong className='font-extrabold text-md mt-2'>Infrastructure:</strong> Legacy systems integration challenges
+          <br /><br />
+          We've had success with gradual implementation and extensive training programs. What’s been your experience with stakeholder buy-in?
+        </div>
+        <div className="flex items-center space-x-6 text-xs text-gray-500 mt-3">
+          <button className="flex items-center space-x-1 hover:text-red-600">
+            <span><svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.56953 0.27668C9.28047 0.418867 9.74258 1.11066 9.60039 1.8216L9.5375 2.13332C9.39258 2.8634 9.12461 3.55793 8.75 4.18957H12.6875C13.4121 4.18957 14 4.77746 14 5.50207C14 6.00793 13.7129 6.44816 13.2918 6.66691C13.5898 6.90754 13.7812 7.27668 13.7812 7.68957C13.7812 8.32941 13.3219 8.86262 12.7176 8.97746C12.8379 9.17707 12.9062 9.40949 12.9062 9.65832C12.9062 10.2407 12.5262 10.7357 12.0012 10.9052C12.0203 10.9954 12.0312 11.0911 12.0312 11.1896C12.0312 11.9142 11.4434 12.5021 10.7188 12.5021H8.05273C7.5332 12.5021 7.02734 12.3489 6.59531 12.0618L5.54258 11.3591C4.8125 10.8724 4.375 10.0521 4.375 9.17434V8.12707V6.81457V6.13371C4.375 5.33527 4.73867 4.58332 5.35938 4.08293L5.56172 3.9216C6.28633 3.34191 6.78125 2.52707 6.96172 1.61926L7.02461 1.30754C7.1668 0.596601 7.85859 0.134492 8.56953 0.27668ZM0.875 4.62707H2.625C3.10898 4.62707 3.5 5.01809 3.5 5.50207V11.6271C3.5 12.1111 3.10898 12.5021 2.625 12.5021H0.875C0.391016 12.5021 0 12.1111 0 11.6271V5.50207C0 5.01809 0.391016 4.62707 0.875 4.62707Z" fill="#9B2033"/>
+</svg>
+</span><span>12</span>
+          </button>
+          <button className="flex items-center space-x-1 hover:text-red-600">
+          <span>
+<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M5.60547 0.328578C5.91992 0.468031 6.125 0.782484 6.125 1.12702V2.87702H9.1875C11.8453 2.87702 14 5.0317 14 7.68952C14 10.7876 11.7715 12.1712 11.2602 12.4501C11.1918 12.4883 11.1152 12.502 11.0387 12.502C10.7406 12.502 10.5 12.2587 10.5 11.9633C10.5 11.7583 10.6176 11.5696 10.768 11.4301C11.025 11.1895 11.375 10.7083 11.375 9.87975C11.375 8.43053 10.1992 7.25475 8.75 7.25475H6.125V9.00475C6.125 9.34928 5.92266 9.66373 5.60547 9.80319C5.28828 9.94264 4.92188 9.88522 4.66484 9.65553L0.289844 5.71803C0.106641 5.5485 0 5.31334 0 5.06452C0 4.81569 0.106641 4.58053 0.289844 4.41373L4.66484 0.476235C4.92188 0.243813 5.29102 0.186391 5.60547 0.328578Z" fill="#9B2033"/>
+</svg>
+
+</span><span>Replies</span></button>
+              <button className="flex items-center space-x-1 hover:text-red-600">
+
+          <span><svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.39453 0.328578C8.08008 0.468031 7.875 0.782484 7.875 1.12702V2.87702H4.8125C2.15469 2.87702 0 5.0317 0 7.68952C0 10.7876 2.22852 12.1712 2.73984 12.4501C2.8082 12.4883 2.88477 12.502 2.96133 12.502C3.25937 12.502 3.5 12.2587 3.5 11.9633C3.5 11.7583 3.38242 11.5696 3.23203 11.4301C2.975 11.1895 2.625 10.7083 2.625 9.87975C2.625 8.43053 3.80078 7.25475 5.25 7.25475H7.875V9.00475C7.875 9.34928 8.07734 9.66373 8.39453 9.80319C8.71172 9.94264 9.07812 9.88522 9.33516 9.65553L13.7102 5.71803C13.8934 5.5485 14 5.31334 14 5.06452C14 4.81569 13.8934 4.58053 13.7102 4.41373L9.33516 0.476235C9.07812 0.243813 8.70898 0.186391 8.39453 0.328578Z" fill="#9B2033"/>
+</svg>
+
+</span><span>Share</span></button>
+
+        </div>
+
+        {/* Replies */}
+        <div className="mt-4 space-y-3 pl-4">
+          {/* Reply 1 */}
+          <div className="flex items-start space-x-3">
+            <img src="/images/img (13).png" alt="avatar" className="w-7 h-7 rounded-full" />
+            <div className="flex-1">
+              <div className="flex justify-between items-center">
+                <span className="font-semibold text-gray-800">Dr. Johnathan</span>
+                <span className="text-xs text-gray-400">1 hour ago</span>
+              </div>
+              <div className="mt-1 text-gray-700">
+                I agree, Emma. I especially liked how they tied the framework back to real-world applications. Too often sessions are just theory, but here I actually feel like I can take the model and use it with my team right away. Did you also find the group activity helpful?
+              </div>
+            </div>
+          </div>
+
+          {/* Reply 2 */}
+          <div className="flex items-start space-x-3">
+            <img src="/images/img16.jpg" alt="avatar" className="w-7 h-7 rounded-full" />
+            <div className="flex-1">
+              <div className="flex justify-between items-center">
+                <span className="font-semibold text-gray-800">Layla Hassan</span>
+                <span className="text-xs text-gray-400">1 hour ago</span>
+              </div>
+              <div className="mt-1 text-gray-700">
+                The talent shortage is real! We’ve been partnering with local universities to create AI training programs. It’s a long-term investment but necessary.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><br></br>
+
+                <Image src="/images/line.png" alt="Logo" width={1729} height={127} className="absolute " />
 
 </div>
   )

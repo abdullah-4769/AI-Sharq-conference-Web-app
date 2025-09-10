@@ -11,7 +11,7 @@ import Image from 'next/image';
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gray-100 p-10 font-sans">
+    <main className="min-h-screen bg-gray-100 p-7 ">
       
       {/* Latest Update Banner */}
       <div className="bg-red-800 text-white p-8 rounded-lg flex justify-between items-center mb-6">
@@ -29,7 +29,7 @@ export default function Home() {
     <TodaysSchedule />
     <QuickAccess />
     <ToolsAndConnections />
- <Image src="/images/line.png" alt="Line" width={1729} height={127} className="absolute top-[1310px]" />
+ <Image src="/images/line.png" alt="Line" width={1450} height={127} className="absolute " />
     
     </main>
   );
