@@ -132,7 +132,7 @@ const EventMap = () => {
           </Marker>
         </MapContainer>
       </div><br></br>
-                      <Image src="/images/line.png" alt="Logo" width={1460} height={127} className="absolute " />
+    <Image src="/images/line.png" alt="Logo" width={1460} height={127} className="absolute " />
       
     </div>
   );
