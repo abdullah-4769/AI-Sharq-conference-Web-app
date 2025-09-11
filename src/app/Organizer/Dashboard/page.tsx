@@ -24,7 +24,7 @@ const quickAccessItems = [
     label: "Manage Participants",
     desc: "Directory & search",
     img: "/images/Particpants.png",
-    Link: "",
+    Link: "/Organizer/Manage",
   },
   {
     label: "Manage Sessions",

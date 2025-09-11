@@ -5,6 +5,7 @@ import { FaArrowLeft, FaCalendar, FaClock, FaPlay, FaPlus } from 'react-icons/fa
 import { FiSearch, FiMapPin, FiClock } from 'react-icons/fi';
 import { IoMdArrowBack } from 'react-icons/io';
 import AddNewVenuePopup from '../../components/AddNewVenuePopup';
+import LiveLoaction3 from '@/app/components/LiveLoaction3';
 
 
 const VenueMaps = () => {
@@ -139,49 +140,7 @@ const VenueMaps = () => {
         </div>
       </div>
 
-      {/* Map Container */}
-      <div className="w-[1276px] h-[625px] relative">
-        <div className="absolute inset-0 bg-cover bg-center border border-[#D4D4D4] shadow-[0px_4px_110.3px_rgba(68,68,68,0.05)] rounded-3xl"
-             style={{ backgroundImage: 'url(/images/map.png)' }}>
-
-          {/* Venue Pins */}
-          <div className="absolute top-[193px] left-[774px]">
-            <FiMapPin className="w-6 h-6 text-[#9B2033]" />
-            <div className="absolute top-8 left-1/2 transform -translate-x-1/2 bg-[#9B2033] text-white px-3 py-1 rounded-full text-sm font-medium">
-              Venue 02
-            </div>
-          </div>
-
-          <div className="absolute top-[304px] left-[171px]">
-            <FiMapPin className="w-6 h-6 text-[#9B2033]" />
-            <div className="absolute top-8 left-1/2 transform -translate-x-1/2 bg-[#9B2033] text-white px-3 py-1 rounded-full text-sm font-medium">
-              Venue 01
-            </div>
-          </div>
-
-          <div className="absolute top-[208px] left-[1133px]">
-            <FiMapPin className="w-6 h-6 text-[#9B2033]" />
-            <div className="absolute top-8 left-1/2 transform -translate-x-1/2 bg-[#9B2033] text-white px-3 py-1 rounded-full text-sm font-medium">
-              Venue 03
-            </div>
-          </div>
-
-          <div className="absolute top-[478px] left-[65px]">
-            <FiMapPin className="w-6 h-6 text-[#9B2033]" />
-            <div className="absolute top-8 left-1/2 transform -translate-x-1/2 bg-[#9B2033] text-white px-3 py-1 rounded-full text-sm font-medium">
-              Venue 04
-            </div>
-          </div>
-
-          {/* You are here indicator */}
-          <div className="absolute top-[59px] left-[378px] w-6 h-6 bg-[#9B2033] rounded-full opacity-20"></div>
-          <div className="absolute top-[67px] left-[386px] w-3.5 h-3.5 bg-[#9B2033] rounded-full"></div>
-          <div className="absolute top-[96px] left-[367px] bg-[#9B2033] text-white px-3 py-1 rounded-full text-sm font-medium">
-            You
-          </div>
-        </div>
-      </div>
-
+<LiveLoaction3 />
       {/* Search Bar */}
       <div className="flex flex-row items-center p-0 gap-4 w-[1280px] h-11">
         <div className="flex flex-col justify-center items-center p-4 gap-2.5 w-[1280px] h-11 border border-[#E8E8E8] rounded-2xl">
