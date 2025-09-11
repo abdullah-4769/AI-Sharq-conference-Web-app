@@ -5,6 +5,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L, { LatLngTuple } from "leaflet";
 import { FaArrowLeft } from "react-icons/fa";
 import Image from "next/image";
+import Link from "next/link";
 
 // Venue Marker (Pin + Label Box)
 const createVenueIcon = (label: string) =>
@@ -89,7 +90,7 @@ const EventMap = () => {
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <button className="p-2 rounded-full hover:bg-gray-200 transition">
-          <FaArrowLeft className="text-[#9B2033]" size={20} />
+       <Link href="/participants/Home"><FaArrowLeft className="text-[#9B2033]" size={20} /></Link>   
         </button>
         <h1 className="text-xl font-semibold text-gray-800">Venue Maps</h1>
       </div>

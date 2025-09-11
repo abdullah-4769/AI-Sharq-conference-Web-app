@@ -18,14 +18,14 @@ const toolsSupport = [
     title: 'Venue Maps',
     desc: 'Navigation & locations',
     icon: <FaMapMarkedAlt className="text-xl text-pink-500" />,
-   Link:'/VeneueMaps',
+   Link:'/participants/VeneueMaps',
 
   },
   {
     title: 'FAQ & Support',
     desc: 'Help & guidance',
     icon: <FaQuestionCircle className="text-xl text-yellow-500" />,
-        Link:'/Faqs&Support',
+        Link:'/participants/Faqs&Support',
 
   },
 ];

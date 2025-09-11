@@ -1,35 +1,21 @@
-# Speaker Details Page Implementation
+# VenueMaps Page Update Plan
 
-## Completed Tasks
-- [x] Created SpeakerDetails page (`src/app/SpeakerDetails/page.tsx`)
-- [x] Created reusable SpeakerSession component (`src/app/components/SpeakerSession.tsx`)
-- [x] Implemented speaker profile section with image, name, and title
-- [x] Added biography section
-- [x] Added areas of expertise section with tags
-- [x] Implemented speaking sessions section with 3 sessions
-- [x] Added connect & contact section
-- [x] Made SpeakerSession component editable via props
-- [x] Used map method to render multiple sessions dynamically
+## Overview
+Replace the current VenueMaps page with a new design based on provided CSS, keeping the Leaflet map but applying the new layout with statistics cards, search bar, and venue details.
 
-## Key Features Implemented
-- **Reusable Component**: SpeakerSession component accepts props for title, time, duration, room, type, and colors
-- **Dynamic Rendering**: Sessions are rendered using map method from an array of session data
-- **Responsive Design**: Layout matches the provided design specifications
-- **TypeScript Support**: Full TypeScript implementation with proper interfaces
-- **Modular Structure**: Component-based architecture for maintainability
+## Tasks
+- [x] Update VenueMaps page.tsx with new layout structure
+- [x] Add statistics cards (Total Sessions, Ongoing, Scheduled)
+- [x] Style the map container with pins and labels
+- [x] Implement search bar with icon
+- [x] Add filter buttons (All, Male, Female, etc.)
+- [x] Create venue detail cards below the map
+- [x] Apply Tailwind CSS classes to match the provided design
+- [x] Test the layout and responsiveness
 
-## Save for Later Icon Implementation
-- [x] Import FaRegBookmark and FaBookmark from react-icons/fa
-- [x] Add useState for isSaved state
-- [x] Add useEffect to load saved state from localStorage on mount
-- [x] Add handleSaveClick function to toggle state and save to localStorage
-- [x] Replace placeholder <Fa /> with conditional bookmark icon
-- [x] Make the icon clickable with onClick handler
+## Files to Edit
+- [x] src/app/VenueMaps/page.tsx
 
-## Potential Follow-up Tasks
-- [ ] Add actual speaker images from public/images directory
-- [ ] Implement click handlers for Register Now buttons
-- [ ] Add social media links functionality
-- [ ] Add responsive breakpoints for mobile devices
-- [ ] Implement loading states if data comes from API
-- [ ] Add error handling for missing session data
+## Dependencies
+- [x] Leaflet and react-leaflet already installed
+- [x] Using Tailwind CSS for styling
