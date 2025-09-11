@@ -94,7 +94,7 @@ export default function SignIn() {
               <label className="text-base font-normal leading-5 text-[#282828] font-['SF_Pro_Display']">
                 Remember me
               </label>
-            </div> <Link href="/ForgetPassword">
+            </div> <Link href="/authentication/ForgetPassword">
             <span  className="text-base font-normal leading-5 text-[#9B2033] font-['SF_Pro_Display']">
               Forget Password?
             </span>
@@ -102,9 +102,9 @@ export default function SignIn() {
           </div>
 
           {/* Sign In Button */}
-          <button className="w-full bg-[#9B2033] rounded-lg text-base font-medium leading-6 text-white font-['IBM_Plex_Sans'] px-4 py-3">
+         <Link href="/Organizer/Dashboard" ><button className="w-full bg-[#9B2033] rounded-lg text-base font-medium leading-6 text-white font-['IBM_Plex_Sans'] px-4 py-3">
             Sign In
-          </button>
+          </button></Link>
         </div>
 
         {/* Or Login With */}

@@ -114,7 +114,7 @@ export default function SignIn() {
           <button className="flex flex-row justify-center items-center p-[40px_10px] gap-[10px] w-[405px] h-[59px] bg-[#9B2033] rounded-[12px] flex-1 border-none outline-none">
             
             
-            <Link href="/SetNewPassword">
+            <Link href="/authentication/SetNewPassword">
             <span className="w-[83px] h-[11px] font-['IBM_Plex_Sans'] font-medium text-[16px] leading-[21px] text-center text-white">
               Verify Code
             </span>

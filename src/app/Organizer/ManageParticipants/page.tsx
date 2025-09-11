@@ -104,7 +104,7 @@ export default function page() {
         <div className="min-h-screen bg-[#FAFAFA] px-4 md:px-10 py-6 space-y-8 relative">
         {/* Header */}
         <div className="flex items-center gap-3">
-          <Link href="/participants/Home">
+          <Link href="/Organizer/Dashboard">
             <FaArrowLeft className="text-red-800 w-[20px] h-[20px] cursor-pointer" />
           </Link>
           <h1 className="text-xl font-bold text-gray-900 ml-5">Manage Participants</h1>
@@ -227,9 +227,9 @@ export default function page() {
               <button className="border border-gray-300 px-4 py-1 rounded-md text-black hover:bg-gray-100 transition">
                 Block
               </button>
-              <button className="border border-gray-300 px-4 py-1 rounded-md text-black hover:bg-gray-100 transition">
+             <Link href="/participants/SpeakerDetails"><button className="border border-gray-300 px-4 py-1 rounded-md text-black hover:bg-gray-100 transition">
                 View
-              </button>
+              </button></Link> 
             </div>
           </div>
         ))}

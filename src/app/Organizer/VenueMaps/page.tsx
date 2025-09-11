@@ -5,6 +5,7 @@ import { FaArrowLeft, FaCalendar, FaClock, FaPlay, FaPlus } from 'react-icons/fa
 import { FiSearch, FiMapPin, FiClock } from 'react-icons/fi';
 import { IoMdArrowBack } from 'react-icons/io';
 import AddNewVenuePopup from '../../components/AddNewVenuePopup';
+import Link from 'next/link';
 
 
 const VenueMaps = () => {
@@ -50,7 +51,7 @@ const VenueMaps = () => {
       {/* Header */}
       <div className="flex flex-row items-center p-0 gap-8 w-[1280px] h-6">
         <div className="flex flex-row items-center p-0 gap-8 w-[1280px] h-6">
-          <FaArrowLeft className="w-9 h-9 text-[#7e0505]" />
+        <Link href="/Organizer/Dashboard"> <FaArrowLeft className="w-9 h-9 text-[#7e0505]" /></Link> 
           <h1 className=" font-medium text-4xl leading-6 text-[#282828]">
             Venue Maps
           </h1>
@@ -271,9 +272,9 @@ const VenueMaps = () => {
                     </span>
                   </div>
                   <div className="flex flex-col justify-center items-center p-4 gap-2.5 w-[114.33px] h-11 border border-[#8C8C8C] rounded-2xl">
-                    <span className=" font-bold text-sm leading-2 text-[#282828]">
+                   <Link href="/Organizer/VenueDetail"><span className=" font-bold text-sm leading-2 text-[#282828]">
                       View
-                    </span>
+                    </span></Link> 
                   </div>
                 </div>
               </div>

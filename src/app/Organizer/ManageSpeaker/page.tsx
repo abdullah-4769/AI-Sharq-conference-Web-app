@@ -116,7 +116,7 @@ export default function SchedulePage() {
       
       {/* Header */}
       <div className="flex items-center gap-3">
-        <Link href="/participants/Home">
+        <Link href="/Organizer/Dashboard">
           <FaArrowLeft className="text-red-800 w-[20px] h-[20px] cursor-pointer" />
         </Link>
         <h1 className="text-xl font-bold text-gray-900 ml-5">Manage Speakers</h1>

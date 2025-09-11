@@ -9,7 +9,7 @@ export default function ChatPage() {
   return (
     <>
      <div className="flex items-center gap-2 mt-6 ml-5">
- <Link href="/participants/Home">
+ <Link href="/speakers/ManageSessions">
     <FaArrowLeft className="text-red-800 w-[20px] h-[20px] cursor-pointer" />
   </Link>
         <h1 className="text-xl font-semibold text-black ml-4">Chats</h1>

@@ -107,7 +107,7 @@ const [isModalOpen, setIsModalOpen] = useState(false);
       <div className="p-6 md:p-10 min-h-screen font-sans bg-[#FAFAFA]">
         {/* Header */}
         <div className="flex items-center gap-3 mb-6">
-          <Link href="/participants/Home">
+          <Link href="/Organizer/Dashboard">
             <FaArrowLeft className="text-red-800 w-[20px] h-[20px] cursor-pointer" />
           </Link>
           <h1 className="text-xl font-bold text-gray-900 ml-5" >Sessions Schedule</h1>

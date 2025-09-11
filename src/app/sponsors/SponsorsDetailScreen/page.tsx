@@ -15,7 +15,7 @@ const SponsorsDetailsScreen: React.FC = () => {
       >
         {/* Arrow Back Button */}
         <div className="absolute w-[40px] h-[40px] left-[20px] top-[20px] rounded-full flex items-center justify-center cursor-pointer">
- <Link href="/participants/Sponsors&Exhibitors">
+ <Link href="/sponsors/Sponsors&Exhibitors">
     <FaArrowLeft className="text-red-800 w-[20px] h-[20px] cursor-pointer" />
   </Link>        </div>
         {/* Gold Sponsors Label with Crown */}

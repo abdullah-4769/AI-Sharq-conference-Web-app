@@ -102,9 +102,11 @@ export default function SignIn() {
           </div>
 
           {/* Sign In Button */}
-          <button className="w-full bg-[#9B2033] rounded-lg text-base font-medium leading-6 text-white font-['IBM_Plex_Sans'] px-4 py-3">
+       <Link href="/participants/SetUpYourProfile">
+       <button className="w-full bg-[#9B2033] rounded-lg text-base font-medium leading-6 text-white font-['IBM_Plex_Sans'] px-4 py-3">
             Sign In
           </button>
+       </Link>   
         </div>
 
         {/* Or Login With */}

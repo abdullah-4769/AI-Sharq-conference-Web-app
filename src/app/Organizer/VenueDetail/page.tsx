@@ -26,7 +26,7 @@ export default function VenueDetail() {
       >
         {/* Back Button */}
         <div className="absolute top-5 left-5">
-          <Link href="/participants/Sponsors&Exhibitors">
+          <Link href="/Organizer/VenueMaps">
             <FaArrowLeft className="text-red-800 w-5 h-5 cursor-pointer" />
           </Link>
         </div>

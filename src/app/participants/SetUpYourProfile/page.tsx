@@ -76,9 +76,11 @@ export default function ProfileSetup() {
           </div>
 
           {/* Save & Continue Button */}
+         <Link href="/participants/Home">
           <button className="w-full h-12 bg-[#9B2033] text-white text-sm font-semibold rounded-lg hover:bg-[#7c1a2a] transition">
             Save & Continue
           </button>
+         </Link>
 
           {/* Skip Link */}
           <Link href="/Home">

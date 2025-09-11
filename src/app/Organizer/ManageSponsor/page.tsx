@@ -122,7 +122,7 @@ export default function Page() {
       <div className="min-h-screen bg-[#FAFAFA] px-4 md:px-10 py-6 space-y-8 relative">
         {/* Header */}
         <div className="flex items-center gap-3">
-          <Link href="/participants/Home">
+           <Link href="/Organizer/Dashboard">
             <FaArrowLeft className="text-red-800 w-[20px] h-[20px] cursor-pointer" />
           </Link>
           <h1 className="text-xl font-bold text-gray-900 ml-5">Manage Sponsor</h1>

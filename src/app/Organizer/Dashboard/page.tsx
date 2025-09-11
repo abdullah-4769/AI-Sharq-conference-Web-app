@@ -24,37 +24,37 @@ const quickAccessItems = [
     label: "Manage Participants",
     desc: "Directory & search",
     img: "/images/Particpants.png",
-    Link: "",
+    Link: "/Organizer/ManageParticipants",
   },
   {
     label: "Manage Sessions",
     desc: "Create & edit sessions",
     img: "/images/div2.png",
-    Link: "",
+    Link: "/Organizer/ManageSessions",
   },
   {
     label: "Manage Speakers",
     desc: "Update profiles & bios",
-    Link: "/icons/speakers.png",
     img: "/images/div3.png",
+    Link: "/Organizer/ManageSpeaker",
   },
   {
     label: "Sponsors",
     desc: "Manage exhibitors",
     img: "/images/div4.png",
-    Link: "",
+    Link: "/Organizer/ManageSponsor",
   },
   {
     label: "Venue Maps",
     desc: "Upload & update maps",
     img: "/images/div5.png",
-    Link: "/",
+    Link: "/Organizer/VenueMaps",
   },
   {
     label: "Announcement",
     desc: "Send Updates",
     img: "/images/div6.png",
-    Link: "/admin/announcements",
+    Link: "/Organizer/ManageAnnouncements",
   },
 ];
 
@@ -189,7 +189,7 @@ export default function Dashboard() {
           <p className="text-xs text-gray-500">Validate check-ins</p>
         </div>
       </div>
-      <span className="text-[#9B2033] text-lg font-bold"><FaArrowRight></FaArrowRight></span>
+      <span className="text-[#9B2033] text-lg font-bold"><Link href="/Organizer/Dashboard"><FaArrowRight></FaArrowRight></Link></span>
     </div>
 
     {/* Box 2 */}
@@ -203,7 +203,7 @@ export default function Dashboard() {
           <p className="text-xs text-gray-500">Analytics & exports</p>
         </div>
       </div>
-      <span className="text-[#9B2033] text-lg font-bold"><FaArrowRight></FaArrowRight></span>
+      <span className="text-[#9B2033] text-lg font-bold"><Link href="/Organizer/Report"><FaArrowRight></FaArrowRight></Link></span>
     </div>
 
     {/* Box 3 */}
@@ -217,7 +217,7 @@ export default function Dashboard() {
           <p className="text-xs text-gray-500">Help & guidance</p>
         </div>
       </div>
-      <span className="text-[#9B2033] text-lg font-bold"><FaArrowRight></FaArrowRight></span>
+      <span className="text-[#9B2033] text-lg font-bold"><Link href="/Organizer/Dashboard"><FaArrowRight></FaArrowRight></Link></span>
     </div>
   </div>
 </section>

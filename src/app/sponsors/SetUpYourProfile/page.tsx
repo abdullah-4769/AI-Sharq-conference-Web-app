@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { FaUser, FaEye, FaEyeSlash, FaPlus } from 'react-icons/fa';
 import Image from 'next/image';
 import { describe } from 'node:test';
+import Link from 'next/link';
 
 const SetUpYourProfile: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -225,7 +226,7 @@ const SetUpYourProfile: React.FC = () => {
                 type="submit"
                 className="flex-1 py-4 bg-red-600 text-white rounded-xl font-medium text-base hover:bg-red-700 transition-colors"
               >
-                Save & Continue
+                 <Link href="/sponsors/ManageSessions"> Save & Continue</Link> 
               </button>
               <button
                 type="button"

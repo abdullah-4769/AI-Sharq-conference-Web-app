@@ -91,7 +91,7 @@ export default function      () {
                         <div className="flex flex-col items-start p-0 gap-4 flex-1 h-8">
                           <h2 className="text-lg font-semibold text-[#9B2033]">Chats List</h2>
                         </div>
-                        <Link href="/participants/Masseges">
+                        <Link href="/speakers/Messages">
         <FaArrowRight className="text-[#9B2033] text-2xl" />
       </Link>
 

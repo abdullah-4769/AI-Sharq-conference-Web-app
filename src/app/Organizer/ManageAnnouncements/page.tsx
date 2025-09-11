@@ -134,7 +134,7 @@ const ManageAnnouncements: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex items-center gap-6 mb-8">
-               <Link href="/Dashboard">  <FaArrowLeft className="text-red-700 w-7 h-7" /></Link>
+               <Link href="/Organizer/Dashboard">  <FaArrowLeft className="text-red-700 w-7 h-7" /></Link>
           
           
           <h1 className="text-2xl font-medium text-gray-900">Manage Announcements</h1>

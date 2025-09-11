@@ -92,7 +92,7 @@ export default function SignIn() {
           {/* Frame 8 */}
           <button className="flex flex-row justify-center items-center p-[16px] gap-[10px] w-[405px] h-[59px] bg-[#9B2033] rounded-[12px] border-none outline-none">
             {/* Send Code */}
-            <Link href="/Code">
+            <Link href="/authentication/Code">
             <span className="w-[78px] h-[11px] font-['IBM_Plex_Sans'] font-medium text-[16px] leading-[11px] text-center text-white tracking-[-0.01em]">
               Send Code
             </span>
