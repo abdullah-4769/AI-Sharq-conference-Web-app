@@ -6,7 +6,7 @@ import ImageComponent from '../../components/Images';
 import { FaEnvelope, FaEyeSlash, FaGoogle, FaFacebookF, FaApple } from 'react-icons/fa';
 import Link from 'next/link';
 
-export default function SignIn() {
+export default function SignInSpeakers() {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -39,7 +39,7 @@ export default function SignIn() {
                  />
           {/* Title */}
           <h1 className="text-2xl font-medium text-gray-800 text-center leading-tight">
-            Sign In to <br/> <strong className='text-[#9B2033]'>AL SHARQ CONFERENCE</strong>
+            Sign In as a Speaker to <br/> <strong className='text-[#9B2033]'>AL SHARQ CONFERENCE</strong>
           </h1>
         </div>
 

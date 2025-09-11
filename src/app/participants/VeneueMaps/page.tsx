@@ -117,7 +117,7 @@ const EventMap = () => {
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <button className="p-2 rounded-full hover:bg-gray-200 transition">
-          <FaArrowLeft className="text-[#9B2033]" size={20} />
+       <Link href="/participants/Home"><FaArrowLeft className="text-[#9B2033]" size={20} /></Link>   
         </button>
         <h1 className="text-xl font-semibold text-gray-800">Venue Maps</h1>
       </div>

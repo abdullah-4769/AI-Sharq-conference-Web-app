@@ -7,11 +7,11 @@ import { FaEnvelope, FaEyeSlash, FaExclamationCircle, FaGoogle, FaFacebookF, FaA
 import Navbar from '../../components/Navbar';
 import LiveChat from '../../components/LiveChat';
 import Link from 'next/link';
-import { FiMessageCircle } from 'react-icons/fi';
 import { FaMessage } from 'react-icons/fa6';
+import { FiMessageCircle } from 'react-icons/fi';
 
 
-export default function LiveSession() {
+export default function LiveSessionSpeakers() {
 
   return (
 
@@ -238,61 +238,60 @@ export default function LiveSession() {
           </div>
         </div>
 
-       
-               {/* Speakers */}
-               <div className="flex flex-col gap-[24px] p-[24px_32px] bg-white border border-gray-300 shadow-lg rounded-[20px] w-[1280px] h-[253px]">
-                 <div className="text-[24px] font-medium font-['IBM Plex Sans'] text-[#282828] leading-[100%] tracking-[-0.01em]">
-                   Speakers
-                 </div>
-                 <div className="flex flex-row items-center gap-[30px]">
-                   <div className="w-[105px] h-[105px] rounded-full bg-gray-300 overflow-hidden">
-                     <Image src="/images/drAhmad.jpg" alt='drahmad' width={105} height={105} className="w-full h-full object-cover rounded-full" />
-                   </div>
-                   <div className="flex flex-col gap-[24px] flex-1">
-                     <div className="flex flex-row items-center gap-[24px]">
-                       <div className="text-[18px] font-semibold font-['IBM Plex Sans'] text-[#282828] leading-[150%]">
-                         Dr. Johnathan
-                       </div>
-                       <div className="w-[4px] h-[4px] bg-[#9B2033] rounded-full"></div>
-                       <div className="text-[16px] font-normal font-['IBM Plex Sans'] text-[#282828] leading-[150%]">
-                         Director of Regional Affairs
-                       </div>
-                       <div className="w-[4px] h-[4px] bg-[#9B2033] rounded-full"></div>
-                       <div className="text-[16px] font-normal font-['IBM Plex Sans'] text-[#282828] leading-[150%] flex-1">
-                         Middle East Institute
-                       </div>
-                       <div className="flex justify-center items-center bg-[#FCDCDC] rounded-full w-[48px] h-[44px]">
-                        <FaMessage className="text-[#9B2033]" size={20} />
-                       </div>
-                       <div className="flex justify-center items-center bg-[#91C6FF] rounded-full px-[12px] py-[10px] text-[#1E40AF] font-['IBM Plex Sans'] font-semibold text-[18px] leading-[140%]">
-                        Keynote Speaker
-                       </div>
-                     </div>
-                     <div className="text-[14px] font-normal font-['IBM Plex Sans'] text-[#424242] leading-[140%]">
-                       Dr. Johnathan is a professor of Political Science at Cairo University with expertise in international relations and Middle Eastern diplomacy. She has published extensively on regional cooperation and has advised multiple governments and organizations on policy development."
-                     </div>
-                   </div>
-                 </div>
-               </div>
-       
-               {/* Session Forum */}
-               <div className="flex flex-col gap-[24px] p-[24px_32px] bg-[#FFEEEE] border border-gray-300 shadow-lg rounded-[20px] w-[1280px] h-[106px] ">
-                 <div className="flex flex-row items-center gap-[14px]">
-                   <div className="w-[48px] h-[48px] bg-[#FFBEBE] rounded-[8px] flex items-center justify-center">
-                     <FiMessageCircle className="text-[#9B2033]" size={24} />
-                   </div>
-                   <div className="flex flex-col gap-[14px] flex-1">
-                     <div className="text-[18px] font-semibold font-['IBM Plex Sans'] text-[#9B2033] leading-[150%]">
-                       Session Forum
-                     </div>
-                     <div className="text-[16px] font-normal font-['IBM Plex Sans'] text-[#9B2033] leading-[150%]">
-                       Join the discussion with other attendees, ask questions, and share insights about this session.
-                     </div>
-                   </div>
-                  <FaArrowRight className="text-[#9B2033]" size={24} />
-                 </div>
-               </div>
-             </div>
+        {/* Speakers */}
+        <div className="flex flex-col gap-[24px] p-[24px_32px] bg-white border border-gray-300 shadow-lg rounded-[20px] w-[1280px] h-[253px]">
+          <div className="text-[24px] font-medium font-['IBM Plex Sans'] text-[#282828] leading-[100%] tracking-[-0.01em]">
+            Speakers
+          </div>
+          <div className="flex flex-row items-center gap-[30px]">
+            <div className="w-[105px] h-[105px] rounded-full bg-gray-300 overflow-hidden">
+              <Image src="/images/drAhmad.jpg" alt='drahmad' width={105} height={105} className="w-full h-full object-cover rounded-full" />
+            </div>
+            <div className="flex flex-col gap-[24px] flex-1">
+              <div className="flex flex-row items-center gap-[24px]">
+                <div className="text-[18px] font-semibold font-['IBM Plex Sans'] text-[#282828] leading-[150%]">
+                  Dr. Johnathan
+                </div>
+                <div className="w-[4px] h-[4px] bg-[#9B2033] rounded-full"></div>
+                <div className="text-[16px] font-normal font-['IBM Plex Sans'] text-[#282828] leading-[150%]">
+                  Director of Regional Affairs
+                </div>
+                <div className="w-[4px] h-[4px] bg-[#9B2033] rounded-full"></div>
+                <div className="text-[16px] font-normal font-['IBM Plex Sans'] text-[#282828] leading-[150%] flex-1">
+                  Middle East Institute
+                </div>
+                <div className="flex justify-center items-center bg-[#FCDCDC] rounded-full w-[48px] h-[44px]">
+                 <FaMessage className="text-[#9B2033]" size={20} />
+                </div>
+                <div className="flex justify-center items-center bg-[#91C6FF] rounded-full px-[12px] py-[10px] text-[#1E40AF] font-['IBM Plex Sans'] font-semibold text-[18px] leading-[140%]">
+                 Keynote Speaker
+                </div>
+              </div>
+              <div className="text-[14px] font-normal font-['IBM Plex Sans'] text-[#424242] leading-[140%]">
+                Dr. Johnathan is a professor of Political Science at Cairo University with expertise in international relations and Middle Eastern diplomacy. She has published extensively on regional cooperation and has advised multiple governments and organizations on policy development."
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Session Forum */}
+        <div className="flex flex-col gap-[24px] p-[24px_32px] bg-[#FFEEEE] border border-gray-300 shadow-lg rounded-[20px] w-[1280px] h-[106px] ">
+          <div className="flex flex-row items-center gap-[14px]">
+            <div className="w-[48px] h-[48px] bg-[#FFBEBE] rounded-[8px] flex items-center justify-center">
+              <FiMessageCircle className="text-[#9B2033]" size={24} />
+            </div>
+            <div className="flex flex-col gap-[14px] flex-1">
+              <div className="text-[18px] font-semibold font-['IBM Plex Sans'] text-[#9B2033] leading-[150%]">
+                Session Forum
+              </div>
+              <div className="text-[16px] font-normal font-['IBM Plex Sans'] text-[#9B2033] leading-[150%]">
+                Join the discussion with other attendees, ask questions, and share insights about this session.
+              </div>
+            </div>
+           <FaArrowRight className="text-[#9B2033]" size={24} />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

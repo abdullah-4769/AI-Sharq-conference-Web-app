@@ -58,7 +58,7 @@ const FAQSupport = () => {
     <div className="max-w-8xl  p-10 min-h-[80px]">
                  {/* Header */}
       <div className="flex  gap-2 mb-6 mt- ml-5">
- <Link href="/Home">
+ <Link href="/participants/Home">
     <FaArrowLeft className="text-red-800 w-[20px] h-[20px] cursor-pointer" />
   </Link>
         <h1 className="text-xl font-semibold text-black ml-4">FAQ & Support</h1>
