@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import ImageComponent from '../../components/Images';
-import { FaEnvelope, FaEyeSlash, FaExclamationCircle, FaGoogle, FaFacebookF, FaApple } from 'react-icons/fa';
+import Link from 'next/link';
+import {  FaEyeSlash, FaExclamationCircle, } from 'react-icons/fa';
 
 export default function SetNewPassword() {
   const [formData, setFormData] = useState({
@@ -151,12 +152,14 @@ export default function SetNewPassword() {
           </div>
 
           {/* Save Change Button */}
+          <Link href="/participants/SetUpYourProfile">
           <button
             type="submit"
             className="w-full bg-red-700 hover:bg-red-800 text-white font-semibold py-3 rounded-lg transition-colors"
           >
             Save Change
           </button>
+          </Link>
         </form>
       </div>
       <Image src="/images/line.png" alt="Line" width={1729} height={127} className="absolute top-[1010px]" />

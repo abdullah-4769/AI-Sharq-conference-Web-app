@@ -122,7 +122,7 @@ export default function Page() {
       <div className="min-h-screen bg-[#FAFAFA] px-4 md:px-10 py-6 space-y-8 relative">
         {/* Header */}
         <div className="flex items-center gap-3">
-          <Link href="/participants/Home">
+           <Link href="/Organizer/Dashboard">
             <FaArrowLeft className="text-red-800 w-[20px] h-[20px] cursor-pointer" />
           </Link>
           <h1 className="text-xl font-bold text-gray-900 ml-5">Manage Sponsor</h1>
@@ -212,6 +212,17 @@ export default function Page() {
             </div>
           </div>
         )}
+             {/* Gold Sponsors */}
+        {goldSponsors.length > 0 && (
+          <div className="mb-10">
+           
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {goldSponsors.map((sponsor, index) => (
+                <SponsorCard key={sponsor.id} sponsor={sponsor} index={index} tier="gold" />
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Silver Sponsors */}
         {silverSponsors.length > 0 && (
@@ -227,7 +238,41 @@ export default function Page() {
             </div>
           </div>
         )}
+           {/* Silver Sponsors */}
+        {silverSponsors.length > 0 && (
+          <div className="mb-10">
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {silverSponsors.map((sponsor, index) => (
+                <SponsorCard key={sponsor.id} sponsor={sponsor} index={index} tier="silver" />
+              ))}
+            </div>
+          </div>
+        )}
+           {/* Silver Sponsors */}
+        {silverSponsors.length > 0 && (
+          <div className="mb-10">
+           
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {silverSponsors.map((sponsor, index) => (
+                <SponsorCard key={sponsor.id} sponsor={sponsor} index={index} tier="silver" />
+              ))}
+            </div>
+          </div>
+        )}
+           {/* Silver Sponsors */}
+        {silverSponsors.length > 0 && (
+          <div className="mb-10">
+           
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {silverSponsors.map((sponsor, index) => (
+                <SponsorCard key={sponsor.id} sponsor={sponsor} index={index} tier="silver" />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
+ <Image src="/images/line.png" alt="Line" width={1450} height={127} className="absolute " />
 
       {/* MODAL SECTION */}
       {isModalOpen && (

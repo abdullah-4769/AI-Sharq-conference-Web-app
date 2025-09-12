@@ -15,12 +15,12 @@ import {
   FaTwitter,
   FaLinkedin,
 } from "react-icons/fa";
-import dynamic from "next/dynamic";
 
-const LiveLocation1 = dynamic(() => import('@/app/components/LiveLocation1'), {
+const LiveLocation1 = dynamic(() => import("@/app/components/LiveLocation1"), {
   ssr: false,
 });
 import Image from "next/image";
+import dynamic from "next/dynamic";
 
 export default function VenueDetail() {
   return (
@@ -32,7 +32,7 @@ export default function VenueDetail() {
       >
         {/* Back Button */}
         <div className="absolute top-5 left-5">
-          <Link href="/participants/Sponsors&Exhibitors">
+          <Link href="/Organizer/VenueMaps">
             <FaArrowLeft className="text-red-800 w-5 h-5 cursor-pointer" />
           </Link>
         </div>

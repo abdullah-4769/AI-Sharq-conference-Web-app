@@ -1,6 +1,6 @@
 "use client"
 import React,{useState} from 'react'
-import { FaArrowLeft, FaArrowRight, FaCalendar, FaCalendarAlt, FaClock, FaPlay, FaSearch, FaStar } from 'react-icons/fa'
+import {  FaArrowRight, FaCalendar, FaCalendarAlt, FaClock, FaPlay, FaSearch, FaStar } from 'react-icons/fa'
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaMessage } from 'react-icons/fa6';

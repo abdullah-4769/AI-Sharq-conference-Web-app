@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { FaUser, FaEye, FaEyeSlash, FaPlus } from 'react-icons/fa';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const SetUpYourProfile: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -268,12 +269,13 @@ const SetUpYourProfile: React.FC = () => {
             </div>
 
             <div className="flex flex-col gap-4 pt-4">
-              <button
+           <button
                 type="submit"
                 className="flex-1 py-4 bg-red-600 text-white rounded-xl font-medium text-base hover:bg-red-700 transition-colors"
               >
-                Save & Continue
+                 <Link href="/speakers/ManageSessions"> Save & Continue</Link> 
               </button>
+              
               <button
                 type="button"
                 onClick={handleSkip}

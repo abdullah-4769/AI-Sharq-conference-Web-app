@@ -3,7 +3,6 @@ import {
   FaQrcode,
   FaMapMarkedAlt,
   FaQuestionCircle,
-  FaArrowLeft,
   FaArrowRight,
 } from 'react-icons/fa';
 

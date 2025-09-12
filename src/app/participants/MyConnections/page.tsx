@@ -82,13 +82,6 @@ const Networking: React.FC = () => {
     }
   ]);
 
-  const handleConnect = (userId: number) => {
-    setUsers(prevUsers =>
-      prevUsers.map(user =>
-        user.id === userId ? { ...user, isConnected: true } : user
-      )
-    );
-  };
 
   const filteredUsers = users.filter(user =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -125,7 +118,8 @@ const Networking: React.FC = () => {
 
         {/* Navigation Section */}
         <div className="flex flex-row items-center p-0 gap-10 w-[1280px] h-6">
-          <FaArrowLeft className="text-[#9B2033] text-2xl" />
+          <Link href="/participants/Home"> <FaArrowLeft className="text-[#9B2033] text-2xl" /></Link>
+         
           <h1 className="text-2xl font-medium text-[#282828]">Networking</h1>
         </div>
 

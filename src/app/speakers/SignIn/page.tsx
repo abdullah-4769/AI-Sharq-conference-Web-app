@@ -22,7 +22,7 @@ export default function SignInSpeakers() {
   };
 
   return (
-    <div className="flex gap-20 p-10 mt-10">
+    <div className="flex gap-20  mt-10">
       {/* Left side - Image */}
       <ImageComponent />
 
@@ -102,9 +102,9 @@ export default function SignInSpeakers() {
           </div>
 
           {/* Sign In Button */}
-          <button className="w-full bg-[#9B2033] rounded-lg text-base font-medium leading-6 text-white font-['IBM_Plex_Sans'] px-4 py-3">
+        <Link href="/speakers/SetUpYourProfile"><button className="w-full bg-[#9B2033] rounded-lg text-base font-medium leading-6 text-white font-['IBM_Plex_Sans'] px-4 py-3">
             Sign In
-          </button>
+          </button></Link>  
         </div>
 
         {/* Or Login With */}

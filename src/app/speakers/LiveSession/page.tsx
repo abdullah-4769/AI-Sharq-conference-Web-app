@@ -1,10 +1,7 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
-import ImageComponent from '../../components/Images';
-import { FaEnvelope, FaEyeSlash, FaExclamationCircle, FaGoogle, FaFacebookF, FaApple, FaPlay, FaArrowLeft, FaExpand, FaEye, FaArrowRight } from 'react-icons/fa';
-import Navbar from '../../components/Navbar';
+import { FaPlay, FaArrowLeft, FaExpand, FaEye, FaArrowRight } from 'react-icons/fa';
 import LiveChat from '../../components/LiveChat';
 import Link from 'next/link';
 import { FaMessage } from 'react-icons/fa6';
@@ -29,7 +26,7 @@ export default function LiveSessionSpeakers() {
           {/* Logo Vector */}
        {/* Logo Vector */}
 <div className="w-[30px] h-[26px] flex items-center justify-center">
-  <Link href="/LiveSession">
+  <Link href="/speakers/ManageSessions">
     <FaArrowLeft className="text-[#9B2033] cursor-pointer" size={24} />
   </Link>
 

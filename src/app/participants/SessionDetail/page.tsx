@@ -1,5 +1,4 @@
 "use client"
-import { useState } from "react";
 // import { Speaker } from "./Speaker";
 import  SessionDetails  from "../../components/SessionDetails";
 // import { RelatedSessions } from "./RelatedSessions";
@@ -7,13 +6,13 @@ import  SessionDetails  from "../../components/SessionDetails";
 import { SessionHeader } from "../../components/SessionHeader";
 import Speaker from "../../components/Speaker";
 import RelatedSessions from "../../components/RelatedSessions";
-import ActionButtons from "../../components/ActionButtons";
 import SessionForums from "../../components/SessionForums";
 
 import Image from "next/image";
 import WhosAttending from "../../components/Attending";
 import { FaArrowLeft } from "react-icons/fa";
 import Link from "next/link";
+import RelatedSessionsGrid from "../../components/RelatedSessions";
 
 const sessionData = {
   title: "The Future of Regional Cooperation",
@@ -115,7 +114,7 @@ export default function SessionDetailsPage() {
 
       <Speaker speaker={speakerData} />
       <SessionDetails details={sessionDetailsData} />
-      <RelatedSessions sessions={relatedSessionsData} />
+<RelatedSessionsGrid /> ✅
       <WhosAttending />
     </div>
               <Image src="/images/line.png" alt="Logo" width={1729} height={127} className="absolute " />

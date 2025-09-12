@@ -36,7 +36,6 @@ const filters = ['Daily', 'Weekly', '10 Days', '90 Days', 'All Time'];
 
 export default function page() {
       const [activeFilter, setActiveFilter] = useState('Daily');
-    const [isModalOpen, setIsModalOpen] = useState(false);
   return (
               <div className="p-6 md:p-10 min-h-screen font-sans bg-[#FAFAFA]">
 

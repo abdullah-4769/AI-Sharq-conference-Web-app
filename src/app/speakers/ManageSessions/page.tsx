@@ -1,6 +1,6 @@
 "use client"
 import React,{useState} from 'react'
-import { FaArrowLeft, FaArrowRight, FaCalendar, FaCalendarAlt, FaClock, FaPlay, FaSearch } from 'react-icons/fa'
+import { FaArrowRight, FaCalendar, FaCalendarAlt, FaClock, FaPlay, FaSearch } from 'react-icons/fa'
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaMessage } from 'react-icons/fa6';
@@ -73,7 +73,7 @@ const allEvents = [
 
 
 export default function      () {
-      const [activeFilter, setActiveFilter] = useState('Daily');
+      const [activeFilter, ] = useState('Daily');
     
   return (
     <>
@@ -91,7 +91,7 @@ export default function      () {
                         <div className="flex flex-col items-start p-0 gap-4 flex-1 h-8">
                           <h2 className="text-lg font-semibold text-[#9B2033]">Chats List</h2>
                         </div>
-                        <Link href="/participants/Masseges">
+                        <Link href="/speakers/Messages">
         <FaArrowRight className="text-[#9B2033] text-2xl" />
       </Link>
 
@@ -188,10 +188,11 @@ export default function      () {
                </div>
              </div>
            </div>
-     
+     <Link href="/speakers/LiveSession">
       <div className="flex justify-end text-black mb-4">
   <p>View Details</p>
 </div>
+</Link>
  {/* Agenda Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {allEvents.map((event, index) => (

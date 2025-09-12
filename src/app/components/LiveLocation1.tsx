@@ -6,7 +6,6 @@ import L, { LatLngTuple } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 // Booth info styling imports
-import { FaMapMarkerAlt } from 'react-icons/fa';
 
 const createVenueIcon = (label: string) =>
   L.divIcon({

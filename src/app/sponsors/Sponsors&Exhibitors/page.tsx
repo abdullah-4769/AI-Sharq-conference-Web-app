@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { FaArrowLeft, FaCrown, FaFilter, FaMedal, FaSearch } from 'react-icons/fa';
-import { FaLocationPin, FaMapLocationDot, FaShop } from 'react-icons/fa6';
+import { FaMapLocationDot, FaShop } from 'react-icons/fa6';
 
 interface SponsorExhibitor {
   id: number;

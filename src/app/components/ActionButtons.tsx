@@ -10,7 +10,6 @@ type ActionButtonsProps = {
 export default function ActionButtons({
   onSetReminder,
   onAddToCalendar,
-  onAttend,
 }: ActionButtonsProps) {
   return (
     <div className="flex space-x-4 mt-6 justify-end">

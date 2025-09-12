@@ -1,10 +1,7 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
-import ImageComponent from '../../components/Images';
-import { FaEnvelope, FaEyeSlash, FaExclamationCircle, FaGoogle, FaFacebookF, FaApple, FaPlay, FaArrowLeft, FaExpand, FaEye, FaArrowRight } from 'react-icons/fa';
-import Navbar from '../../components/Navbar';
+import { FaPlay, FaArrowLeft, FaExpand, FaEye, FaArrowRight } from 'react-icons/fa';
 import LiveChat from '../../components/LiveChat';
 import Link from 'next/link';
 import { FiMessageCircle } from 'react-icons/fi';
@@ -28,12 +25,11 @@ export default function LiveSession() {
         <div className="flex flex-row items-center gap-9 w-[227px] h-[41px]">
           {/* Logo Vector */}
        {/* Logo Vector */}
-<div className="w-[30px] h-[26px] flex items-center justify-center">
-  <Link href="/LiveSession">
-    <FaArrowLeft className="text-[#9B2033] cursor-pointer" size={24} />
-  </Link>
-
-          </div>
+ <div className="w-[30px] h-[26px] flex items-center justify-center">
+      <Link href="/participants/SessionDetail1" className="cursor-pointer">
+        <FaArrowLeft className="text-[#9B2033]" size={24} />
+      </Link>
+    </div>
 
           {/* Title Frame */}
           <div className="flex flex-col justify-center items-start gap-[8px] w-[159px] h-[41px]">
@@ -262,7 +258,7 @@ export default function LiveSession() {
                          Middle East Institute
                        </div>
                        <div className="flex justify-center items-center bg-[#FCDCDC] rounded-full w-[48px] h-[44px]">
-                        <FaMessage className="text-[#9B2033]" size={20} />
+                        <Link href="/participants/Masseges"><FaMessage className="text-[#9B2033]" size={20} /></Link>
                        </div>
                        <div className="flex justify-center items-center bg-[#91C6FF] rounded-full px-[12px] py-[10px] text-[#1E40AF] font-['IBM Plex Sans'] font-semibold text-[18px] leading-[140%]">
                         Keynote Speaker
@@ -289,7 +285,7 @@ export default function LiveSession() {
                        Join the discussion with other attendees, ask questions, and share insights about this session.
                      </div>
                    </div>
-                  <FaArrowRight className="text-[#9B2033]" size={24} />
+                 <Link href="/participants/Forums"><FaArrowRight className="text-[#9B2033]" size={24} /></Link> 
                  </div>
                </div>
              </div>

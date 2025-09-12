@@ -1,6 +1,5 @@
 "use client"
 import React, { useState } from "react";
-import { ArrowLeft } from "lucide-react";
 import { FaArrowLeft } from "react-icons/fa";
 import Link from "next/link";
 

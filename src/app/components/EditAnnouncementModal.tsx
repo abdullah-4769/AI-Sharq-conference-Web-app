@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { FiChevronDown, FiX } from 'react-icons/fi';
 import Image from 'next/image';
 

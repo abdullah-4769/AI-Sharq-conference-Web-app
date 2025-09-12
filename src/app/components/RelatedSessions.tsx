@@ -13,6 +13,9 @@ type Session = {
   description: string;
 };
 
+
+
+
 const allEvents: Session[] = [
   {
     title: "Digital Transformation in MENA",

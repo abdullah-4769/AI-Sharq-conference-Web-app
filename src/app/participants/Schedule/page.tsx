@@ -72,7 +72,7 @@ const allEvents = [
 
 
 export default function      () {
-      const [activeFilter, setActiveFilter] = useState('Daily');
+      const [activeFilter,] = useState('Daily');
     
   return (
     <>

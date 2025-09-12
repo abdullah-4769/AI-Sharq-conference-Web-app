@@ -3,7 +3,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { FaUser, FaEnvelope, FaEyeSlash, FaGoogle, FaFacebookF, FaApple } from "react-icons/fa";
+import { FaUser,  } from "react-icons/fa";
 
 export default function ProfileSetup() {
   const formData = {
@@ -76,9 +76,11 @@ export default function ProfileSetup() {
           </div>
 
           {/* Save & Continue Button */}
+         <Link href="/participants/Home">
           <button className="w-full h-12 bg-[#9B2033] text-white text-sm font-semibold rounded-lg hover:bg-[#7c1a2a] transition">
             Save & Continue
           </button>
+         </Link>
 
           {/* Skip Link */}
           <Link href="/Home">

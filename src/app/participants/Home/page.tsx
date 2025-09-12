@@ -2,7 +2,6 @@
 'use client';
 
 import React from 'react';
-import { FaCalendarAlt, FaUserTie, FaHandshake, FaComments, FaUsers, FaRegCalendarCheck } from 'react-icons/fa';
 import TodaysSchedule from '../../components/TodaysSchedule';
 import QuickAccess from '../../components/QuickAcess';
 import ToolsAndConnections from '../../components/ToolsAndConnections';

@@ -14,8 +14,6 @@ import {
 } from "react-icons/fa";
 import TodaysSchedule from "@/app/components/TodaysSchedule";
 import Link from "next/link";
-import { FaArrowDown } from "react-icons/fa6";
-import Image from "next/image";
 
 const filters = ["Daily", "Weekly", "10 Days", "90 Days", "All Time"];
 
@@ -23,38 +21,38 @@ const quickAccessItems = [
   {
     label: "Manage Participants",
     desc: "Directory & search",
-    img: "/images/Particpants.png",
-    Link: "/Organizer/Manage",
+    image: "/images/Particpants.png",
+    Link: "/Organizer/ManageParticipants",
   },
   {
     label: "Manage Sessions",
     desc: "Create & edit sessions",
-    img: "/images/div2.png",
-    Link: "",
+    image: "/images/div2.png",
+    Link: "/Organizer/ManageSessions",
   },
   {
     label: "Manage Speakers",
     desc: "Update profiles & bios",
-    Link: "/icons/speakers.png",
-    img: "/images/div3.png",
+    image: "/images/div3.png",
+    Link: "/Organizer/ManageSpeaker",
   },
   {
     label: "Sponsors",
     desc: "Manage exhibitors",
-    img: "/images/div4.png",
-    Link: "",
+    image: "/images/div4.png",
+    Link: "/Organizer/ManageSponsor",
   },
   {
     label: "Venue Maps",
     desc: "Upload & update maps",
-    img: "/images/div5.png",
-    Link: "/",
+    image: "/images/div5.png",
+    Link: "/Organizer/VenueMaps",
   },
   {
     label: "Announcement",
     desc: "Send Updates",
-    img: "/images/div6.png",
-    Link: "/admin/announcements",
+    image: "/images/div6.png",
+    Link: "/Organizer/ManageAnnouncements",
   },
 ];
 
@@ -73,31 +71,31 @@ const participants = [
     name: "Dr. Johnathan",
     role: "Director of Regional Affairs",
     email: "johnathan@gmail.com",
-    img: "/images/Dr.jpg",  // replace with your actual image path
+    image: "/images/Dr.jpg",  // replace with your actual image path
   },
   {
     name: "Sarah Mitchell",
     role: "Innovation Labs",
     email: "sarah@gmail.com",
-    img: "/images/img (7).png",  // replace with your actual image path
+    image: "/images/image (7).png",  // replace with your actual image path
   },
   {
     name: "Emily Torres",
     role: "Design Gurus",
     email: "emily@gmail.com",
-    img: "/images/emily.png",
+    image: "/images/emily.png",
   },
   {
     name: "Michael Chen",
     role: "Data Analytics Team",
     email: "michael.chen@gmail.com",
-    img: "/images/img (8).png",  // replace with your actual image path
+    image: "/images/image (8).png",  // replace with your actual image path
   },
   {
     name: "Ava Robinson",
     role: "User Experience Research",
     email: "ava.robinson@gmail.com",
-    img: "/images/Ava.jpg",
+    image: "/images/Ava.jpg",
   },
 ]
 
@@ -165,7 +163,7 @@ export default function Dashboard() {
          {quickAccessItems.map((item) => (
   <Link href={item.Link} key={item.label}>
     <div className="flex flex-col items-center text-center bg-white border border-gray-300 rounded-xl p-4 hover:shadow-md transition cursor-pointer">
-      <img src={item.img} alt={item.label} className="w-10 h-10 mb-2" />
+      <image href={item.image} className="w-10 h-10 mb-2" />
       <p className="font-semibold text-black text-sm">{item.label}</p>
       <p className="text-xs text-gray-500">{item.desc}</p>
     </div>
@@ -182,42 +180,42 @@ export default function Dashboard() {
     <div className="flex items-center justify-between border border-gray-300 rounded-xl p-4 hover:shadow-md transition cursor-pointer">
       <div className="flex items-center gap-3">
         <div className="bg-gray-100 p-2 rounded-md">
-          <img src="/images/qr.png" alt="QR Scanner" className="w-6 h-6" />
+          <image href="/images/qr.png"  className="w-6 h-6" />
         </div>
         <div>
           <p className="font-semibold text-black text-sm">QR Scanner</p>
           <p className="text-xs text-gray-500">Validate check-ins</p>
         </div>
       </div>
-      <span className="text-[#9B2033] text-lg font-bold"><FaArrowRight></FaArrowRight></span>
+      <span className="text-[#9B2033] text-lg font-bold"><Link href="/Organizer/Dashboard"><FaArrowRight></FaArrowRight></Link></span>
     </div>
 
     {/* Box 2 */}
     <div className="flex items-center justify-between border border-gray-300 rounded-xl p-4 hover:shadow-md transition cursor-pointer">
       <div className="flex items-center gap-3">
         <div className="bg-[#E3FFF7] p-2 rounded-md">
-          <img src="/images/reports.png" alt="Reports" className="w-6 h-6" />
+          <image href="/images/reports.png"  className="w-6 h-6" />
         </div>
         <div>
           <p className="font-semibold text-black text-sm">Reports</p>
           <p className="text-xs text-gray-500">Analytics & exports</p>
         </div>
       </div>
-      <span className="text-[#9B2033] text-lg font-bold"><FaArrowRight></FaArrowRight></span>
+      <span className="text-[#9B2033] text-lg font-bold"><Link href="/Organizer/Report"><FaArrowRight></FaArrowRight></Link></span>
     </div>
 
     {/* Box 3 */}
     <div className="flex items-center justify-between border border-gray-300 rounded-xl p-4 hover:shadow-md transition cursor-pointer">
       <div className="flex items-center gap-3">
         <div className="bg-[#FFF3F3] p-2 rounded-md">
-          <img src="/images/Faqs.png" alt="Manage FAQ" className="w-10 h-10" />
+          <image href="/images/Faqs.png"  className="w-10 h-10" />
         </div>
         <div>
           <p className="font-semibold text-black text-sm">Manage FAQ</p>
           <p className="text-xs text-gray-500">Help & guidance</p>
         </div>
       </div>
-      <span className="text-[#9B2033] text-lg font-bold"><FaArrowRight></FaArrowRight></span>
+      <span className="text-[#9B2033] text-lg font-bold"><Link href="/Organizer/Dashboard"><FaArrowRight></FaArrowRight></Link></span>
     </div>
   </div>
 </section>
@@ -236,9 +234,9 @@ export default function Dashboard() {
             key={index}
             className="flex items-center space-x-4 border border-gray-200 rounded-lg p-3"
           >
-            <img
-              src={participant.img}
-              alt={participant.name}
+            <image
+             href={participant.image}
+           
               className="w-12 h-12 rounded-full object-cover"
             />
             <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 w-full text-sm text-gray-700">
@@ -283,7 +281,7 @@ export default function Dashboard() {
     Download CSV
   </a>
 </div>
-      <Image src="/images/line.png" alt="Logo" width={1460} height={127} className="absolute top-[1900px]" />
+      <image href="/images/line.png"  width={1460} height={127} className="absolute top-[1900px]" />
 
     </div>
   );

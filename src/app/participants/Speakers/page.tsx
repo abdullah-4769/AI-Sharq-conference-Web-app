@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { FaArrowLeft, FaFilter, FaSearch } from 'react-icons/fa';
+import Image from 'next/image';
 
 const speakers = [
   {
@@ -17,7 +18,7 @@ const speakers = [
     name: "Sarah Johnson",
     title: "VP Marketing",
     organization: "Global Corp",
-    image: "/images/SarahJohnson.png",
+    image: "/images/Sara.png",
     tags: ["Keynote", "Speaker"],
     description: "Sarah Johnson is a VP Marketing at Global Corp with expertise in digital marketing and brand strategy. She has led multiple successful campaigns and has advised startups on scaling their marketing efforts."
   },
@@ -25,7 +26,7 @@ const speakers = [
     name: "Michael Chen",
     title: "CTO",
     organization: "StartupX",
-    image: "/images/MichaelChen.png",
+    image: "/images/img15.jpg",
     tags: ["Technology", "Speaker"],
     description: "Michael Chen is the CTO of StartupX, specializing in AI and machine learning. He has built scalable tech infrastructures for numerous startups and has spoken at major tech conferences worldwide."
   },
@@ -33,7 +34,7 @@ const speakers = [
     name: "Dr. Emma Wilson",
     title: "Research Director",
     organization: "AI Labs",
-    image: "/images/DrEmmaWilson.png",
+    image: "/images/img16.jpg",
     tags: ["Technology", "Speaker"],
     description: "Dr. Emma Wilson is the Research Director at AI Labs, focusing on cutting-edge AI research. She has published numerous papers on machine learning and has collaborated with leading universities on AI ethics."
   },
@@ -41,7 +42,7 @@ const speakers = [
     name: "David Rodriguez",
     title: "Founder",
     organization: "EcoTech Solutions",
-    image: "/images/DavidRodriguez.png",
+    image: "/images/David.jpg",
     tags: ["Keynote", "Speaker"],
     description: "David Rodriguez is the Founder of EcoTech Solutions, pioneering sustainable technology solutions. He has developed eco-friendly products and has been recognized for his contributions to green technology."
   },
@@ -49,7 +50,7 @@ const speakers = [
     name: "Lisa Park",
     title: "Head of Design",
     organization: "Creative Agency",
-    image: "/images/LisaPark.png",
+    image: "/images/img18.jpg",
     tags: ["Workshop", "Speaker"],
     description: "Lisa Park is the Head of Design at Creative Agency, specializing in UX/UI design. She has designed user experiences for major brands and has conducted workshops on design thinking globally."
   }
@@ -71,6 +72,7 @@ export default function SpeakersPage() {
     : speakers.filter(speaker => speaker.tags.includes(activeFilter));
 
   return (
+    <>
     <div className="flex flex-col gap-10 p-5 max-w-7xl mx-auto">
       {/* Header */}
       <div className="flex items-center gap-10">
@@ -193,6 +195,10 @@ export default function SpeakersPage() {
     </Link>
   ))}
 </div>
+
     </div>
+     <Image src="/images/line.png" alt="Line" width={1450} height={127} className="absolute " />
+
+    </>
   );
 }

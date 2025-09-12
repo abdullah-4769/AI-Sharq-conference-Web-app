@@ -15,8 +15,9 @@ import {
 } from 'recharts';
 import ChartStatistics from '../../components/ChartStatistics';
 import ExportCsv from '../../components/ExportCsv';
-import { FaBuilding, FaCalendar, FaCheck, FaMicrophone, FaSpeakap, FaUsers } from 'react-icons/fa';
+import { FaArrowLeft, FaBuilding, FaCalendar, FaCheck, FaMicrophone, FaUsers } from 'react-icons/fa';
 import { FaPeopleGroup } from 'react-icons/fa6';
+import Link from 'next/link';
 
 const ReportPage = () => {
   // Sample data for charts
@@ -97,6 +98,15 @@ const ReportPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-6">
+
+         {/* Header */}
+            <div className="flex flex-row items-center p-0 gap-8 w-[1280px] h-6  mb-5">
+              <div className="flex flex-row items-center p-0 gap-8 w-[1280px] h-6">
+              <Link href="/Organizer/Dashboard"> <FaArrowLeft className="w-9 h-9 text-[#7e0505]" /></Link> 
+                <h1 className=" font-medium text-4xl leading-6 text-[#282828]">
+Reports                </h1>
+              </div>
+            </div>
       {/* Main Container */}
       <div className="flex flex-col items-start gap-6 md:gap-8 w-full max-w-[1280px] mx-auto">
         {/* Header Section */}

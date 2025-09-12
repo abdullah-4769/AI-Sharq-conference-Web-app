@@ -83,7 +83,7 @@ export default function ForumsPage() {
         <Link href="/participants/Home">
     <FaArrowLeft className="text-red-800 w-[20px] h-[20px] cursor-pointer" />
   </Link>
-        <h1 className="text-xl font-semibold text-black ml-4">Chats</h1>
+        <h1 className="text-xl font-semibold text-black ml-4">Forums</h1>
       </div>
 
       {/* Search Bar */}

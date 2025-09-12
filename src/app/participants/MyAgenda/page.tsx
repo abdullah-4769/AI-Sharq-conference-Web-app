@@ -4,12 +4,8 @@ import { useState } from 'react';
 import {
 
     FaSearch,
-  FaChevronLeft,
   FaCalendarAlt,
-  FaRegClock,
-  FaDoorOpen,
-  FaUser,
-  FaSlidersH,
+ 
   FaArrowLeft,
 } from 'react-icons/fa';
 import DiscoverMoreSessions from '../../components/DiscoverMoreSessions';
@@ -83,7 +79,7 @@ const allEvents = [
 
 
 export default function MyAgendaPage() {
-  const [activeFilter, setActiveFilter] = useState('Daily');
+  const [activeFilter, ] = useState('Daily');
 
 
   return (

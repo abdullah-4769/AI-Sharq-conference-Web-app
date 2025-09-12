@@ -1,12 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L, { LatLngTuple } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-
-// Booth info styling imports
-import { FaMapMarkerAlt } from 'react-icons/fa';
 
 const createVenueIcon = (label: string) =>
   L.divIcon({
@@ -46,18 +43,35 @@ const createYouIcon = () =>
   });
 
 const venues: { id: number; name: string; position: LatLngTuple }[] = [
-  { id: 1, name: "Venue01", position: [40.7128, -74.006] as LatLngTuple },
-  { id: 2, name: "Venue02", position: [40.6782, -73.9442] as LatLngTuple },
-  { id: 3, name: "A12 Hall 1", position: [40.7891, -73.135] as LatLngTuple },
+  { id: 1, name: "Venue01", position: [40.7128, -74.006] },
+  { id: 2, name: "Venue02", position: [40.6782, -73.9442] },
+  { id: 3, name: "A12 Hall 1", position: [40.7891, -73.135] },
 ];
 
-const you: { name: string; position: LatLngTuple } = {
-  name: "You",
-  position: [40.73061, -73.935242] as LatLngTuple,
-};
-
-
 const LiveLocation: React.FC = () => {
+  // ✅ "You" state with fallback position
+  const [you, setYou] = useState<{ name: string; position: LatLngTuple }>({
+    name: "You",
+    position: [40.73061, -73.935242], // fallback position
+  });
+
+  // ✅ Try to update with real geolocation
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          setYou({
+            name: "You",
+            position: [pos.coords.latitude, pos.coords.longitude],
+          });
+        },
+        (err) => {
+          console.warn("Geolocation error:", err);
+        }
+      );
+    }
+  }, []);
+
   return (
     <div className="flex flex-row items-start gap-[21px] w-[1280px] h-[410px]">
       {/* Booth Information Card */}
@@ -89,7 +103,7 @@ const LiveLocation: React.FC = () => {
       {/* Dynamic Map Section */}
       <div className="w-[955px] h-[410px] relative bg-white border border-gray-300 shadow-sm rounded-2xl overflow-hidden">
         <MapContainer
-          center={[40.7128, -74.006]}
+          center={you.position}
           zoom={10}
           style={{ height: '100%', width: '100%' }}
         >
@@ -100,7 +114,7 @@ const LiveLocation: React.FC = () => {
           {venues.map((venue) => (
             <Marker
               key={venue.id}
-              position={venue.position as LatLngTuple}
+              position={venue.position}
               icon={createVenueIcon(venue.name)}
             >
               <Popup>{venue.name}</Popup>

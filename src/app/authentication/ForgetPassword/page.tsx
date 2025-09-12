@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import ImageComponent from '../../components/Images';
-import { FaEnvelope, FaEyeSlash, FaGoogle, FaFacebookF, FaApple } from 'react-icons/fa';
+import { FaEnvelope,  } from 'react-icons/fa';
 import Link from 'next/link';
 
 export default function SignIn() {
@@ -22,7 +22,7 @@ export default function SignIn() {
   };
 
   return (
-    <div className="flex gap-20 p-10 mt-10">
+    <div className="flex gap-20 mt-10">
       {/* Need help? Contact Support */}
       <span className="absolute w-[191px] h-[11px] left-[calc(50%-191px/2+0.5px)] top-[916px] font-['SF_Pro_Display'] font-normal text-[16px] leading-[30px] text-center text-[#282828]">
         Need help? <strong className='text-red-700'>Contact Support</strong>
@@ -92,7 +92,7 @@ export default function SignIn() {
           {/* Frame 8 */}
           <button className="flex flex-row justify-center items-center p-[16px] gap-[10px] w-[405px] h-[59px] bg-[#9B2033] rounded-[12px] border-none outline-none">
             {/* Send Code */}
-            <Link href="/Code">
+            <Link href="/authentication/Code">
             <span className="w-[78px] h-[11px] font-['IBM_Plex_Sans'] font-medium text-[16px] leading-[11px] text-center text-white tracking-[-0.01em]">
               Send Code
             </span>

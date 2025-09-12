@@ -2,7 +2,8 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { FaArrowLeft, FaCrown, FaFilter, FaMedal, FaSearch } from 'react-icons/fa';
-import { FaLocationPin, FaMapLocationDot, FaShop } from 'react-icons/fa6';
+import { FaMapLocationDot, FaShop } from 'react-icons/fa6';
+import Image from 'next/image';
 
 interface SponsorExhibitor {
   id: number;
@@ -106,7 +107,7 @@ const SponsorsExhibitorsPage: React.FC = () => {
   const exhibitors = filteredData.filter(item => item.category === 'Exhibitor');
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
+    <div className="p-2 max-w-7xl mx-auto">
       {/* Header */}
       <div className="flex flex-col items-start justify-between mb-8">
         <div className="flex items-center gap-4 mb-[50px]">
@@ -305,6 +306,7 @@ const SponsorsExhibitorsPage: React.FC = () => {
     })}
   
 
+ <Image src="/images/line.png" alt="Line" width={1360} height={127} className="absolute mr-5 " />
 
     </div>
   );

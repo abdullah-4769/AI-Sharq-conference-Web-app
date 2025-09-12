@@ -5,6 +5,7 @@ import RelatedSessions from '@/app/components/RelatedSessions';
 import Attending from '@/app/components/Attending';
 import { FaArrowLeft } from 'react-icons/fa';
 import Link from 'next/link';
+import RelatedSessionsGrid from '@/app/components/RelatedSessions';
 
 // Session interfaces & data
 interface Session {
@@ -235,7 +236,7 @@ export default function SessionPage() {
       <SessionDetail1 session={sessionData} />
       <Speaker speaker={sampleSpeaker} />
       <SessionDetails details={sampleSessionDetails} />
-            <RelatedSessions sessions={relatedSessionsData} />
+<RelatedSessionsGrid /> ✅
             <Attending />
                 <Image src="/images/line.png" alt="Logo" width={1729} height={127} className="absolute " />
       

@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import ImageComponent from '../../components/Images';
-import { FaEnvelope, FaEyeSlash, FaGoogle, FaFacebookF, FaApple } from 'react-icons/fa';
 import Link from 'next/link';
 
 export default function SignIn() {
@@ -13,16 +12,9 @@ export default function SignIn() {
     rememberMe: false
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === 'checkbox' ? checked : value
-    });
-  };
 
   return (
-    <div className="flex gap-20 p-10 mt-10">
+    <div className="flex gap-20  mt-10">
       {/* Need help? Contact Support */}
       <span className="absolute w-[191px] h-[11px] left-[calc(50%-191px/2+0.5px)] top-[916px] font-['SF_Pro_Display'] font-normal text-[16px] leading-[30px] text-center text-[#282828]">
         Need help? <strong className='text-red-700'>Contact Support</strong>
@@ -114,7 +106,7 @@ export default function SignIn() {
           <button className="flex flex-row justify-center items-center p-[40px_10px] gap-[10px] w-[405px] h-[59px] bg-[#9B2033] rounded-[12px] flex-1 border-none outline-none">
             
             
-            <Link href="/SetNewPassword">
+            <Link href="/authentication/SetNewPassword">
             <span className="w-[83px] h-[11px] font-['IBM_Plex_Sans'] font-medium text-[16px] leading-[21px] text-center text-white">
               Verify Code
             </span>
