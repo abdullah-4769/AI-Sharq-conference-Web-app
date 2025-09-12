@@ -1,10 +1,14 @@
+"use client"
 import React from 'react';
 import Image from 'next/image';
 import { FaGlobe, FaEnvelope, FaPhone, FaArrowLeft, FaCrown, FaSearch } from 'react-icons/fa';
 import { FaLinkedin, FaTwitter, FaYoutube } from 'react-icons/fa';
 import SpeakerSession from '@/app/components/SpeakerSession';
 import { FaShop } from 'react-icons/fa6';
-import LiveLocation from '@/app/components/LiveLocation';
+import dynamic from 'next/dynamic';
+const LiveLocation = dynamic(() => import('@/app/components/LiveLocation'), {
+  ssr: false, // disables server-side rendering
+});
 import Link from 'next/link';
 
 
