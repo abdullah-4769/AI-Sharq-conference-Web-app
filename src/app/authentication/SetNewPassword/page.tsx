@@ -58,7 +58,7 @@ export default function SetNewPassword() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row items-center justify-center gap-30 p-4 bg-gray-50 relative">
+    <div className="min-h-screen flex flex-col md:flex-row items-center justify-center gap-20 p-3 bg-gray-50 relative">
       {/* Need help? Contact Support */}
       <span className="absolute w-[191px] h-[11px] left-[calc(50%-191px/2+0.5px)] top-[916px] font-['SF_Pro_Display'] font-normal text-[16px] leading-[30px] text-center text-[#282828]">
         Need help? <strong className='text-red-700'>Contact Support</strong>

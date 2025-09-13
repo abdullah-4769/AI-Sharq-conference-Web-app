@@ -22,7 +22,7 @@ export default function SignUp() {
   };
 
   return (
-    <div className="flex items-center justify-center gap-20 p-10">
+    <div className="flex items-center justify-center gap-20 p-">
       {/* Left side - Image */}
       <ImageComponent />
       

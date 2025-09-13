@@ -24,7 +24,7 @@ import Image from "next/image";
 
 export default function VenueDetail() {
   return (
-    <><div className="relative w-full min-h-screen bg-[#F9F9F9]">
+    <><div className=" bg-[#F9F9F9]">
       {/* Top Image Section */}
       <div
         className="w-full h-[231px] bg-cover bg-center relative"
@@ -268,7 +268,7 @@ export default function VenueDetail() {
         <LiveLocation1 />
       </div>
       {/* Follow Us Section */}
-      <div className="flex flex-col items-start gap-3 w-full mt-8 max-w-xs ml-15">
+      <div className="flex flex-col items-start gap-1 ml-2 w-full mt-8 max-w-xs ">
         <h2 className="text-2xl font-medium text-[#282828] mb-4">Follow Us</h2>
         <div className='flex flex-row gap-[70px]'>
           <button className="w-full h-12 bg-blue-600 rounded-lg flex items-center justify-center gap-3 flex-none">
@@ -288,7 +288,7 @@ export default function VenueDetail() {
 
 
     </div><br></br>
-    <Image src="/images/line.png" alt="Logo" width={1729} height={127} className="absolute top-" /></>
+    <Image src="/images/line.png" alt="Logo" width={1700} height={127} className="absolute top-" /></>
 
 
 

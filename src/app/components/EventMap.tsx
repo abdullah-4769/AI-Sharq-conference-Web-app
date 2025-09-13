@@ -110,9 +110,9 @@ const EventMap = () => {
   const [selectedVenue, setSelectedVenue] = useState<typeof venues[0] | null>(null);
 
   return (
-    <div className="bg-gray-50 min-h-screen p-6">
+    <div className="bg-gray-50 min-h-screen p-0">
       {/* Header */}
-      <div className="flex items-center gap-3 mb-6">
+      <div className="flex items-center gap-3 mb-6 ml-5 mt-4">
         <button className="p-2 rounded-full hover:bg-gray-200 transition">
           <Link href="/participants/Home">
             <FaArrowLeft className="text-[#9B2033]" size={20} />
@@ -126,12 +126,12 @@ const EventMap = () => {
         <input
           type="text"
           placeholder="Search Venue"
-          className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#9B2033] focus:outline-none"
+          className="w-[90%] ml-8 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#9B2033] focus:outline-none"
         />
       </div>
 
       {/* Map */}
-      <div className="rounded-xl overflow-hidden shadow-lg border border-gray-200">
+      <div className="rounded-xl overflow-hidden shadow-lg ml-10 border max-w-7xl border-gray-200">
         <MapContainer
           center={[40.7128, -74.006]}
           zoom={10}

@@ -22,12 +22,12 @@ export default function SignIn() {
   };
 
   return (
-    <div className="flex gap-20  mt-10">
+    <div className="flex gap-10 mt-10 mr-6">
       {/* Left side - Image */}
       <ImageComponent />
 
       {/* Right side - Form Container */}
-      <div className="absolute w-[450px] max-w-full h-[800px] left-[935px]  bg-white border border-gray-300 rounded-[20px] shadow-[0px_4px_110.3px_rgba(68,68,68,0.25)] p-8 flex flex-col gap-10">
+      <div className="absolute w-[450px] max-w-full h-[800px] left-[800px]  bg-white border border-gray-300 rounded-[20px] shadow-[0px_4px_110.3px_rgba(68,68,68,0.25)] p-8 flex flex-col gap-10">
        {/* Logo and Title */}
                <div className="flex flex-col items-center mb-4">
                  <Image

@@ -5,12 +5,12 @@ export default function TodaysSchedule() {
     <>
  {/* Today's Schedule */}
 <section className="mb-6">
-  <div className="flex justify-between items-center mb-6">
+  <div className="flex justify-between items-center mb-6 ml-4">
     <h2 className="text-xl font-semibold text-black">Today's Schedule</h2>
     <p className="text-black font-medium cursor-pointer">View All</p>
   </div>
 
-  <div className="bg-white p-8 rounded-xl shadow flex items-center justify-between border border-gray-300">
+  <div className="bg-white p-8 rounded-xl shadow flex items-center max-w-7xl justify-between border ml-4 border-gray-300">
     <div>
       <p className="text-black text-sm font-semibold ml-5">Next</p>
       <p className="text-red-700 text-2xl font-bold leading-tight ">10:30</p>

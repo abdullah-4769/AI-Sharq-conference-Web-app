@@ -10,10 +10,10 @@ import Image from 'next/image';
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gray-100 p-7 ">
+    <main className="min--screen bg-gray-100 p-0 ">
       
       {/* Latest Update Banner */}
-      <div className="bg-red-800 text-white p-8 rounded-lg flex justify-between items-center mb-6">
+      <div className="bg-red-800 text-white p-10 rounded-lg flex justify-between items-center mt-5 mb-6">
         <div className=''>
           <span className="bg-[#9E9E5C] text-white px-4 py-2 rounded-4xl text-sm font-semibold">Latest Update</span>
           <p className="mt-2 text-lg font-bold">Keynote starts at 10:30 AM</p>

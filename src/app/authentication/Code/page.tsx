@@ -23,7 +23,7 @@ export default function SignIn() {
       <ImageComponent />
 
       {/* Right side - Form Container */}
-      <div className="absolute w-[525px] h-[667px] left-[935px] top-[calc(50%-567px/2+0.5px)] bg-white border border-[#D4D4D4] shadow-[0px_4px_110.3px_rgba(68,68,68,0.25)] rounded-[20px] flex flex-col items-center p-[42px_60px] gap-[42px] box-border">
+      <div className="absolute w-[525px] h-[667px] left-[800px] top-[calc(50%-567px/2+0.5px)] bg-white border border-[#D4D4D4] shadow-[0px_4px_110.3px_rgba(68,68,68,0.25)] rounded-[20px] flex flex-col items-center p-[42px_60px] gap-[42px] box-border">
         {/* Frame 1000004789 */}
         <div className="flex flex-col items-center gap-[30px] w-[358px] h-[94px]">
           {/* al sharq guidelines-3 copy */}

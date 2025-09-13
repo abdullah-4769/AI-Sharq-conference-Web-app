@@ -8,7 +8,6 @@ export default function page() {
  <div className="bg-[#9B2033] min-h-screen w-full flex justify-center items-center relative">
       <div className="flex flex-col justify-center items-center">
         <Image src="/images/logo.png" alt="Logo" width={638} height={224} />
-       <Image src="/images/line.png" alt="Logo" width={1729} height={127} className="absolute top-[640px] bg-transparent" />
 
         <div className="mt-12 flex gap-6">
           <Link href="/authentication/SignUp">
@@ -25,6 +24,8 @@ export default function page() {
         </div>
 
       </div>
+             <Image src="/images/line.png" alt="Logo" width={1729} height={127} className="absolute top-[603px] bg-transparent" />
+
 
     </div>  )
 }
