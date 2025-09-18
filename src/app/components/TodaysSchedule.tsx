@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import React from 'react'
 
 export default function TodaysSchedule() {
@@ -5,17 +6,19 @@ export default function TodaysSchedule() {
     <>
  {/* Today's Schedule */}
 <section className="mb-6">
-  <div className="flex justify-between items-center mb-6 ml-4">
-    <h2 className="text-xl font-semibold text-black">Today's Schedule</h2>
-    <p className="text-black font-medium cursor-pointer">View All</p>
+  <div className="flex justify-between items-center mb-4 px-2 md:px-4">
+    <h2 className="text-lg md:text-xl font-semibold text-black">Today's Schedule</h2>
+    <p className="text-black hover:text-red-700 text-sm md:text-base font-medium cursor-pointer">
+      <Link href={"/participants/ViewAllSessions"}>View All</Link>
+    </p>
   </div>
 
-  <div className="bg-white p-8 rounded-xl shadow flex items-center max-w-7xl justify-between border ml-4 border-gray-300">
+  <div className="bg-white p-4 md:p-6 rounded-xl shadow flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-0 max-w-full border border-gray-300">
     <div>
-      <p className="text-black text-sm font-semibold ml-5">Next</p>
-      <p className="text-red-700 text-2xl font-bold leading-tight ">10:30</p>
+      <p className="text-black text-xs md:text-sm font-semibold">Next</p>
+      <p className="text-red-700 text-xl md:text-2xl font-bold leading-tight">10:30</p>
     </div>
-    <div className="flex-1 px-4 ml-6">
+    <div className="flex-1 md:px-4">
       <p className="font-semibold text-black">Opening Keynote</p>
       <p className="text-sm text-gray-600">Dr Emily • Hall A</p>
     </div>

@@ -60,11 +60,11 @@ const suggestedConnections = [
 export default function DashboardPage() {
   return (
     <div className="p-8">
-      <div className="flex flex-col md:flex-row gap-10">
-<section className="bg-white rounded-lg shadow p-10 w-[621px] h-[450px] flex flex-col justify-start">
+      <div className="flex flex-col md:flex-row gap-6">
+<section className="bg-white rounded-lg shadow p-6 md:p-8 flex-1">
   <h2 className="text-base font-semibold text-black mb-4">Tools & Support</h2>
 
-  <div className="flex flex-col gap-5">
+  <div className="flex flex-col gap-4">
   {toolsSupport.map((tool, index) => (
     <div
       key={index}
@@ -88,7 +88,7 @@ export default function DashboardPage() {
 
 </section>
 
-<section className="bg-white rounded-lg shadow p-5 w-[621px] h-[450px] flex flex-col justify-start">
+<section className="bg-white rounded-lg shadow p-6 md:p-8 flex-1">
   <div className="flex justify-between items-center mb-4">
     <h2 className="text-base font-semibold text-black">Suggested Connections</h2>
     <a href="#" className="text-xs text-gray-500 hover:underline">View All</a>

@@ -22,12 +22,12 @@ export default function SignUp() {
   };
 
   return (
-    <div className="flex items-center justify-center gap-20 p-">
+    <div className="flex items-center justify-center gap-20">
       {/* Left side - Image */}
       <ImageComponent />
       
       {/* Right side - Form Container */} 
-      <div className="w-[525px] h-[926px] bg-white border border-gray-300 rounded-2xl shadow-lg p-10 flex gap-10">
+      <div className="w-[525px] h-[926px] bg-white border border-gray-300 rounded-2xl shadow-lg p-10 flex gap-10 m-14 ">
         <div className="w-[525px] flex flex-col items-center gap-10">
           {/* Logo */}
           <Image

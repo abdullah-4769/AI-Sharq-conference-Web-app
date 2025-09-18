@@ -2,8 +2,13 @@
 
 import { Bell, MessageSquare, User } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
+import { useEffect } from "react";
+import { getRemainingSessions } from "../config/services/participants";
+import LiveIndicator from "./LiveIndicator";
 
 export default function Navbar() {
+  
   return (
     <nav className="w-full bg-white shadow-md px-6 py-6 flex items-center justify-between">
 {/* Left: Logo */}
@@ -18,6 +23,10 @@ export default function Navbar() {
 </div>
       {/* Right Section */}
       <div className="flex items-center gap-6">
+
+        {/* 🔴 Live Indicator */
+        <LiveIndicator />}
+
         {/* Notification Icon */}
         <div className="relative">
           <div className="w-10 h-10 flex items-center p-2 justify-center bg-red-100 rounded-full shadow-sm cursor-pointer">

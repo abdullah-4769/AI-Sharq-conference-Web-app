@@ -41,9 +41,9 @@ const quickAccessItems = [
 
 export default function QuickAccess() {
   return (
-    <section className="bg-white p-10 rounded-xl shadow">
-      <h2 className="text-xl font-semibold mb-6 text-black">Quick Access</h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
+    <section className="bg-white p-6 md:p-10 rounded-xl shadow">
+      <h2 className="text-lg md:text-xl font-semibold mb-6 text-black">Quick Access</h2>
+      <div className="grid grid-cols-2 sm:grid-cols-3  md:grid-cols-4 lg:grid-cols-6 gap-4">
         {quickAccessItems.map((item) => {
           const content = (
             <div
