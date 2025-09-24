@@ -61,7 +61,7 @@ export default function Home() {
     }
     try {
       setLoading(true)
-      const res = await api.get(`/participants/all-sessions/${eventId}`);
+      const res = await api.get(`/event/event-sessions/${eventId}`);
       const data = res.data;
       console.log("Fetched sessions data:", data);
       const liveBanners: Banner[] = (data.liveSessions || []).map((s: any) => {

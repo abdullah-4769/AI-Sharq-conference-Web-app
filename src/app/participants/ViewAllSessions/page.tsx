@@ -36,7 +36,7 @@ export default function MyAgendaPage() {
       return;
     }
     try {
-      const res = await api.get(`/participants/all-sessions/${eventId}`);
+      const res = await api.get(`/event/event-sessions/${eventId}`);
       const data = res.data;
 
       const all = [...(data.liveSessions || []), ...(data.allSessions || [])];
