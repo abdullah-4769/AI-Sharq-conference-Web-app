@@ -28,6 +28,7 @@ const parseDuration = (duration: string) => {
 
 export default function MyAgendaPage() {
   const eventId = useSelector((state: RootState) => state.event.id);
+  const userId = useSelector((state: RootState) => state.user.userId)
   const [activeFilter, setActiveFilter] = useState("All Time");
   const [searchText, setSearchText] = useState("");
   const [allSessions, setAllSessions] = useState<any[]>([]);
@@ -36,12 +37,11 @@ export default function MyAgendaPage() {
   const [emptyMessage, setEmptyMessage] = useState("");
 
 const fetchSessions = async () => {
-  if (!eventId) {
+  if (!eventId || !userId) {
     setEmptyMessage("Event not selected")
     setLoading(false)
     return
   }
-const userId=1;
   try {
     const res = await api.get(
       `/participants/bookmarked-sessions/${userId}/${eventId}`
