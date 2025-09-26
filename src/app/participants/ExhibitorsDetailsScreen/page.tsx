@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { FaGlobe, FaEnvelope, FaPhone, FaArrowLeft,  FaSearch } from 'react-icons/fa';
+import { FaGlobe, FaEnvelope, FaPhone, FaArrowLeft, FaSearch } from 'react-icons/fa';
 import { FaLinkedin, FaTwitter, FaYoutube } from 'react-icons/fa';
 import SpeakerSession from '@/app/components/SpeakerSession';
 import { FaShop } from 'react-icons/fa6';
@@ -24,19 +24,19 @@ const SponsorsDetailsScreen: React.FC = () => {
       >
         {/* Arrow Back Button */}
         <div className="absolute w-[40px] h-[40px] left-[20px] top-[20px] rounded-full flex items-center justify-center cursor-pointer">
-          
- <Link href="/participants/Sponsors&Exhibitors">
-    <FaArrowLeft className="text-red-800 w-[20px] h-[20px] cursor-pointer" />
-  </Link>        </div>
+
+          <Link href="/participants/Sponsors&Exhibitors">
+            <FaArrowLeft className="text-red-800 w-[20px] h-[20px] cursor-pointer" />
+          </Link>        </div>
         {/* Gold Sponsors Label with Crown */}
         <div className="absolute flex flex-row justify-center items-center gap-2 left-[1149px] top-[39px] w-[211.25px] h-[37px] bg-[#FFFEEF] rounded-full px-3 py-2">
           <FaShop className="text-green-400 w-[20.25px] h-[15.75px] flex-none" />
           <span className="text-[#282828] font-medium text-2xl leading-6 tracking-tight font-['IBM_Plex_Sans']">
-           Exhibitors
+            Exhibitors
           </span>
         </div>
 
-        
+
       </div>
 
       {/* Group 1597884762 */}
@@ -78,7 +78,7 @@ const SponsorsDetailsScreen: React.FC = () => {
           {/* Contact Information */}
           <div className="w-[325px] h-[270px] p-8 bg-white border border-gray-300 shadow-sm rounded-2xl flex flex-col gap-3">
             {/* Contact Sponsor Button */}
-           
+
 
             <h2 className="text-lg font-semibold text-[#282828]">Contact Information</h2>
             <div className="flex flex-col gap-6">
@@ -201,40 +201,40 @@ const SponsorsDetailsScreen: React.FC = () => {
             </div>
           </div>
         </div>
-       {/* live location */}
+        {/* live location */}
 
-       <LiveLocation />
 
-       {/* Search/Filter Bar */}
-       <div className="flex flex-row items-start gap-[16px] w-[1280px] h-[44px]">
-         {/* Frame 1000004777 */}
-         <div className="flex flex-row items-center gap-[13px] w-[972px] h-[44px]">
-           {/* Search Input with Red Background */}
-           <div className="flex flex-col justify-center items-center p-[14px_20px] gap-[10px] w-[972px] h-[44px] bg-[#9B2033] border border-[#9B2033] rounded-[10px]">
-             <div className="flex flex-row justify-center items-end gap-[12px] w-[932px] h-[16px]">
-               <div className="flex flex-row items-center gap-[8px] w-[118px] h-[16px]">
-                 {/* Search Icon Placeholder */}
-                 <FaSearch className="text-white w-[16px] h-[16px]" />
-                
-                 <span className="text-[14px] font-bold text-white font-['IBM_Plex_Sans'] leading-[10px]">
-                   Search booths...
-                 </span>
-               </div>
-             </div>
-           </div>
-         </div>
 
-         {/* Filter Input with White Background */}
-         <div className="flex flex-col justify-center items-center p-[14px_20px] gap-[10px] w-[292px] h-[44px] border border-[#E8E8E8] rounded-[10px]">
-           <div className="flex flex-row justify-center items-end gap-[12px] w-[252px] h-[10px]">
-             <div className="flex flex-row items-center gap-[8px] w-[59px] h-[10px]">
-               <span className="text-[14px] font-bold text-[#282828] font-['IBM_Plex_Sans'] leading-[10px]">
-                 Filter
-               </span>
-             </div>
-           </div>
-         </div>
-       </div>
+        {/* Search/Filter Bar */}
+        <div className="flex flex-row items-start gap-[16px] w-[1280px] h-[44px]">
+          {/* Frame 1000004777 */}
+          <div className="flex flex-row items-center gap-[13px] w-[972px] h-[44px]">
+            {/* Search Input with Red Background */}
+            <div className="flex flex-col justify-center items-center p-[14px_20px] gap-[10px] w-[972px] h-[44px] bg-[#9B2033] border border-[#9B2033] rounded-[10px]">
+              <div className="flex flex-row justify-center items-end gap-[12px] w-[932px] h-[16px]">
+                <div className="flex flex-row items-center gap-[8px] w-[118px] h-[16px]">
+                  {/* Search Icon Placeholder */}
+                  <FaSearch className="text-white w-[16px] h-[16px]" />
+
+                  <span className="text-[14px] font-bold text-white font-['IBM_Plex_Sans'] leading-[10px]">
+                    Search booths...
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Filter Input with White Background */}
+          <div className="flex flex-col justify-center items-center p-[14px_20px] gap-[10px] w-[292px] h-[44px] border border-[#E8E8E8] rounded-[10px]">
+            <div className="flex flex-row justify-center items-end gap-[12px] w-[252px] h-[10px]">
+              <div className="flex flex-row items-center gap-[8px] w-[59px] h-[10px]">
+                <span className="text-[14px] font-bold text-[#282828] font-['IBM_Plex_Sans'] leading-[10px]">
+                  Filter
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* Sessions Sponsored Section */}
         <div className="flex flex-row justify-between items-center w-full">
@@ -276,20 +276,20 @@ const SponsorsDetailsScreen: React.FC = () => {
         <div className="flex flex-col items-start gap-4 w-full mt-8 max-w-xs">
           <h2 className="text-2xl font-medium text-[#282828] mb-4">Follow Us</h2>
           <div className='flex flex-row gap-[60px]'>
-              <button className="w-full h-12 bg-blue-600 rounded-lg flex items-center justify-center gap-3 flex-none">
-            <FaLinkedin className="text-white" />
-            <span className="text-base font-normal text-white">LinkedIn</span>
-          </button>
-          <button className="w-full h-12 bg-blue-400 rounded-lg flex items-center justify-center gap-3 flex-none">
-            <FaTwitter className="text-white" />
-            <span className="text-base font-normal text-white">Twitter</span>
-          </button>
-          <button className="w-full h-12 bg-red-500 rounded-lg flex items-center justify-center gap-3 flex-none">
-            <FaYoutube className="text-white" />
-            <span className="text-base font-normal text-white">Youtube</span>
-          </button>
+            <button className="w-full h-12 bg-blue-600 rounded-lg flex items-center justify-center gap-3 flex-none">
+              <FaLinkedin className="text-white" />
+              <span className="text-base font-normal text-white">LinkedIn</span>
+            </button>
+            <button className="w-full h-12 bg-blue-400 rounded-lg flex items-center justify-center gap-3 flex-none">
+              <FaTwitter className="text-white" />
+              <span className="text-base font-normal text-white">Twitter</span>
+            </button>
+            <button className="w-full h-12 bg-red-500 rounded-lg flex items-center justify-center gap-3 flex-none">
+              <FaYoutube className="text-white" />
+              <span className="text-base font-normal text-white">Youtube</span>
+            </button>
           </div>
-        
+
         </div>
 
       </div>

@@ -222,7 +222,7 @@ const SponsorsExhibitorsPage: React.FC = () => {
               const colors = ['bg-[#FF8A65]', 'bg-[#4DB6AC]', 'bg-[#9575CD]', 'bg-[#EC4899]']
               const colorClass = colors[index % colors.length]
               return (
-                <Link href={`/exhibitor/${exhibitor.id}`} key={exhibitor.id}>
+                <Link href={`/participants/ExhibitorsDetailsScreen/${exhibitor.id}`} key={exhibitor.id}>
                   <div className="w-full bg-white border border-gray-300 rounded-2xl p-6 shadow-sm hover:shadow-md transition duration-200 cursor-pointer flex flex-col justify-between h-[200px]">
                     <div className="flex items-center gap-4 mb-2">
                       <div
