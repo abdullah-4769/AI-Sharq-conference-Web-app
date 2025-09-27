@@ -1,289 +1,301 @@
-import React from "react";
-import Image from "next/image"
-import Link from "next/link";
-import { FaArrowLeft } from "react-icons/fa";
+'use client'
+
+import React, { useEffect, useState,useRef  } from 'react'
+import Link from 'next/link'
+import { FaArrowLeft } from 'react-icons/fa'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/lib/store/store'
+import api from '@/config/api'
+
+interface User {
+  id: number
+  name: string
+  email: string
+  file: string | null
+}
+
+interface Connection {
+  connectionId: number
+  user: User
+  connectedAt: string
+  unreadMessages: number
+}
+
+interface Message {
+  senderId: number
+  receiverId: number
+  content: string
+  createdAt?: string
+}
+
+interface ApiMessage {
+  id: number
+  from: 'sender' | 'receiver'
+  content: string
+  createdAt: string
+}
+
+const ChatPage: React.FC = () => {
+  const userId = useSelector((state: RootState) => state.user.userId)
+
+  const [connections, setConnections] = useState<Connection[]>([])
+  const [selectedUser, setSelectedUser] = useState<User | null>(null)
+  const [messages, setMessages] = useState<Message[]>([])
+  const [newMessage, setNewMessage] = useState('')
+  
+
+  const [unreadCounts, setUnreadCounts] = useState<{[userId: number]: number}>({})
 
 
+// Inside your component
+const messagesEndRef = useRef<HTMLDivElement>(null);
+const dummyRef = useRef<HTMLDivElement>(null);
 
-export default function ChatPage() {
-  return (
-    <>
-     <div className="flex items-center gap-2 mt-6 ml-5">
- <Link href="/participants/Home">
-    <FaArrowLeft className="text-red-800 w-[20px] h-[20px] cursor-pointer" />
-  </Link>
-        <h1 className="text-xl font-semibold text-black ml-4">Chats</h1>
-      </div>
-    <div className="h-screen flex items-center justify-center  p-6">
+const scrollToBottom = () => {
+  messagesEndRef.current?.scrollTo({
+    top: messagesEndRef.current.scrollHeight,
+    behavior: 'smooth'
+  });
+};
+
+useEffect(() => {
+  scrollToBottom();
+}, [messages]); // Scroll when messages change
+
+useEffect(() => {
+  if (selectedUser) {
+    scrollToBottom();
+  }
+}, [selectedUser]); // Scroll when user changes
+
+  const fetchConnections = async () => {
+    if (!userId) return
+    try {
+      const res = await api.get(`/connections/all?userId=${userId}`)
+      const connectionsData: Connection[] = Array.isArray(res.data) ? res.data : []
       
-     
-      <div className="flex w-full mt-70 h-[897px] space-x-7">
-        {/* Sidebar */}
-        <div className="w-1/3 bg-white rounded-2xl shadow border flex flex-col">
-          <h2 className="px-6 py-4 text-lg font-semibold border-b border-b-gray-300 text-black">Chat List</h2>
-          
-          {/* Search */}
-   <div className="px-4 py-2 border-b border-b-gray-300 text-gray-400">
-  <div className="relative">
-    <input
-      type="text"
-      placeholder="Search"
-      className="w-full text-black pl-4 pr-10 py-2 text-sm focus:outline-none"
-    />
-    {/* Search Icon */}
-    <svg
-      width="19"
-      height="19"
-      viewBox="0 0 19 19"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
-    >
-      <path
-        d="M14.5962 14.6248L17.8046 17.8332M16.791 8.979C16.791 11.051 15.9679 13.0381 14.5028 14.5033C13.0377 15.9684 11.0505 16.7915 8.97852 16.7915C6.90651 16.7915 4.91937 15.9684 3.45424 14.5033C1.98912 13.0381 1.16602 11.051 1.16602 8.979C1.16602 6.907 1.98912 4.91986 3.45424 3.45473C4.91937 1.9896 6.90651 1.1665 8.97852 1.1665C11.0505 1.1665 13.0377 1.9896 14.5028 3.45473C15.9679 4.91986 16.791 6.907 16.791 8.979Z"
-        stroke="#9B2033"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
+      setConnections(connectionsData)
+      
+    
+      connectionsData.forEach(conn => {
+        if (conn.unreadMessages > 0) {
+          setUnreadCounts(prev => ({
+            ...prev,
+            [conn.user.id]: (prev[conn.user.id] || 0) + conn.unreadMessages
+          }))
+        }
+      })
+    } catch (error) {
+      console.error('Error fetching connections:', error)
+    }
+  }
+
+
+  const fetchMessages = async (otherUserId: number) => {
+    if (!userId) return
+    try {
+      const res = await api.get(`/chat/messages?userId=${userId}&otherUserId=${otherUserId}`)
+      if (res.data && Array.isArray(res.data.messages)) {
+        const formatted: Message[] = (res.data.messages as ApiMessage[]).map((msg) => ({
+          senderId: msg.from === 'sender' ? userId : otherUserId,
+          receiverId: msg.from === 'sender' ? otherUserId : userId,
+          content: msg.content,
+          createdAt: msg.createdAt
+        }))
+        setMessages(formatted)
+      } else {
+        setMessages([])
+      }
+    } catch (error) {
+      console.error('Error fetching messages:', error)
+    }
+  }
+
+
+  const selectUser = (user: User) => {
+    setSelectedUser(user)
+    fetchMessages(user.id)
+    
+   
+    setUnreadCounts(prev => ({
+      ...prev,
+      [user.id]: 0
+    }))
+  }
+
+  const handleSendMessage = async () => {
+    if (!newMessage.trim() || !selectedUser || !userId) return
+    try {
+      const payload: Message = {
+        senderId: userId,
+        receiverId: selectedUser.id,
+        content: newMessage
+      }
+      await api.post('/chat/send', payload)
+      setNewMessage('')
+      fetchMessages(selectedUser.id)
+    } catch (error) {
+      console.error('Error sending message:', error)
+    }
+  }
+
+
+  const getUnreadCount = (userId: number) => {
+    return unreadCounts[userId] || 0
+  }
+
+
+  useEffect(() => {
+    if (!userId) return
+    fetchConnections()
+    const interval = setInterval(fetchConnections, 10000)
+    return () => clearInterval(interval)
+  }, [userId])
+
+ 
+  useEffect(() => {
+    if (!selectedUser) return
+    fetchMessages(selectedUser.id)
+    const interval = setInterval(() => {
+      fetchMessages(selectedUser.id)
+    }, 10000)
+    return () => clearInterval(interval)
+  }, [selectedUser, userId])
+
+  return (
+ <div className="h-screen flex flex-col">
+  <div className="flex items-center gap-2 mt-6 ml-5 flex-shrink-0">
+    <Link href="/participants/Home">
+      <FaArrowLeft className="text-red-800 w-5 h-5 cursor-pointer" />
+    </Link>
+    <h1 className="text-xl font-semibold text-black ml-4">Chats</h1>
   </div>
-</div>
 
-
-
-          {/* Chat list */}
-          <ul className="flex-1 overflow-y-auto space-y-5">
-            {[
-              {
-                name: "Dr. Johnathan",
-                lastMessage: "Remember to review your...",
-                time: "2 days ago",
-                active: false,
-              image: "/images/img (13).png", // example
-
-              },
-              {
-                name: "Sarah Johnson",
-                lastMessage: "Remember to review your...",
-                time: "2 days ago",
-                active: true,
-                      image: "/images/img (7).png", // example
-
-              },
-              {
-                name: "Michael Chen",
-                lastMessage: "Remember to review your...",
-                time: "2 days ago",
-                active: false,
-                image: "/images/img15.jpg", // example
-
-              },
-              {
-                name: "Dr. Emma Wilson",
-                lastMessage: "Remember to review your...",
-                time: "2 days ago",
-                active: false,
-                      image: "/images/img16.jpg", // example
-
-              },
-              {
-                name: "David Rodriguez",
-                lastMessage: "Remember to review your...",
-                time: "2 days ago",
-                active: false,
-                      image: "/images/img17.jpg", // example
-
-              },
-              {
-                name: "Lisa Park",
-                lastMessage: "Remember to review your...",
-                time: "2 days ago",
-                active: false,
-                      image: "/images/img18.jpg", // example
-
-              },
-                {
-                name: "Michael Chen",
-                lastMessage: "Remember to review your...",
-                time: "2 days ago",
-                active: false,
-                image: "/images/img15.jpg", // example
-
-              },
-              {
-                name: "Dr. Emma Wilson",
-                lastMessage: "Remember to review your...",
-                time: "2 days ago",
-                active: false,
-                      image: "/images/img16.jpg", // example
-
-              },
-                {
-                name: "Dr. Johnathan",
-                lastMessage: "Remember to review your...",
-                time: "2 days ago",
-                active: false,
-              image: "/images/img (13).png", // example
-
-              },
-            ].map((chat, i) => (
+  <div className="flex flex-1 p-6 space-x-7 min-h-0">
+    {/* Chat List */}
+    <div className="w-1/3 bg-white rounded-2xl shadow border flex flex-col min-h-0">
+      <h2 className="px-6 py-4 text-lg font-semibold border-b border-gray-300 text-black flex-shrink-0">
+        Chat List
+      </h2>
+      <div className="flex-1 overflow-y-auto">
+        <ul>
+          {connections.map(conn => {
+            const unreadCount = getUnreadCount(conn.user.id)
+            return (
               <li
-                key={i}
-                className={`flex items-center justify-between px-4 py-3 cursor-pointer ${
-                  chat.active ? "bg-red-800 text-white" : "hover:bg-gray-100"
+                key={conn.connectionId}
+                onClick={() => selectUser(conn.user)}
+                className={`flex items-center gap-3 px-4 py-3 cursor-pointer ${
+                  selectedUser?.id === conn.user.id ? 'bg-red-800 text-white' : 'hover:bg-gray-100'
                 }`}
               >
-                <div className="flex items-center space-x-3 text-black">
-        <img
-          src={chat.image}
-          alt={chat.name}
-          className="h-10 w-10 rounded-full"
-        />
-        <div>
-<p className={`font-medium ${chat.active ? "text-white" : "text-black"}`}>
-  {chat.name}
-</p>
-                    <p
-                      className={`text-sm truncate w-40 ${
-                        chat.active ? "text-white" : "text-gray-500"
-                      }`}
-                    >
-                      {chat.lastMessage}
-                    </p>
-                  </div>
+                <img
+                  src={conn.user.file ? `/uploads/${conn.user.file}` : '/images/default.png'}
+                  alt={conn.user.name}
+                  className="h-10 w-10 rounded-full"
+                />
+                <div className="flex-1 min-w-0">
+                  <p className={`font-medium truncate ${selectedUser?.id === conn.user.id ? 'text-white' : 'text-black'}`}>
+                    {conn.user.name}
+                  </p>
+                  <p className={`text-sm truncate ${selectedUser?.id === conn.user.id ? 'text-white' : 'text-gray-500'}`}>
+                    {conn.user.email}
+                  </p>
                 </div>
-                <span
-                  className={`text-xs ${
-                    chat.active ? "text-white" : "text-gray-400"
-                  }`}
-                >
-                  {chat.time}
-                </span>
+                {unreadCount > 0 && (
+                  <span className="bg-red-600 text-white text-xs font-semibold px-2 py-1 rounded-full flex-shrink-0">
+                    {unreadCount}
+                  </span>
+                )}
               </li>
-            ))}
-          </ul>
-        </div>
-{/* Chat Window */}
-<div className="flex-1 bg-white rounded-2xl shadow border flex flex-col">
-  {/* Chat Header */}
-  <div className="flex items-center px-6 py-4 border-b">
-    <img
-      src="/images/img (13).png"
-      alt="avatar"
-      className="h-10 w-10 rounded-full"
-    />
-    <div className="ml-3">
-      <p className="font-semibold text-black">Dr. Johnathan</p>
-      <p className="text-sm text-gray-500">Director of Regional Affairs</p>
-    </div>
-  </div>
-
-  {/* Messages */}
-  <div className="flex-1 p-6 overflow-y-auto flex flex-col-reverse space-y-6 space-y-reverse">
-    
-    {/* Sent message */}
-    <div className="flex items-start justify-end space-x-3">
-      <div>
-        <div className="bg-gray-100 text-gray-800 px-4 py-2 rounded-xl max-w-md">
-          Same here. I noted down two approaches from that breakout that I’d like to test in our department. 
-          What really stood out to me was the emphasis on collaboration and listening, rather than rushing to fix things individually. 
-          That’s something I can see shifting our culture if we apply it properly.
-        </div>
-        <p className="text-xs text-gray-400 mt-1 text-right">Today, 10:50 AM</p>
-      </div>
-      <img
-        src="/images/img15.jpg"
-        alt="avatar"
-        className="h-8 w-8 rounded-full"
-      />
-    </div>
-
-    {/* Received message */}
-    <div className="flex items-start space-x-3">
-      <img
-        src="/images/img (13).png"
-        alt="avatar"
-        className="h-8 w-8 rounded-full"
-      />
-      <div>
-        <div className="bg-red-600 text-white px-4 py-2 rounded-xl max-w-md">
-          Absolutely. The group discussion gave me a chance to hear how others in completely different industries approach the same challenges. 
-          Some of their solutions were so creative! It really pushed me to think outside of my usual process.
-        </div>
-        <p className="text-xs text-gray-400 mt-1">Today, 10:42 AM</p>
+            )
+          })}
+        </ul>
       </div>
     </div>
 
-    {/* Sent message */}
-    <div className="flex items-start justify-end space-x-3">
-      <div>
-        <div className="bg-gray-100 text-gray-800 px-4 py-2 rounded-xl max-w-md">
-          I agree, Emma. I especially liked how they tied the framework back to real-world applications. 
-          Too often sessions are just theory, but here it actually felt like I can take the model and use it with my team right away. 
-          Did you also find the group activity helpful?
+    {/* Chat Area */}
+    <div className="flex-1 bg-white rounded-2xl shadow border flex flex-col min-h-0">
+      {selectedUser ? (
+        <>
+          {/* Chat Header */}
+          <div className="flex items-center px-6 py-4 border-b flex-shrink-0">
+            <img
+              src={selectedUser.file ? `/uploads/${selectedUser.file}` : '/images/default.png'}
+              alt={selectedUser.name}
+              className="h-10 w-10 rounded-full"
+            />
+            <div className="ml-3 min-w-0">
+              <p className="font-semibold text-black truncate">{selectedUser.name}</p>
+              <p className="text-sm text-gray-500 truncate">{selectedUser.email}</p>
+            </div>
+          </div>
+
+          {/* Messages */}
+      <div 
+  ref={messagesEndRef}
+  className="flex-1 overflow-y-auto p-6"
+>
+  <div className="space-y-3">
+    {messages.map((msg: Message, idx: number) => (
+      <div
+        key={idx}
+        className={`flex items-start gap-3 ${msg.senderId === userId ? 'justify-end' : 'justify-start'}`}
+      >
+        {msg.senderId !== userId && (
+          <img
+            src={selectedUser.file ? `/uploads/${selectedUser.file}` : '/images/default.png'}
+            alt="avatar"
+            className="h-8 w-8 rounded-full flex-shrink-0"
+          />
+        )}
+        <div className={`max-w-xs lg:max-w-md ${msg.senderId === userId ? 'order-first' : ''}`}>
+          <div className={`px-4 py-2 rounded-xl ${msg.senderId === userId ? 'bg-gray-100 text-gray-800' : 'bg-red-600 text-white'}`}>
+            {msg.content}
+          </div>
+          <p className={`text-xs mt-1 ${msg.senderId === userId ? 'text-right' : ''} text-gray-400`}>
+            {msg.createdAt ? new Date(msg.createdAt).toLocaleTimeString() : ''}
+          </p>
         </div>
-        <p className="text-xs text-gray-400 mt-1 text-right">Today, 10:35 AM</p>
+        {msg.senderId === userId && (
+          <img
+            src="/images/default.png"
+            alt="avatar"
+            className="h-8 w-8 rounded-full flex-shrink-0"
+          />
+        )}
       </div>
-      <img
-        src="/images/img15.jpg"
-        alt="avatar"
-        className="h-8 w-8 rounded-full"
-      />
-    </div>
-
-    {/* Received message */}
-    <div className="flex items-start space-x-3">
-      <img
-        src="/images/img (13).png"
-        alt="avatar"
-        className="h-8 w-8 rounded-full"
-      />
-      <div>
-        <div className="bg-red-600 text-white px-4 py-2 rounded-xl max-w-md">
-          I really appreciate how today’s session broke down such a complex topic into manageable steps. 
-          The framework the speaker shared makes it much easier to visualize how we can integrate this 
-          into our own projects. Definitely one of the most practical workshops I’ve attended in a while.
-        </div>
-        <p className="text-xs text-gray-400 mt-1">Today, 10:32 AM</p>
-      </div>
-    </div>
-
-  </div>
-
-  {/* Input */}
-  <div className="border-t px-6 py-3 flex items-center space-x-3 text-gray-400">
-    <input
-      type="text"
-      placeholder="Type a message..."
-className="flex-1 placeholder-gray-400 text-black rounded-full px-4 py-2 focus:outline-none"
-    />
-   <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M20.0693 0.0839524C21.2155 -0.316532 22.3165 0.784518 21.916 1.93069L15.2318 21.0298C14.7974 22.2685 13.0714 22.3385 12.5389 21.1393L9.31353 13.8832L13.8532 9.34247C14.0026 9.18208 14.084 8.96994 14.0801 8.75075C14.0763 8.53155 13.9875 8.32241 13.8325 8.16739C13.6774 8.01237 13.4683 7.92358 13.2491 7.91971C13.0299 7.91584 12.8177 7.99721 12.6574 8.14666L8.11657 12.6862L0.860336 9.46093C-0.338883 8.92732 -0.26781 7.20242 0.969766 6.76809L20.0693 0.0839524Z" fill="#9B2033"/>
-</svg>
-
+    ))}
+    <div ref={dummyRef} />
   </div>
 </div>
-
-
-
-</div>
-
-</div><br></br>
-<>
-
-  {/* Footer Line Image */}
-  <div className="w-full mt-60">
-    <Image
-      src="/images/line.png"
-      alt="Footer Line"
-      width={1729}
-      height={127}
-      className="w-full"
-    />
+          {/* Message Input - Fixed at bottom */}
+          <div className="border-t px-6 py-4 flex items-center space-x-3 flex-shrink-0">
+            <input
+              type="text"
+              value={newMessage}
+              onChange={e => setNewMessage(e.target.value)}
+              placeholder="Type a message..."
+              className="flex-1 placeholder-gray-400 text-black border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:border-red-800"
+              onKeyDown={e => e.key === 'Enter' && handleSendMessage()}
+            />
+            <button
+              onClick={handleSendMessage}
+              className="text-red-800 font-bold px-4 py-2 rounded-full border border-red-800 hover:bg-red-50 transition-colors"
+            >
+              Send
+            </button>
+          </div>
+        </>
+      ) : (
+        <div className="flex-1 flex items-center justify-center text-gray-500">
+          Select a chat to start messaging
+        </div>
+      )}
+    </div>
   </div>
-</>
-
-    </>
-  );
+</div>
+  )
 }
+
+export default ChatPage
