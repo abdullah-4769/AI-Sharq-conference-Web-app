@@ -37,16 +37,13 @@ interface ApiMessage {
 
 const ChatPage: React.FC = () => {
   const userId = useSelector((state: RootState) => state.user.userId)
-
   const [connections, setConnections] = useState<Connection[]>([])
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
   const [messages, setMessages] = useState<Message[]>([])
   const [newMessage, setNewMessage] = useState('')
-  const messagesEndRef = useRef<HTMLDivElement | null>(null)
-  // Track unread messages separately for each user
+  const messagesEndRef = useRef<HTMLDivElement>(null)
   const [unreadCounts, setUnreadCounts] = useState<{ [userId: number]: number }>({})
 
-  // fetch all connections
   const fetchConnections = async () => {
     if (!userId) return
     try {
@@ -55,7 +52,6 @@ const ChatPage: React.FC = () => {
 
       setConnections(connectionsData)
 
-      // Update unread counts - only add new messages, don't reset existing counts
       connectionsData.forEach(conn => {
         if (conn.unreadMessages > 0) {
           setUnreadCounts(prev => ({
@@ -68,10 +64,7 @@ const ChatPage: React.FC = () => {
       console.error('Error fetching connections:', error)
     }
   }
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
-  // fetch messages between user and otherUserId
+
   const fetchMessages = async (otherUserId: number) => {
     if (!userId) return
     try {
@@ -92,12 +85,9 @@ const ChatPage: React.FC = () => {
     }
   }
 
-  // when user clicks on a connection
   const selectUser = (user: User) => {
     setSelectedUser(user)
     fetchMessages(user.id)
-
-    // Reset unread messages count ONLY for this specific user
     setUnreadCounts(prev => ({
       ...prev,
       [user.id]: 0
@@ -120,12 +110,14 @@ const ChatPage: React.FC = () => {
     }
   }
 
-  // Get total unread count for a user
   const getUnreadCount = (userId: number) => {
     return unreadCounts[userId] || 0
   }
 
-  // fetch connections on mount and refresh every 10s
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
+
   useEffect(() => {
     if (!userId) return
     fetchConnections()
@@ -133,7 +125,6 @@ const ChatPage: React.FC = () => {
     return () => clearInterval(interval)
   }, [userId])
 
-  // fetch messages for selected user and refresh every 10s
   useEffect(() => {
     if (!selectedUser) return
     fetchMessages(selectedUser.id)
@@ -144,120 +135,150 @@ const ChatPage: React.FC = () => {
   }, [selectedUser, userId])
 
   return (
-<div className="flex flex-col min-h-screen overflow-hidden">
-      <div className="flex items-center gap-2 mt-6 ml-5">
-        <Link href="/participants/Home">
-          <FaArrowLeft className="text-red-800 w-5 h-5 cursor-pointer" />
-        </Link>
-        <h1 className="text-xl font-semibold text-black ml-4">Chats</h1>
+    <div className="flex flex-col h-screen bg-gray-50">
+      {/* Header */}
+      <div className="shrink-0 bg-white border-b border-gray-200">
+        <div className="flex items-center gap-2 py-4 px-6">
+          <Link href="/participants/Home">
+            <FaArrowLeft className="text-red-800 w-5 h-5 cursor-pointer" />
+          </Link>
+          <h1 className="text-xl font-semibold text-black ml-4">Chats</h1>
+        </div>
       </div>
 
-      <div className="flex flex-1 p-6 space-x-7">
+      {/* Main Content */}
+      <div className="flex flex-1 min-h-0 p-6 gap-6">
         {/* Chat List */}
-        <div className="w-1/3 bg-white rounded-2xl shadow border flex flex-col">
-          <h2 className="px-6 py-4 text-lg font-semibold border-b border-gray-300 text-black">Chat List</h2>
-          <ul className="flex-1 overflow-y-auto">
-            {connections.map(conn => {
-              const unreadCount = getUnreadCount(conn.user.id)
-              return (
-                <li
-                  key={conn.connectionId}
-                  onClick={() => selectUser(conn.user)}
-                  className={`flex items-center gap-3 px-4 py-3 cursor-pointer ${selectedUser?.id === conn.user.id ? 'bg-red-800 text-white' : 'hover:bg-gray-100'
+        <div className="w-1/3 bg-white rounded-2xl shadow border flex flex-col min-h-0">
+          <h2 className="px-6 py-4 text-lg font-semibold border-b border-gray-300 text-black shrink-0">
+            Chat List
+          </h2>
+          <div className="flex-1 overflow-y-auto">
+            <ul>
+              {connections.map(conn => {
+                const unreadCount = getUnreadCount(conn.user.id)
+                return (
+                  <li
+                    key={conn.connectionId}
+                    onClick={() => selectUser(conn.user)}
+                    className={`flex items-center gap-3 px-4 py-3 cursor-pointer border-b border-gray-100 ${
+                      selectedUser?.id === conn.user.id ? 'bg-red-800 text-white' : 'hover:bg-gray-50'
                     }`}
-                >
-                  <img
-                    src={conn.user.file ? `/uploads/${conn.user.file}` : '/images/default.png'}
-                    alt={conn.user.name}
-                    className="h-10 w-10 rounded-full"
-                  />
-                  <div className="flex-1">
-                    <p className={`font-medium ${selectedUser?.id === conn.user.id ? 'text-white' : 'text-black'}`}>
-                      {conn.user.name}
-                    </p>
-                    <p className={`text-sm truncate w-40 ${selectedUser?.id === conn.user.id ? 'text-white' : 'text-gray-500'}`}>
-                      {conn.user.email}
-                    </p>
-                  </div>
-
-                  {unreadCount > 0 && (
-                    <span className="bg-red-600 text-white text-xs font-semibold px-2 py-1 rounded-full">
-                      {unreadCount}
-                    </span>
-                  )}
-                </li>
-              )
-            })}
-          </ul>
+                  >
+                    <img
+                      src={conn.user.file ? `/uploads/${conn.user.file}` : '/images/default.png'}
+                      alt={conn.user.name}
+                      className="h-10 w-10 rounded-full shrink-0"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <p className={`font-medium truncate ${
+                        selectedUser?.id === conn.user.id ? 'text-white' : 'text-black'
+                      }`}>
+                        {conn.user.name}
+                      </p>
+                      <p className={`text-sm truncate ${
+                        selectedUser?.id === conn.user.id ? 'text-white' : 'text-gray-500'
+                      }`}>
+                        {conn.user.email}
+                      </p>
+                    </div>
+                    {unreadCount > 0 && (
+                      <span className="bg-red-600 text-white text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center shrink-0">
+                        {unreadCount}
+                      </span>
+                    )}
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
         </div>
 
         {/* Chat Window */}
-        <div className="flex-1 bg-white rounded-2xl shadow border flex flex-col">
-          {selectedUser && (
-            <div className="flex items-center px-6 py-4 border-b">
-              <img
-                src={selectedUser.file ? `/uploads/${selectedUser.file}` : '/images/default.png'}
-                alt={selectedUser.name}
-                className="h-10 w-10 rounded-full"
-              />
-              <div className="ml-3">
-                <p className="font-semibold text-black">{selectedUser.name}</p>
-                <p className="text-sm text-gray-500">{selectedUser.email}</p>
-              </div>
-            </div>
-          )}
-
-          <div className="h-screen flex flex-col">
-  
-            <div className="flex-1 p-6 overflow-y-auto flex flex-col space-y-3">
-              {messages.map((msg: Message, idx: number) => (
-                <div
-                  key={idx}
-                  className={`flex items-start gap-3 ${msg.senderId === userId ? 'justify-end' : 'justify-start'}`}
-                >
-                  {msg.senderId !== userId && (
-                    <img
-                      src={selectedUser?.file ? `/uploads/${selectedUser.file}` : '/images/default.png'}
-                      alt="avatar"
-                      className="h-8 w-8 rounded-full"
-                    />
-                  )}
-                  <div>
-                    <div className={`px-4 py-2 rounded-xl max-w-md ${msg.senderId === userId ? 'bg-gray-100 text-gray-800' : 'bg-red-600 text-white'}`}>
-                      {msg.content}
-                    </div>
-                    <p className={`text-xs mt-1 ${msg.senderId === userId ? 'text-right text-gray-400' : 'text-gray-400'}`}>
-                      {msg.createdAt ? new Date(msg.createdAt).toLocaleTimeString() : ''}
-                    </p>
-                  </div>
-                  {msg.senderId === userId && (
-                    <img
-                      src="/images/default.png"
-                      alt="avatar"
-                      className="h-8 w-8 rounded-full"
-                    />
-                  )}
+        <div className="flex-1 bg-white rounded-2xl shadow border flex flex-col min-h-0">
+          {selectedUser ? (
+            <>
+              {/* Chat Header */}
+              <div className="flex items-center px-6 py-4 border-b border-gray-300 shrink-0">
+                <img
+                  src={selectedUser.file ? `/uploads/${selectedUser.file}` : '/images/default.png'}
+                  alt={selectedUser.name}
+                  className="h-10 w-10 rounded-full"
+                />
+                <div className="ml-3">
+                  <p className="font-semibold text-black">{selectedUser.name}</p>
+                  <p className="text-sm text-gray-500">{selectedUser.email}</p>
                 </div>
-              ))}
-            </div>
-          </div>
+              </div>
 
+              {/* Messages Container */}
+              <div className="flex-1 flex flex-col min-h-0">
+                {/* Scrollable Messages Area */}
+                <div className="flex-1 overflow-y-auto p-6">
+                  <div className="space-y-4">
+                    {messages.map((msg, idx) => (
+                      <div
+                        key={idx}
+                        className={`flex items-start gap-3 ${
+                          msg.senderId === userId ? 'justify-end' : 'justify-start'
+                        }`}
+                      >
+                        {msg.senderId !== userId && (
+                          <img
+                            src={selectedUser.file ? `/uploads/${selectedUser.file}` : '/images/default.png'}
+                            alt="avatar"
+                            className="h-8 w-8 rounded-full shrink-0"
+                          />
+                        )}
+                        <div className={`max-w-md ${msg.senderId === userId ? 'text-right' : ''}`}>
+                          <div className={`px-4 py-2 rounded-xl inline-block ${
+                            msg.senderId === userId ? 'bg-gray-100 text-gray-800' : 'bg-red-600 text-white'
+                          }`}>
+                            {msg.content}
+                          </div>
+                          <p className={`text-xs mt-1 ${
+                            msg.senderId === userId ? 'text-gray-400' : 'text-gray-400'
+                          }`}>
+                            {msg.createdAt ? new Date(msg.createdAt).toLocaleTimeString() : ''}
+                          </p>
+                        </div>
+                        {msg.senderId === userId && (
+                          <img
+                            src="/images/default.png"
+                            alt="avatar"
+                            className="h-8 w-8 rounded-full shrink-0"
+                          />
+                        )}
+                      </div>
+                    ))}
+                    <div ref={messagesEndRef} />
+                  </div>
+                </div>
 
-          {selectedUser && (
-            <div className="border-t px-6 py-3 flex items-center space-x-3 text-gray-400">
-              <input
-                type="text"
-                value={newMessage}
-                onChange={e => setNewMessage(e.target.value)}
-                className="flex-1 placeholder-gray-400 text-black rounded-full px-4 py-2 focus:outline-none"
-                onKeyDown={e => e.key === 'Enter' && handleSendMessage()}
-              />
-              <button
-                onClick={handleSendMessage}
-                className="text-red-800 font-bold px-3 py-2 rounded-full border border-red-800"
-              >
-                Send
-              </button>
+                {/* Input Container - Fixed at Bottom */}
+                <div className="border-t border-gray-300 px-6 py-4 bg-white shrink-0">
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="text"
+                      value={newMessage}
+                      onChange={e => setNewMessage(e.target.value)}
+                      onKeyDown={e => e.key === 'Enter' && handleSendMessage()}
+                      placeholder="Type a message..."
+                      className="flex-1 placeholder-gray-400 text-black rounded-full px-4 py-2 border border-gray-300 focus:outline-none focus:border-red-800"
+                    />
+                    <button
+                      onClick={handleSendMessage}
+                      className="text-red-800 font-bold px-4 py-2 rounded-full border border-red-800 hover:bg-red-50 transition-colors shrink-0"
+                    >
+                      Send
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="flex-1 flex items-center justify-center text-gray-500">
+              Select a chat to start messaging
             </div>
           )}
         </div>
