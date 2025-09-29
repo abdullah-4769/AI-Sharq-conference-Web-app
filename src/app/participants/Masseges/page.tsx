@@ -44,6 +44,18 @@ const ChatPage: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const [unreadCounts, setUnreadCounts] = useState<{ [userId: number]: number }>({})
 
+  // Generate Google Avatar URL based on user name
+  const getAvatarUrl = (user: User) => {
+    // Use the first letter of the name for the avatar
+    const initial = user.name.charAt(0).toUpperCase()
+    // Generate a consistent background color based on the name
+    const colors = ['FFB3BA', 'FFDFBA', 'FFFFBA', 'BAFFC9', 'BAE1FF', 'D9B3FF']
+    const colorIndex = user.name.length % colors.length
+    const bgColor = colors[colorIndex]
+    
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(initial)}&background=${bgColor}&color=fff&size=128&rounded=true&bold=true`
+  }
+
   const fetchConnections = async () => {
     if (!userId) return
     try {
@@ -166,7 +178,7 @@ const ChatPage: React.FC = () => {
                     }`}
                   >
                     <img
-                      src={conn.user.file ? `/uploads/${conn.user.file}` : '/images/default.png'}
+                      src={getAvatarUrl(conn.user)}
                       alt={conn.user.name}
                       className="h-10 w-10 rounded-full shrink-0"
                     />
@@ -201,7 +213,7 @@ const ChatPage: React.FC = () => {
               {/* Chat Header */}
               <div className="flex items-center px-6 py-4 border-b border-gray-300 shrink-0">
                 <img
-                  src={selectedUser.file ? `/uploads/${selectedUser.file}` : '/images/default.png'}
+                  src={getAvatarUrl(selectedUser)}
                   alt={selectedUser.name}
                   className="h-10 w-10 rounded-full"
                 />
@@ -225,7 +237,7 @@ const ChatPage: React.FC = () => {
                       >
                         {msg.senderId !== userId && (
                           <img
-                            src={selectedUser.file ? `/uploads/${selectedUser.file}` : '/images/default.png'}
+                            src={getAvatarUrl(selectedUser)}
                             alt="avatar"
                             className="h-8 w-8 rounded-full shrink-0"
                           />
@@ -244,7 +256,7 @@ const ChatPage: React.FC = () => {
                         </div>
                         {msg.senderId === userId && (
                           <img
-                            src="/images/default.png"
+                            src={getAvatarUrl({ id: userId, name: 'You', email: '', file: null })}
                             alt="avatar"
                             className="h-8 w-8 rounded-full shrink-0"
                           />

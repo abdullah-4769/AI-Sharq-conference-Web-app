@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, use } from "react"
 import Image from "next/image"
-import RelatedSessionsGrid from "@/app/components/RelatedSessions"
+import RelatedSessionsGrid from "@/app/components/relatedsession"
 import { FaArrowLeft } from "react-icons/fa"
 import Link from "next/link"
 import api from "@/config/api"
