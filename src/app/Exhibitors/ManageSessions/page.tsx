@@ -14,7 +14,6 @@ const filters = ["Daily", "Weekly", "10 Days", "90 Days", "All Time"]
 export default function SpeakerSessions() {
   const router = useRouter()
   const userId = useSelector((state: RootState) => state.user.userId)
-  const sponsorId = 1
 
   const [events, setEvents] = useState<any[]>([])
   const [filteredEvents, setFilteredEvents] = useState<any[]>([])
@@ -26,7 +25,8 @@ export default function SpeakerSessions() {
     if (!userId) return
     const fetchEvents = async () => {
       try {
-        const res = await api.get(`/sponsors/sponsor/${sponsorId}/sessions`)
+        const exhibitorId = localStorage.getItem("exhibitorId") || "2"
+        const res = await api.get(`/exhibiteros/${exhibitorId}/sessions`)
         const data = Array.isArray(res.data.sessions) ? res.data.sessions : []
         setEvents(data)
         setFilteredEvents(data)
@@ -108,7 +108,8 @@ export default function SpeakerSessions() {
   }
 
   const handleSponsorClick = () => {
-    router.push(`/sponsors/SponsorsDetailScreen?sponsorId=${sponsorId}`)
+    const exhibitorId = localStorage.getItem("exhibitorId") || "2"
+    router.push(`/sponsors/SponsorsDetailScreen?sponsorId=${exhibitorId}`)
   }
 
   return (

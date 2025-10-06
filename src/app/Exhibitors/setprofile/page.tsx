@@ -11,16 +11,16 @@ const SetUpYourProfile: React.FC = () => {
 
   const [formData, setFormData] = useState({
     name: '',
+    picUrl: '',
     description: '',
-    Pic_url: '',
+    location: '',
+    website: '',
     email: '',
     phone: '',
-    category: '',
-    password: '',
-    website: '',
     linkedin: '',
     twitter: '',
     youtube: '',
+ 
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -42,18 +42,18 @@ const SetUpYourProfile: React.FC = () => {
 
     const payload = { ...formData };
 
-    if (!profileImage && !formData.Pic_url) {
-      payload.Pic_url = 'https://example.com/default-image.png';
+    if (!profileImage && !formData.picUrl) {
+      payload.picUrl = 'https://example.com/default-image.png';
     } else if (profileImage) {
-      payload.Pic_url = URL.createObjectURL(profileImage);
+      payload.picUrl = URL.createObjectURL(profileImage);
     }
 
     try {
-      const response = await api.post('/sponsors', payload);
+      const response = await api.post('/exhibiteros', payload);
 
       if (response.status === 200 || response.status === 201) {
-        console.log('Success: Sponsor profile created', response.data);
-        localStorage.setItem('sponsorId', response.data.id.toString());
+        console.log('Success: Exhibitor profile created', response.data);
+        localStorage.setItem('exhibitorId', response.data.id.toString());
         router.push('/sponsors/sponsorsproducts');
       } else {
         console.log('Rejected: Unexpected response', response.data);
@@ -79,7 +79,7 @@ const SetUpYourProfile: React.FC = () => {
         <div className="flex flex-col items-center gap-8">
           <div className="flex flex-col items-center gap-4">
             <h1 className="text-2xl font-medium text-gray-900 text-center">
-              Set Up Your Sponsor Profile
+              Set Up Your Exhibitor Profile
             </h1>
             <p className="text-base text-gray-900 text-center max-w-sm">
               Complete your profile to personalize your event experience and connect with others
@@ -111,13 +111,13 @@ const SetUpYourProfile: React.FC = () => {
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-6 w-full">
             <div className="flex flex-col gap-1">
-              <label>Sponsor Name*</label>
+              <label>Exhibitor Name*</label>
               <input
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleInputChange}
-                placeholder="Sponsor Name"
+                placeholder="Exhibitor Name"
                 className="w-full px-5 py-4 border border-gray-300 rounded-xl"
                 required
               />
@@ -149,15 +149,14 @@ const SetUpYourProfile: React.FC = () => {
             </div>
 
             <div className="flex flex-col gap-1">
-              <label>Category*</label>
+              <label>Location</label>
               <input
                 type="text"
-                name="category"
-                value={formData.category}
+                name="location"
+                value={formData.location}
                 onChange={handleInputChange}
-                placeholder="Category"
+                placeholder="Location"
                 className="w-full px-5 py-4 border border-gray-300 rounded-xl"
-                required
               />
             </div>
 
@@ -210,28 +209,7 @@ const SetUpYourProfile: React.FC = () => {
               />
             </div>
 
-            <div className="flex flex-col gap-1 relative">
-              <label>Password*</label>
-              <input
-                type={showPassword ? 'text' : 'password'}
-                name="password"
-                value={formData.password}
-                onChange={handleInputChange}
-                placeholder="Password"
-                className="w-full px-5 py-4 border border-gray-300 rounded-xl pr-12"
-                required
-              />
-              {formData.password.length > 0 && (
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(prev => !prev)}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center justify-center text-gray-500"
-                >
-                  {showPassword ? <FaEyeSlash /> : <FaEye />}
-                </button>
-              )}
-            </div>
-
+            
 
             <div className="flex flex-col gap-1">
               <label>Description</label>
@@ -254,7 +232,7 @@ const SetUpYourProfile: React.FC = () => {
               </button>
               <button
                 type="button"
-                onClick={() => console.log('Skipped')}
+                onClick={handleSkip}
                 className="py-4 border border-gray-300 rounded-xl"
               >
                 Skip for Now
