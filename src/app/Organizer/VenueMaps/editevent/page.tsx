@@ -91,7 +91,7 @@ const AddNewVenuePopup = ({ isOpen, onClose }: AddNewVenuePopupProps) => {
           </div>
 
           <h2 className="text-center text-[24px] font-medium text-[#282828] mb-8">
-            Add New Venue
+            Update Venue
           </h2>
 
           <div className="space-y-6">

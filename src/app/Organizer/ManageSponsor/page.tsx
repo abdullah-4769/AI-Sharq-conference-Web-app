@@ -1,7 +1,7 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
+"use client"
+import React, { useEffect, useState } from "react"
+import Link from "next/link"
+import Image from "next/image"
 import {
   FaArrowLeft,
   FaSearch,
@@ -11,13 +11,14 @@ import {
   FaBookmark,
   FaCrown,
   FaMedal,
-} from "react-icons/fa";
-import { FaShop } from "react-icons/fa6";
-import api from "@/config/api";
+} from "react-icons/fa"
+import { FaShop } from "react-icons/fa6"
+import api from "@/config/api"
+import Createsponsor from "./createsponsor/page"
+import CreateExhibitor from "./createxhibitor/page" // fixed import
 
-const filters = ["Daily", "Weekly", "10 Days", "90 Days", "All Time"];
+const filters = ["Daily", "Weekly", "10 Days", "90 Days", "All Time"]
 
-// Gradient backgrounds for sponsor badges
 const getBadgeGradient = (tier: "gold" | "silver", index: number) => {
   const gradients = {
     gold: [
@@ -30,21 +31,20 @@ const getBadgeGradient = (tier: "gold" | "silver", index: number) => {
       "bg-gradient-to-r from-red-500 to-red-600",
       "bg-gradient-to-r from-pink-500 to-pink-600",
     ],
-  };
-  return gradients[tier][index % gradients[tier].length];
-};
+  }
+  return gradients[tier][index % gradients[tier].length]
+}
 
-// Reusable Sponsor card
 const SponsorCard = ({
   sponsor,
   index,
   tier,
 }: {
-  sponsor: { id: number; name: string; description: string };
-  index: number;
-  tier: "gold" | "silver";
+  sponsor: { id: number; name: string; description: string }
+  index: number
+  tier: "gold" | "silver"
 }) => {
-  const badgeColor = getBadgeGradient(tier, index);
+  const badgeColor = getBadgeGradient(tier, index)
   return (
     <div className="bg-white border border-gray-300 rounded-2xl p-6 shadow-sm flex items-center gap-6">
       <div className={`w-24 h-24 ${badgeColor} rounded-full flex items-center justify-center`}>
@@ -67,72 +67,61 @@ const SponsorCard = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 export default function Page() {
-  const [activeFilter, setActiveFilter] = useState("Daily");
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeFilter, setActiveFilter] = useState("Daily")
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isExhibitorModalOpen, setIsExhibitorModalOpen] = useState(false)
+  const [goldSponsors, setGoldSponsors] = useState<any[]>([])
+  const [silverSponsors, setSilverSponsors] = useState<any[]>([])
+  const [exhibitors, setExhibitors] = useState<any[]>([])
 
-  const [goldSponsors, setGoldSponsors] = useState<any[]>([]);
-  const [silverSponsors, setSilverSponsors] = useState<any[]>([]);
-  const [exhibitors, setExhibitors] = useState<any[]>([]);
-
-  // Fetch API Data
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await api.get("http://localhost:5000/event/allsponsors/exhibitors");
-
+        const res = await api.get("http://localhost:5000/event/allsponsors/exhibitors")
         const sponsors = res.data.sponsors.map((s: any) => {
-          const category = s.category?.toLowerCase();
-          let normalized = "silver";
-          if (category === "gold") normalized = "gold";
-          return { ...s, category: normalized };
-        });
-
-        setGoldSponsors(sponsors.filter((s: any) => s.category === "gold"));
-        setSilverSponsors(sponsors.filter((s: any) => s.category === "silver" || s.category === null));
-        setExhibitors(res.data.exhibitors || []);
+          const category = s.category?.toLowerCase()
+          let normalized = "silver"
+          if (category === "gold") normalized = "gold"
+          return { ...s, category: normalized }
+        })
+        setGoldSponsors(sponsors.filter((s: any) => s.category === "gold"))
+        setSilverSponsors(sponsors.filter((s: any) => s.category === "silver" || s.category === null))
+        setExhibitors(res.data.exhibitors || [])
       } catch (err) {
-        console.error("Error fetching sponsors", err);
+        console.error("Error fetching sponsors", err)
       }
-    };
-    fetchData();
-  }, []);
+    }
+    fetchData()
+  }, [])
 
-  // Updated stats based on fetched data
   const stats = [
     {
       label: "Gold",
       value: goldSponsors.length,
-      change: "",
-      percent: "",
       icon: <FaRegListAlt className="text-blue-600" />,
       iconBg: "bg-blue-100",
     },
     {
       label: "Silver",
       value: silverSponsors.length,
-      change: "",
-      percent: "",
       icon: <FaPlay className="text-green-600" />,
       iconBg: "bg-green-100",
     },
     {
       label: "Booth",
       value: exhibitors.length,
-      change: "",
-      percent: "",
       icon: <FaBookmark className="text-yellow-600" />,
       iconBg: "bg-yellow-100",
     },
-  ];
+  ]
 
   return (
     <>
       <div className="min-h-screen bg-[#FAFAFA] px-4 md:px-10 py-6 space-y-8 relative">
-        {/* Header */}
         <div className="flex items-center gap-3">
           <Link href="/Organizer/Dashboard">
             <FaArrowLeft className="text-red-800 w-[20px] h-[20px] cursor-pointer" />
@@ -140,15 +129,10 @@ export default function Page() {
           <h1 className="text-xl font-bold text-gray-900 ml-5">Manage Sponsor</h1>
         </div>
 
-        {/* Filters */}
         <div className="flex flex-wrap justify-between items-center gap-4">
           <div className="flex bg-white border border-gray-300 rounded-md px-3 py-2 w-full md:w-[300px]">
             <FaSearch className="text-red-900 mr-2 mt-1" />
-            <input
-              type="text"
-              placeholder="Search sponsors or exhibitors"
-              className="outline-none text-sm w-full"
-            />
+            <input type="text" placeholder="Search sponsors or exhibitors" className="outline-none text-sm w-full" />
           </div>
 
           <div className="flex gap-3 flex-wrap">
@@ -173,7 +157,6 @@ export default function Page() {
           </div>
         </div>
 
-        {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {stats.map((item, idx) => (
             <div
@@ -191,14 +174,22 @@ export default function Page() {
           ))}
         </div>
 
-        {/* Action Row */}
         <div className="flex justify-between items-center">
-          <button
-            className="bg-[#9B2033] hover:bg-[#7c062a] transition text-white text-sm px-5 py-2 rounded-md font-medium"
-            onClick={() => setIsModalOpen(true)}
-          >
-            + Create New Sponsor
-          </button>
+          <div className="flex gap-3">
+            <button
+              className="bg-[#9B2033] hover:bg-[#7c062a] transition text-white text-sm px-5 py-2 rounded-md font-medium"
+              onClick={() => setIsModalOpen(true)}
+            >
+              + Create New Sponsor
+            </button>
+            <button
+              className="bg-[#006B5E] hover:bg-[#004d40] transition text-white text-sm px-5 py-2 rounded-md font-medium"
+              onClick={() => setIsExhibitorModalOpen(true)}
+            >
+              + Create New Exhibitor
+            </button>
+          </div>
+
           <button className="text-sm text-gray-600 hover:text-black transition underline font-medium">
             View All
           </button>
@@ -209,9 +200,7 @@ export default function Page() {
           <div className="mb-10">
             <div className="flex items-center gap-3 mb-4">
               <FaCrown className="text-yellow-500 w-6 h-6" />
-              <h2 className="text-2xl font-bold text-black">
-                Gold Sponsors ({goldSponsors.length})
-              </h2>
+              <h2 className="text-2xl font-bold text-black">Gold Sponsors ({goldSponsors.length})</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {goldSponsors.map((sponsor, index) => (
@@ -226,9 +215,7 @@ export default function Page() {
           <div className="mb-10">
             <div className="flex items-center gap-3 mb-4">
               <FaMedal className="text-gray-400 w-6 h-6" />
-              <h2 className="text-2xl font-bold text-black">
-                Silver Sponsors ({silverSponsors.length})
-              </h2>
+              <h2 className="text-2xl font-bold text-black">Silver Sponsors ({silverSponsors.length})</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {silverSponsors.map((sponsor, index) => (
@@ -239,54 +226,87 @@ export default function Page() {
         )}
 
         {/* Exhibitors */}
-        {/* Exhibitors */}
-{exhibitors.length > 0 && (
-  <div className="mb-10">
-    <div className="flex items-center gap-3 mb-4">
-      <FaShop className="text-green-500 w-6 h-6" />
-      <h2 className="text-2xl font-bold text-black">
-        Exhibitors ({exhibitors.length})
-      </h2>
-    </div>
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {exhibitors.map((ex: any, index: number) => (
-        <div
-          key={ex.id}
-          className="bg-white border border-gray-300 rounded-2xl p-6 shadow-sm flex items-center gap-6"
-        >
-          {/* Badge circle with first letter */}
-          <div className="w-24 h-24 bg-gradient-to-r from-green-500 to-teal-500 rounded-full flex items-center justify-center">
-            <span className="text-white font-bold text-2xl">{ex.name.charAt(0)}</span>
-          </div>
-
-          {/* Info section */}
-          <div className="flex-1">
-            <h3 className="text-xl font-semibold mb-2 text-black">{ex.name}</h3>
-            <p className="text-black mb-4">{ex.description}</p>
-            <div className="flex items-center gap-4">
-              <Link href={`/participants/ExhibitorDetails/${ex.id}`}>
-                <button className="bg-[#9B2033] text-white px-6 py-2 rounded-lg font-bold hover:bg-[#7b1a2c] transition">
-                  Visit Booth
-                </button>
-              </Link>
-              <Link href={`/participants/ExhibitorDetails/${ex.id}`}>
-                <button className="border border-gray-300 text-black px-6 py-2 rounded-lg hover:bg-gray-100 transition">
-                  Learn More
-                </button>
-              </Link>
+        {exhibitors.length > 0 && (
+          <div className="mb-10">
+            <div className="flex items-center gap-3 mb-4">
+              <FaShop className="text-green-500 w-6 h-6" />
+              <h2 className="text-2xl font-bold text-black">Exhibitors ({exhibitors.length})</h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {exhibitors.map((ex: any, index: number) => (
+                <div
+                  key={ex.id}
+                  className="bg-white border border-gray-300 rounded-2xl p-6 shadow-sm flex items-center gap-6"
+                >
+                  <div className="w-24 h-24 bg-gradient-to-r from-green-500 to-teal-500 rounded-full flex items-center justify-center">
+                    <span className="text-white font-bold text-2xl">{ex.name.charAt(0)}</span>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-semibold mb-2 text-black">{ex.name}</h3>
+                    <p className="text-black mb-4">{ex.description}</p>
+                    <div className="flex items-center gap-4">
+                      <Link href={`/participants/ExhibitorDetails/${ex.id}`}>
+                        <button className="bg-[#9B2033] text-white px-6 py-2 rounded-lg font-bold hover:bg-[#7b1a2c] transition">
+                          Visit Booth
+                        </button>
+                      </Link>
+                      <Link href={`/participants/ExhibitorDetails/${ex.id}`}>
+                        <button className="border border-gray-300 text-black px-6 py-2 rounded-lg hover:bg-gray-100 transition">
+                          Learn More
+                        </button>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
-      ))}
-    </div>
-  </div>
-)}
-
-
+        )}
       </div>
 
-      {/* Decorative Line */}
-      <Image src="/images/line.png" alt="Line" width={1450} height={127} className="absolute " />
+      {/* Create Sponsor Modal */}
+      {isModalOpen && (
+        <div
+          className="fixed inset-0 bg-opacity-80 flex items-center justify-center z-50"
+          onClick={() => setIsModalOpen(false)}
+        >
+          <div
+            className="bg-white rounded-xl shadow-lg w-full max-w-2xl p-6 relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="absolute top-3 right-3 text-gray-600 hover:text-black font-bold"
+              onClick={() => setIsModalOpen(false)}
+            >
+              ✕
+            </button>
+            <Createsponsor onClose={() => setIsModalOpen(false)} />
+          </div>
+        </div>
+      )}
+
+      {/* Create Exhibitor Modal */}
+      {isExhibitorModalOpen && (
+        <div
+          className="fixed inset-0  bg-opacity-80 flex items-center justify-center z-50"
+          onClick={() => setIsExhibitorModalOpen(false)}
+        >
+          <div
+            className="bg-white rounded-xl shadow-lg w-full max-w-2xl p-6 relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="absolute top-3 right-3 text-gray-600 hover:text-black font-bold"
+              onClick={() => setIsExhibitorModalOpen(false)}
+            >
+              ✕
+            </button>
+            <CreateExhibitor onClose={() => setIsExhibitorModalOpen(false)} />
+          </div>
+        </div>
+      )}
+
+      <Image src="/images/line.png" alt="Line" width={1450} height={127} className="absolute" />
     </>
-  );
+  )
 }

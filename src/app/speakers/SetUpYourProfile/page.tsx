@@ -1,12 +1,25 @@
 'use client'
 
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
-import { RootState } from '@/lib/store/store'
+import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import api from '@/config/api'
 
 const SetUpYourProfile: React.FC = () => {
-  const userId = useSelector((state: RootState) => state.user.userId)
+  const router = useRouter()
+  const [step, setStep] = useState(1)
+  const [loading, setLoading] = useState(false)
+  const [userId, setUserId] = useState<number | null>(null)
+
+  // Default speaker ID
+  const speakerId = 12
+
+  const [userData, setUserData] = useState({
+    name: '',
+    email: '',
+    organization: '',
+    file: null as File | null,
+  })
 
   const [formData, setFormData] = useState({
     bio: '',
@@ -16,11 +29,65 @@ const SetUpYourProfile: React.FC = () => {
     linkedin: '',
     orgInput: '',
     tagInput: '',
-    country: 'Pakistan', 
+    country: 'Pakistan',
   })
 
-  const [designations, setDesignations] = useState<string[]>(['Middle East Institute'])
-  const [tags, setTags] = useState<string[]>(['workshop', 'Innovation'])
+  const [designations, setDesignations] = useState<string[]>([])
+  const [tags, setTags] = useState<string[]>([])
+
+  // Fetch speaker and prefill user info
+  useEffect(() => {
+    const fetchSpeaker = async () => {
+      setLoading(true)
+      try {
+        const res = await api.get(`/speakers/${speakerId}`)
+        const data = res.data
+        console.log('Speaker API response:', data)
+
+        // Store userId for later API calls
+        if (data.userId) setUserId(data.userId)
+
+        if (data.user) {
+          setUserData({
+            name: data.user.name || '',
+            email: data.user.email || '',
+            organization: data.designations?.[0] || '',
+            file: null,
+          })
+        }
+
+        setFormData({
+          bio: data.bio || '',
+          expertise: data.expertise ? data.expertise.join(', ') : '',
+          website: data.website || '',
+          facebook: data.facebook || '',
+          linkedin: data.linkedin || '',
+          orgInput: '',
+          tagInput: '',
+          country: data.country || 'Pakistan',
+        })
+
+        setDesignations(data.designations || [])
+        setTags(data.tags || [])
+      } catch (err: any) {
+        console.error('Error loading speaker:', err.response?.data || err.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchSpeaker()
+  }, [])
+
+  const handleUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setUserData(prev => ({ ...prev, [name]: value }))
+  }
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null
+    setUserData(prev => ({ ...prev, file }))
+  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -52,11 +119,39 @@ const SetUpYourProfile: React.FC = () => {
   const removeDesignation = (d: string) => setDesignations(prev => prev.filter(item => item !== d))
   const removeTag = (t: string) => setTags(prev => prev.filter(item => item !== t))
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Step 1 - Update user
+  const handleUserSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!userId) {
+      console.error('No userId found')
+      return
+    }
+    setLoading(true)
+    try {
+      const formDataToSend = new FormData()
+      formDataToSend.append('name', userData.name)
+      formDataToSend.append('email', userData.email)
+      formDataToSend.append('organization', userData.organization)
+      if (userData.file) formDataToSend.append('file', userData.file)
+
+      const res = await api.patch(`/auth/update/${userId}`, formDataToSend, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+      console.log('User updated:', res.data)
+      setStep(2)
+    } catch (err: any) {
+      console.error('Error updating user:', err.response?.data || err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // Step 2 - Update speaker
+  const handleSpeakerSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
 
     const payload = {
-      userId,
       designations,
       bio: formData.bio,
       expertise: formData.expertise.split(',').map(e => e.trim()).filter(Boolean),
@@ -65,35 +160,89 @@ const SetUpYourProfile: React.FC = () => {
       linkedin: formData.linkedin || null,
       tags,
       country: formData.country,
-      category: null,
-      youtube: null,
-      twitter: null,
       featured: true,
       verified: true,
       priority: 1,
       isActive: true,
     }
 
-    console.log('Submitting payload:', payload)
-
     try {
-      const res = await api.post('/speakers', payload)
-      console.log('Saved:', res.data)
+      const res = await api.patch(`/speakers/${speakerId}`, payload)
+      console.log('Speaker updated:', res.data)
+      router.push('/Organizer/ManageSpeaker')
     } catch (err: any) {
-      console.error('API Error:', err.response?.data || err.message)
+      console.error('Error updating speaker:', err.response?.data || err.message)
+    } finally {
+      setLoading(false)
     }
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50 p-4">
-      <div className="bg-white border border-gray-300 rounded-2xl shadow-lg p-10 w-full max-w-lg">
-        <div className="flex flex-col items-center gap-8">
-          <h1 className="text-2xl font-medium text-gray-900 text-center">Set Up Your Speaker Profile</h1>
+    <div className="fixed inset-0 flex items-center justify-center z-50">
+      <div className="bg-white rounded-2xl shadow-lg w-full max-w-lg max-h-[90vh] overflow-auto p-8 md:p-10">
+        <div className="flex justify-center mb-6">
+          <Image src="/images/logo1.png" alt="Logo" width={100} height={100} />
+        </div>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-6 w-full">
-            {/* Organization / Affiliation */}
-            <div className="flex flex-col gap-3">
-              <label className="text-base text-gray-900">Organization / Affiliation*</label>
+        {loading && (
+          <p className="text-center text-gray-500 mb-6">Loading data, please wait...</p>
+        )}
+
+        {!loading && step === 1 && (
+          <>
+            <h1 className="text-2xl font-medium text-gray-900 text-center mb-4">
+              Update User Information
+            </h1>
+            <form onSubmit={handleUserSubmit} className="flex flex-col gap-4">
+              <input
+                type="text"
+                name="name"
+                value={userData.name}
+                onChange={handleUserChange}
+                placeholder="Full Name"
+                className="w-full px-5 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500"
+              />
+              <input
+                type="email"
+                name="email"
+                value={userData.email}
+                onChange={handleUserChange}
+                placeholder="Email"
+                className="w-full px-5 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500"
+              />
+              <input
+                type="text"
+                name="organization"
+                value={userData.organization}
+                onChange={handleUserChange}
+                placeholder="Organization"
+                className="w-full px-5 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500"
+              />
+              <input
+                type="file"
+                name="file"
+                onChange={handleFileChange}
+                className="w-full px-5 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500"
+              />
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="py-4 bg-red-600 text-white rounded-xl hover:bg-red-700 mt-2"
+              >
+                {loading ? 'Saving...' : 'Next'}
+              </button>
+            </form>
+          </>
+        )}
+
+        {!loading && step === 2 && (
+          <>
+            <h1 className="text-2xl font-medium text-gray-900 text-center mb-4">
+              Update Speaker Profile
+            </h1>
+            <form onSubmit={handleSpeakerSubmit} className="flex flex-col gap-4">
+              <label className="font-medium text-gray-700">Designations</label>
               <input
                 type="text"
                 name="orgInput"
@@ -101,30 +250,18 @@ const SetUpYourProfile: React.FC = () => {
                 onChange={handleInputChange}
                 onKeyDown={handleOrgKeyDown}
                 placeholder="Type and press Enter"
-                className="w-full px-5 py-4 border border-gray-300 rounded-xl text-base text-gray-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+                className="w-full px-5 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500"
               />
-              <div className="flex flex-wrap gap-3 mt-2">
-                {designations.map((d, index) => (
-                  <span
-                    key={index}
-                    className="px-3 py-2 bg-yellow-200 text-yellow-800 rounded-full text-sm font-medium flex items-center gap-2"
-                  >
+              <div className="flex flex-wrap gap-2 mt-2">
+                {designations.map((d, i) => (
+                  <span key={i} className="px-3 py-1 bg-yellow-200 text-yellow-800 rounded-full flex items-center gap-2 text-sm">
                     {d}
-                    <button
-                      type="button"
-                      onClick={() => removeDesignation(d)}
-                      className="text-yellow-800 hover:text-yellow-900"
-                    >
-                      ×
-                    </button>
+                    <button type="button" onClick={() => removeDesignation(d)}>×</button>
                   </span>
                 ))}
               </div>
-            </div>
 
-            {/* Tags */}
-            <div className="flex flex-col gap-3">
-              <label className="text-base text-gray-900">Specility</label>
+              <label className="font-medium text-gray-700 mt-4">Tags</label>
               <input
                 type="text"
                 name="tagInput"
@@ -132,92 +269,47 @@ const SetUpYourProfile: React.FC = () => {
                 onChange={handleInputChange}
                 onKeyDown={handleTagKeyDown}
                 placeholder="Keynote Speaker, Workshop"
-                className="w-full px-5 py-4 border border-gray-300 rounded-xl text-base text-gray-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+                className="w-full px-5 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500"
               />
-              <div className="flex flex-wrap gap-3 mt-2">
-                {tags.map((t, index) => (
-                  <span
-                    key={index}
-                    className="px-3 py-2 bg-green-200 text-green-800 rounded-full text-sm font-medium flex items-center gap-2"
-                  >
+              <div className="flex flex-wrap gap-2 mt-2">
+                {tags.map((t, i) => (
+                  <span key={i} className="px-3 py-1 bg-green-200 text-green-800 rounded-full flex items-center gap-2 text-sm">
                     {t}
-                    <button
-                      type="button"
-                      onClick={() => removeTag(t)}
-                      className="text-green-800 hover:text-green-900"
-                    >
-                      ×
-                    </button>
+                    <button type="button" onClick={() => removeTag(t)}>×</button>
                   </span>
                 ))}
               </div>
-            </div>
 
-            {/* Expertise */}
-            <div className="flex flex-col gap-3">
-              <label className="text-base text-gray-900">Expertise </label>
+              <label className="font-medium text-gray-700 mt-4">Expertise</label>
               <input
                 type="text"
                 name="expertise"
                 value={formData.expertise}
                 onChange={handleInputChange}
                 placeholder="AI, ML, NLP"
-                className="w-full px-5 py-4 border border-gray-300 rounded-xl text-base text-gray-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+                className="w-full px-5 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500"
               />
-            </div>
 
-            {/* Socials */}
-            <div className="flex flex-col gap-3">
-              <label className="text-base text-gray-900">Website</label>
-              <input
-                type="url"
-                name="website"
-                value={formData.website}
-                onChange={handleInputChange}
-                placeholder="https://example.com"
-                className="w-full px-5 py-4 border border-gray-300 rounded-xl text-base text-gray-600 focus:outline-none focus:ring-2 focus:ring-red-500"
-              />
-              <label className="text-base text-gray-900">Facebook</label>
-              <input
-                type="url"
-                name="facebook"
-                value={formData.facebook}
-                onChange={handleInputChange}
-                placeholder="https://facebook.com/example"
-                className="w-full px-5 py-4 border border-gray-300 rounded-xl text-base text-gray-600 focus:outline-none focus:ring-2 focus:ring-red-500"
-              />
-              <label className="text-base text-gray-900">LinkedIn</label>
-              <input
-                type="url"
-                name="linkedin"
-                value={formData.linkedin}
-                onChange={handleInputChange}
-                placeholder="https://linkedin.com/in/example"
-                className="w-full px-5 py-4 border border-gray-300 rounded-xl text-base text-gray-600 focus:outline-none focus:ring-2 focus:ring-red-500"
-              />
-            </div>
-
-            {/* Biography */}
-            <div className="flex flex-col gap-3">
-              <label className="text-base text-gray-900">Biography</label>
+              <label className="font-medium text-gray-700 mt-4">Bio</label>
               <textarea
                 name="bio"
                 value={formData.bio}
                 onChange={handleInputChange}
                 placeholder="Describe yourself"
-                rows={4}
-                className="w-full px-5 py-4 border border-gray-300 rounded-xl text-base text-gray-600 focus:outline-none focus:ring-2 focus:ring-red-500 resize-none"
+                rows={6}
+                className="w-full px-5 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 resize-none"
               />
-            </div>
 
-            <button
-              type="submit"
-              className="py-4 bg-red-600 text-white rounded-xl font-medium text-base hover:bg-red-700 transition-colors"
-            >
-              Save & Continue
-            </button>
-          </form>
-        </div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="py-4 bg-red-600 text-white rounded-xl hover:bg-red-700 mt-4"
+              >
+                {loading ? 'Saving...' : 'Save & Finish'}
+              </button>
+            </form>
+          </>
+        )}
       </div>
     </div>
   )
