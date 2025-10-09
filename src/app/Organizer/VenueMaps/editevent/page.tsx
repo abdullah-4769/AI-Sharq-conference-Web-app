@@ -7,6 +7,7 @@ import api from '@/config/api'
 type AddNewVenuePopupProps = {
   isOpen: boolean
   onClose: () => void
+  eventId?: number
 }
 
 type Sponsor = {
@@ -23,16 +24,39 @@ type Exhibitor = {
   picUrl?: string
 }
 
-const AddNewVenuePopup = ({ isOpen, onClose }: AddNewVenuePopupProps) => {
+const AddNewVenuePopup = ({ isOpen, onClose, eventId }: AddNewVenuePopupProps) => {
   const [sponsors, setSponsors] = useState<Sponsor[]>([])
   const [exhibitors, setExhibitors] = useState<Exhibitor[]>([])
-  const [selectedSponsor, setSelectedSponsor] = useState<Sponsor | null>(null)
-  const [selectedExhibitor, setSelectedExhibitor] = useState<Exhibitor | null>(null)
+  const [selectedSponsors, setSelectedSponsors] = useState<number[]>([])
+  const [selectedExhibitors, setSelectedExhibitors] = useState<number[]>([])
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [location, setLocation] = useState('')
   const [googleMapLink, setGoogleMapLink] = useState('')
   const [mapStatus, setMapStatus] = useState(true)
+
+  useEffect(() => {
+    if (isOpen && eventId) {
+      api.get(`/event/${eventId}`)
+        .then(res => {
+          const data = res.data
+          setTitle(data.title || '')
+          setDescription(data.description || '')
+          setLocation(data.location || '')
+          setGoogleMapLink(data.googleMapLink || '')
+          setMapStatus(data.mapstatus)
+
+          if (data.sponsors) {
+            setSelectedSponsors(data.sponsors.map((s: any) => s.id))
+          }
+
+          if (data.exhibitors) {
+            setSelectedExhibitors(data.exhibitors.map((e: any) => e.id))
+          }
+        })
+        .catch(err => console.error('Error loading event data', err))
+    }
+  }, [isOpen, eventId])
 
   useEffect(() => {
     if (!isOpen) return
@@ -48,8 +72,20 @@ const AddNewVenuePopup = ({ isOpen, onClose }: AddNewVenuePopupProps) => {
 
   if (!isOpen) return null
 
+  const handleSponsorSelect = (id: number) => {
+    setSelectedSponsors(prev =>
+      prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id]
+    )
+  }
+
+  const handleExhibitorSelect = (id: number) => {
+    setSelectedExhibitors(prev =>
+      prev.includes(id) ? prev.filter(e => e !== id) : [...prev, id]
+    )
+  }
+
   const handleSubmit = async () => {
-    if (!title || !selectedSponsor || !selectedExhibitor || !googleMapLink || !location) {
+    if (!title || !location || !googleMapLink) {
       alert('Please fill all required fields')
       return
     }
@@ -60,19 +96,18 @@ const AddNewVenuePopup = ({ isOpen, onClose }: AddNewVenuePopupProps) => {
       location,
       googleMapLink,
       mapstatus: mapStatus,
-      sponsors: [{ id: selectedSponsor.id }],
-      exhibitors: [{ id: selectedExhibitor.id }],
-      startTime: new Date().toISOString(),
-      endTime: new Date(new Date().getTime() + 2 * 60 * 60 * 1000).toISOString()
+      sponsors: selectedSponsors.map(id => ({ id })),
+      exhibitors: selectedExhibitors.map(id => ({ id }))
     }
 
     try {
-      const res = await api.post('/event', payload)
-      console.log('Event created', res.data)
+      const res = await api.patch(`/event/${eventId}`, payload)
+      console.log('Event updated successfully:', res.data)
+      alert('Event updated successfully')
       onClose()
     } catch (err) {
-      console.error(err)
-      alert('Failed to create event')
+      console.error('Failed to update event', err)
+      alert('Failed to update event')
     }
   }
 
@@ -107,41 +142,35 @@ const AddNewVenuePopup = ({ isOpen, onClose }: AddNewVenuePopupProps) => {
             </div>
 
             <div>
-              <label className="block text-[16px] text-[#262626] mb-2">Assign Sponsor*</label>
-              <select
-                className="w-full border border-[#DEDEDE] rounded-lg px-4 py-3 text-[#616161] outline-none cursor-pointer"
-                value={selectedSponsor?.id || ''}
-                onChange={e => {
-                  const sponsor = sponsors.find(s => s.id === parseInt(e.target.value))
-                  setSelectedSponsor(sponsor || null)
-                }}
-              >
-                <option value="">Select a sponsor</option>
+              <label className="block text-[16px] text-[#262626] mb-2">Assign Sponsors*</label>
+              <div className="flex flex-col gap-2">
                 {sponsors.map(s => (
-                  <option key={s.id} value={s.id}>
+                  <label key={s.id} className="flex items-center gap-2 text-[#616161]">
+                    <input
+                      type="checkbox"
+                      checked={selectedSponsors.includes(s.id)}
+                      onChange={() => handleSponsorSelect(s.id)}
+                    />
                     {s.name} ({s.email})
-                  </option>
+                  </label>
                 ))}
-              </select>
+              </div>
             </div>
 
             <div>
-              <label className="block text-[16px] text-[#262626] mb-2">Assign Exhibitor*</label>
-              <select
-                className="w-full border border-[#DEDEDE] rounded-lg px-4 py-3 text-[#616161] outline-none cursor-pointer"
-                value={selectedExhibitor?.id || ''}
-                onChange={e => {
-                  const exhibitor = exhibitors.find(ex => ex.id === parseInt(e.target.value))
-                  setSelectedExhibitor(exhibitor || null)
-                }}
-              >
-                <option value="">Select an exhibitor</option>
+              <label className="block text-[16px] text-[#262626] mb-2">Assign Exhibitors*</label>
+              <div className="flex flex-col gap-2">
                 {exhibitors.map(ex => (
-                  <option key={ex.id} value={ex.id}>
+                  <label key={ex.id} className="flex items-center gap-2 text-[#616161]">
+                    <input
+                      type="checkbox"
+                      checked={selectedExhibitors.includes(ex.id)}
+                      onChange={() => handleExhibitorSelect(ex.id)}
+                    />
                     {ex.name} ({ex.email})
-                  </option>
+                  </label>
                 ))}
-              </select>
+              </div>
             </div>
 
             <div>
@@ -160,7 +189,7 @@ const AddNewVenuePopup = ({ isOpen, onClose }: AddNewVenuePopupProps) => {
               <textarea
                 value={description}
                 onChange={e => setDescription(e.target.value)}
-                placeholder="Describe your topic in detail"
+                placeholder="Describe your topic"
                 className="w-full h-[115px] border border-[#DEDEDE] rounded-lg px-4 py-3 text-[#616161] resize-none outline-none"
               />
             </div>
@@ -170,7 +199,7 @@ const AddNewVenuePopup = ({ isOpen, onClose }: AddNewVenuePopupProps) => {
               <div className="w-full h-[115px] border border-dashed border-[#DEDEDE] rounded-lg flex flex-col items-center justify-center text-[#616161] text-center px-4 cursor-pointer">
                 <FaUpload className="text-[#9B2033] text-xl mb-2" />
                 <span>Upload Media</span>
-                <p className="text-[12px]">Drag and drop your map file here, or click to browse</p>
+                <p className="text-[12px]">Drag and drop your map file or click to browse</p>
               </div>
             </div>
 
@@ -200,7 +229,7 @@ const AddNewVenuePopup = ({ isOpen, onClose }: AddNewVenuePopupProps) => {
               onClick={handleSubmit}
               className="w-full h-[54px] bg-[#9B2033] text-white text-[16px] font-medium rounded-lg"
             >
-              Add
+              Update
             </button>
           </div>
         </div>

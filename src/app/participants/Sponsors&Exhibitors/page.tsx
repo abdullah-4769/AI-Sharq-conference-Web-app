@@ -34,7 +34,7 @@ const SponsorsExhibitorsPage: React.FC = () => {
         const res = await api.get(`/event/eventsrelatedsponsers/${eventId}`)
         const sponsors = res.data.sponsors.map((s: SponsorExhibitor) => ({
           ...s,
-          category: s.category || 'Silver Sponsor'
+          category: s.category?.toLowerCase() === 'gold' ? 'Gold Sponsor' : 'Silver Sponsor'
         }))
         setData({ sponsors, exhibitors: res.data.exhibitors })
       } catch (err) {
@@ -58,7 +58,6 @@ const SponsorsExhibitorsPage: React.FC = () => {
 
   return (
     <div className="p-2 max-w-7xl mx-auto">
-      {/* Header */}
       <div className="flex flex-col items-start justify-between mb-8">
         <div className="flex items-center gap-4 mb-[50px]">
           <Link href="/participants/Home">
@@ -66,8 +65,6 @@ const SponsorsExhibitorsPage: React.FC = () => {
           </Link>
           <h1 className="text-3xl font-bold text-black">Sponsors & Exhibitors</h1>
         </div>
-
-        {/* Search and Filter */}
         <div className="flex items-center gap-4">
           <div className="flex items-center border border-gray-300 rounded-lg px-4 py-2 gap-2 w-80">
             <FaSearch className="text-red-600" />
@@ -79,7 +76,6 @@ const SponsorsExhibitorsPage: React.FC = () => {
               className="outline-none text-black"
             />
           </div>
-
           <button
             onClick={() => setSelectedCategory('All')}
             className={`px-6 py-2 rounded-lg font-medium ${
@@ -122,7 +118,6 @@ const SponsorsExhibitorsPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Gold Sponsors */}
       {goldSponsors.length > 0 && (
         <div className="mb-8">
           <div className="flex items-center gap-4 mb-4">
@@ -166,7 +161,6 @@ const SponsorsExhibitorsPage: React.FC = () => {
         </div>
       )}
 
-      {/* Silver Sponsors */}
       {silverSponsors.length > 0 && (
         <div className="mb-8">
           <div className="flex items-center gap-4 mb-4">
@@ -210,7 +204,6 @@ const SponsorsExhibitorsPage: React.FC = () => {
         </div>
       )}
 
-      {/* Exhibitors */}
       {exhibitors.length > 0 && (
         <div className="mb-8">
           <div className="flex items-center gap-4 mb-4">

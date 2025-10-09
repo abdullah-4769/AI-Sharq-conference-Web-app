@@ -1,25 +1,17 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { FaArrowLeft, FaCalendar, FaClock, FaPlay, FaPlus } from 'react-icons/fa'
+import { FaArrowLeft, FaCalendar, FaClock, FaPlay } from 'react-icons/fa'
 import { FiSearch } from 'react-icons/fi'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import AddNewVenuePopup from '../../components/AddNewVenuePopup'
+import { useDispatch } from 'react-redux'
+import { useRouter } from 'next/navigation'
+
 import api from '@/config/api'
+import { setEventId } from '@/lib/store/features/event/eventSlice'
 
-// load the live location component on the client only
-const LiveLoaction3 = dynamic(() => import('@/app/components/LiveLoaction3'), {
-  ssr: false,
-})
-
-// load the edit event component client side and tell TypeScript it accepts eventId
-// this avoids the mismatch where the imported component had props typed as AddNewVenuePopupProps
-const EditEvent = dynamic(() => import('./editevent/page'), { ssr: false }) as unknown as React.ComponentType<{
-  isOpen: boolean
-  onClose: () => void
-  eventId: number
-}>
+const LiveLoaction3 = dynamic(() => import('@/app/components/LiveLoaction3'), { ssr: false })
 
 type EventType = {
   id: number
@@ -37,24 +29,17 @@ type DataType = {
 }
 
 const VenueMaps: React.FC = () => {
-  // popup states
-  const [isPopupOpen, setIsPopupOpen] = useState(false)
-  const [editPopup, setEditPopup] = useState(false)
-  const [selectedEventId, setSelectedEventId] = useState<number | null>(null)
-
-  // loading states
+  const dispatch = useDispatch()
+  const router = useRouter()
   const [loading, setLoading] = useState(true)
-  const [deleteLoadingId, setDeleteLoadingId] = useState<number | null>(null)
-
-  // data state
   const [data, setData] = useState<DataType>({
     totalSessions: 0,
     liveSessions: 0,
     scheduledSessions: 0,
     events: [],
   })
+  const [eventIdInput, setEventIdInput] = useState<number | null>(null)
 
-  // fetch summary and events on mount
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -69,35 +54,14 @@ const VenueMaps: React.FC = () => {
     fetchData()
   }, [])
 
-  // delete an event and adjust totals locally
-  const handleDelete = async (eventId: number) => {
-    const eventToDelete = data.events.find((e) => e.id === eventId)
-    if (!eventToDelete) return
-
-    try {
-      setDeleteLoadingId(eventId)
-      await api.delete(`/event/${eventId}`)
-      const updatedEvents = data.events.filter((e) => e.id !== eventId)
-      setData({
-        ...data,
-        events: updatedEvents,
-        totalSessions: data.totalSessions - eventToDelete.totalSessions,
-      })
-    } catch (err) {
-      console.error(err)
-    } finally {
-      setDeleteLoadingId(null)
-    }
-  }
-
-  // open edit popup for an event
-  const handleEdit = (eventId: number) => {
-    setSelectedEventId(eventId)
-    setEditPopup(true)
-  }
-
   if (loading) {
     return <div className="flex justify-center items-center h-[500px]">Loading...</div>
+  }
+
+  const handleCardClick = (eId: number) => {
+    dispatch(setEventId(eId))
+    setEventIdInput(eId)
+    router.push('/participants/Home')
   }
 
   return (
@@ -153,23 +117,14 @@ const VenueMaps: React.FC = () => {
         <div className="flex flex-col justify-center items-center p-4 gap-2.5 w-[1280px] h-11 border border-[#E8E8E8] rounded-2xl">
           <div className="flex flex-row items-center p-0 gap-3 w-[1240px] h-6">
             <FiSearch className="w-6 h-6 text-red-500" />
-            <span className="font-normal text-base leading-[140%] text-[#706f6f]">Search Venue</span>
+            <input
+              type="number"
+              value={eventIdInput ?? ''}
+              onChange={(e) => setEventIdInput(Number(e.target.value))}
+              placeholder="Search Venue by ID"
+              className="w-full border-none outline-none text-[#706f6f] text-base"
+            />
           </div>
-        </div>
-      </div>
-
-      <div className="flex flex-row items-center gap-8 w-[1280px] h-11">
-        <div className="flex flex-row items-center gap-[1000px] w-[1282px] h-11">
-          <div
-            className="flex flex-col justify-center items-center p-4 w-[205px] h-11 bg-[#9B2033] border border-[#9B2033] rounded-2xl cursor-pointer"
-            onClick={() => setIsPopupOpen(true)}
-          >
-            <div className="flex flex-row justify-center items-start gap-3">
-              <FaPlus className="w-3 h-3 text-white" />
-              <span className="font-normal text-sm text-white">Add New Venue</span>
-            </div>
-          </div>
-          <span className="font-medium text-base leading-6 text-[#282828]">View All</span>
         </div>
       </div>
 
@@ -177,7 +132,8 @@ const VenueMaps: React.FC = () => {
         {data.events.map((event) => (
           <div
             key={event.id}
-            className="flex flex-row justify-between p-6 gap-6 w-[1280px] h-[213px] bg-white border border-[#D4D4D4] shadow rounded-3xl"
+            onClick={() => handleCardClick(event.id)}
+            className="flex flex-row justify-between p-6 gap-6 w-[1280px] h-[213px] bg-white border border-[#D4D4D4] shadow rounded-3xl cursor-pointer hover:bg-gray-50"
           >
             <div className="flex flex-row items-center gap-6">
               <div className="w-24 h-24 bg-gradient-to-r from-green-500 to-green-400 rounded-full flex items-center justify-center">
@@ -188,46 +144,14 @@ const VenueMaps: React.FC = () => {
                 <span className="font-normal text-sm text-[#424242]">{event.description}</span>
               </div>
             </div>
-
             <div className="flex flex-col justify-between items-end">
               <span className="bg-[#F0F0F0] px-4 py-1 rounded-full font-semibold text-lg text-[#282828]">
                 {event.totalSessions} Sessions
               </span>
-              <div className="flex flex-row gap-3">
-                <button
-                  className="flex justify-center items-center px-8 py-1 bg-[#9B2033] border border-[#9B2033] rounded-2xl text-white"
-                  onClick={() => handleDelete(event.id)}
-                  disabled={deleteLoadingId === event.id}
-                >
-                  {deleteLoadingId === event.id ? 'Deleting...' : 'Delete'}
-                </button>
-
-                <button
-                  className="flex justify-center items-center px-8 py-1 border border-[#8C8C8C] rounded-2xl"
-                  onClick={() => handleEdit(event.id)}
-                >
-                  <span className="font-bold text-sm text-[#282828]">Edit</span>
-                </button>
-
-                <Link
-                  href={event.googleMapLink}
-                  className="flex justify-center items-center px-8 py-1 border border-[#8C8C8C] rounded-2xl"
-                >
-                  <span className="font-bold text-sm text-[#282828]">View</span>
-                </Link>
-              </div>
             </div>
           </div>
         ))}
       </div>
-
-      {/* Add new venue popup, no eventId passed here */}
-      <AddNewVenuePopup isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)} />
-
-      {/* Edit event popup, eventId passed only to the edit component */}
-      {editPopup && selectedEventId && (
-        <EditEvent isOpen={editPopup} onClose={() => setEditPopup(false)} eventId={selectedEventId} />
-      )}
     </div>
   )
 }

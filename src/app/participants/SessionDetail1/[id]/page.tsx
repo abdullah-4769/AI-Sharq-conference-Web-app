@@ -14,7 +14,6 @@ interface PageProps {
 }
 
 export default function SessionPage({ params }: PageProps) {
-  // unwrap params (because in Next.js 15 params is a Promise)
   const { id } = use(params)
 
   const [session, setSession] = useState<any>(null)
@@ -38,32 +37,31 @@ export default function SessionPage({ params }: PageProps) {
     fetchData()
   }, [id])
 
-const handleBookmark = async () => {
-  try {
-    if (!userId || !eventId) {
-      console.error("Missing userId or eventId from redux")
-      return
-    }
+  const handleBookmark = async () => {
+    try {
+      if (!userId || !eventId) {
+        console.error("Missing userId or eventId from redux")
+        return
+      }
 
-    const res = await api.post("/participants/agenda", {
-      userId: Number(userId),
-      sessionId: Number(id),
-      eventId: Number(eventId),
-    })
+      const res = await api.post("/participants/agenda", {
+        userId: Number(userId),
+        sessionId: Number(id),
+        eventId: Number(eventId),
+      })
 
-    console.log("Bookmark success:", res.data)
-    setBookmarked(true)
-
-  } catch (err: any) {
-    if (err.response && err.response.status === 400) {
-      console.log("Already in agenda, marking as bookmarked")
+      console.log("Bookmark success:", res.data)
       setBookmarked(true)
-    } else {
-      console.error("Bookmark error:", err)
+
+    } catch (err: any) {
+      if (err.response && err.response.status === 400) {
+        console.log("Already in agenda, marking as bookmarked")
+        setBookmarked(true)
+      } else {
+        console.error("Bookmark error:", err)
+      }
     }
   }
-}
-
 
   if (loading) return <p>Loading...</p>
   if (!session) return <p>No session found</p>
@@ -163,6 +161,29 @@ const handleBookmark = async () => {
           </div>
         </section>
       ))}
+
+      {/* New card showing tags, registration, and event title */}
+      <div className="max-w-7xl mx-auto px-6 mb-6">
+        <div className="bg-white border border-gray-200 rounded-xl p-4">
+        
+          <div className="flex flex-wrap gap-2 mb-2">
+            {session.tags?.map((tag: string, idx: number) => (
+              <span
+                key={idx}
+                className="bg-purple-100 text-purple-700 text-xs font-semibold px-2 py-1 rounded-xl"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+      
+       
+          <p className="text-xs text-gray-600 my-4">
+          {session.registrationRequired ? "Registration Required" : "No Registration Required"}
+          </p>
+         <h2 className="text-sm font-semibold text-black mb-2">{session.event?.title}</h2>
+        </div>
+      </div>
 
       <RelatedSessionsGrid />
 

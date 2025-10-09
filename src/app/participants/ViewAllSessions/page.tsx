@@ -1,95 +1,103 @@
-"use client";
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import { FaSearch, FaCalendarAlt, FaArrowLeft, FaArrowRight, FaMapMarkerAlt } from "react-icons/fa";
-import DiscoverMoreSessions from "../../components/DiscoverMoreSessions";
-import Link from "next/link";
-import { useSelector } from "react-redux";
-import { RootState } from "@/lib/store/store";
-import api from "@/config/api";
+"use client"
+import Image from "next/image"
+import { useEffect, useState } from "react"
+import { 
+  FaSearch, 
+  FaCalendarAlt, 
+  FaArrowLeft, 
+  FaArrowRight, 
+  FaMapMarkerAlt, 
+  FaLock, 
+  FaQrcode 
+} from "react-icons/fa"
+import DiscoverMoreSessions from "../../components/DiscoverMoreSessions"
+import Link from "next/link"
+import { useSelector } from "react-redux"
+import { RootState } from "@/lib/store/store"
+import api from "@/config/api"
 
-const filters = ["Daily", "Weekly", "10 Days", "90 Days", "All Time"];
+const filters = ["Daily", "Weekly", "10 Days", "90 Days", "All Time"]
 
 // parse session duration
 const parseDuration = (duration: string) => {
-  if (!duration) return { startTime: null, endTime: null };
-  const parts = duration.split(" - ").map((p) => p.trim());
-  const start = new Date(parts[0]);
-  const end = new Date(parts[1]);
-  return { startTime: isNaN(start.getTime()) ? null : start, endTime: isNaN(end.getTime()) ? null : end };
-};
+  if (!duration) return { startTime: null, endTime: null }
+  const parts = duration.split(" - ").map((p) => p.trim())
+  const start = new Date(parts[0])
+  const end = new Date(parts[1])
+  return { startTime: isNaN(start.getTime()) ? null : start, endTime: isNaN(end.getTime()) ? null : end }
+}
 
 export default function MyAgendaPage() {
-  const eventId = useSelector((state: RootState) => state.event.id);
-  const [activeFilter, setActiveFilter] = useState("All Time");
-  const [searchText, setSearchText] = useState("");
-  const [sessions, setSessions] = useState<any[]>([]);
-  const [filteredSessions, setFilteredSessions] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [emptyMessage, setEmptyMessage] = useState("");
+  const eventId = useSelector((state: RootState) => state.event.id)
+  const [activeFilter, setActiveFilter] = useState("All Time")
+  const [searchText, setSearchText] = useState("")
+  const [sessions, setSessions] = useState<any[]>([])
+  const [filteredSessions, setFilteredSessions] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [emptyMessage, setEmptyMessage] = useState("")
 
   // fetch all sessions
   const fetchSessions = async () => {
     if (!eventId) {
-      setEmptyMessage("Event not selected");
-      setLoading(false);
-      return;
+      setEmptyMessage("Event not selected")
+      setLoading(false)
+      return
     }
     try {
-      const res = await api.get(`/event/event-sessions/${eventId}`);
-      const data = res.data;
+      const res = await api.get(`/event/event-sessions/${eventId}`)
+      const data = res.data
 
-      const all = [...(data.liveSessions || []), ...(data.allSessions || [])];
-      const transformed = all.map((s: any) => ({ ...s, ...parseDuration(s.duration || "") }));
+      const all = [...(data.liveSessions || []), ...(data.allSessions || [])]
+      const transformed = all.map((s: any) => ({ ...s, ...parseDuration(s.duration || "") }))
 
-      setSessions(transformed);
-      setFilteredSessions(transformed);
-      if (transformed.length === 0) setEmptyMessage("No sessions available");
+      setSessions(transformed)
+      setFilteredSessions(transformed)
+      if (transformed.length === 0) setEmptyMessage("No sessions available")
     } catch {
-      setEmptyMessage("Failed to load sessions");
-      setSessions([]);
-      setFilteredSessions([]);
+      setEmptyMessage("Failed to load sessions")
+      setSessions([])
+      setFilteredSessions([])
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    fetchSessions();
-  }, [eventId]);
+    fetchSessions()
+  }, [eventId])
 
   // filter sessions
   useEffect(() => {
-    let filtered = [...sessions];
-    const now = new Date();
+    let filtered = [...sessions]
+    const now = new Date()
 
     if (activeFilter === "Daily") {
-      filtered = filtered.filter(s => s.startTime && s.startTime.toDateString() === now.toDateString());
+      filtered = filtered.filter(s => s.startTime && s.startTime.toDateString() === now.toDateString())
     } else if (activeFilter === "Weekly") {
-      const weekStart = new Date(now);
-      weekStart.setDate(now.getDate() - now.getDay());
-      const weekEnd = new Date(weekStart);
-      weekEnd.setDate(weekStart.getDate() + 6);
-      filtered = filtered.filter(s => s.startTime && s.startTime >= weekStart && s.startTime <= weekEnd);
+      const weekStart = new Date(now)
+      weekStart.setDate(now.getDate() - now.getDay())
+      const weekEnd = new Date(weekStart)
+      weekEnd.setDate(weekStart.getDate() + 6)
+      filtered = filtered.filter(s => s.startTime && s.startTime >= weekStart && s.startTime <= weekEnd)
     } else if (activeFilter === "10 Days") {
-      const start = new Date();
-      const end = new Date();
-      end.setDate(start.getDate() + 10);
-      filtered = filtered.filter(s => s.startTime && s.startTime >= start && s.startTime <= end);
+      const start = new Date()
+      const end = new Date()
+      end.setDate(start.getDate() + 10)
+      filtered = filtered.filter(s => s.startTime && s.startTime >= start && s.startTime <= end)
     } else if (activeFilter === "90 Days") {
-      const start = new Date();
-      const end = new Date();
-      end.setDate(start.getDate() + 90);
-      filtered = filtered.filter(s => s.startTime && s.startTime >= start && s.startTime <= end);
+      const start = new Date()
+      const end = new Date()
+      end.setDate(start.getDate() + 90)
+      filtered = filtered.filter(s => s.startTime && s.startTime >= start && s.startTime <= end)
     }
 
     if (searchText) {
-      filtered = filtered.filter(s => s.sessionTitle.toLowerCase().includes(searchText.toLowerCase()));
+      filtered = filtered.filter(s => s.sessionTitle.toLowerCase().includes(searchText.toLowerCase()))
     }
 
-    setFilteredSessions(filtered);
-    if (filtered.length === 0) setEmptyMessage("No sessions found");
-  }, [activeFilter, searchText, sessions]);
+    setFilteredSessions(filtered)
+    if (filtered.length === 0) setEmptyMessage("No sessions found")
+  }, [activeFilter, searchText, sessions])
 
   return (
     <div className="p-6 md:p-10 min-h-screen font-sans">
@@ -120,8 +128,8 @@ export default function MyAgendaPage() {
               key={f}
               onClick={() => setActiveFilter(f)}
               className={`px-4 py-1 rounded-xl text-sm font-medium cursor-pointer ${activeFilter === f
-                  ? "bg-[#86002B] text-white"
-                  : "bg-white border border-gray-300 text-black hover:bg-gray-100"
+                ? "bg-[#86002B] text-white"
+                : "bg-white border border-gray-300 text-black hover:bg-gray-100"
                 }`}
             >
               {f}
@@ -148,12 +156,24 @@ export default function MyAgendaPage() {
         <div className="flex flex-col gap-6">
           {filteredSessions.map((s, i) => (
             <div
-              key={`${s?.sessionId ?? "session"}-${i}`} // unique key using sessionId + index
+              key={`${s?.sessionId ?? "session"}-${i}`}
               className={`${i % 2 === 0 ? "bg-red-800 text-gray-200" : "bg-white text-red-800"
                 } p-6 md:p-10 rounded-lg flex flex-col md:flex-row justify-between items-start md:items-center border border-red-800`}
             >
               <div className="flex gap-1 flex-col">
-                <p className="mt-2 text-lg md:text-xl font-bold">{s.sessionTitle || "No title"}</p>
+                <div className="flex items-center gap-2">
+                  <p className="mt-2 text-lg md:text-xl font-bold">
+                    {s.sessionTitle || "No title"}
+                  </p>
+
+                  {/* Registration condition */}
+                  {s.registrationRequired ? (
+                    <FaLock title="Registration Required" className="text-sm text-yellow-500 mt-2" />
+                  ) : (
+                    <FaQrcode title="No Registration Needed" className="text-sm text-green-500" />
+                  )}
+                </div>
+
                 <p className="text-xs mt-1">{s.event?.eventDescription || "No description"}</p>
 
                 <div className="flex items-center text-xs gap-2 mt-1">
@@ -173,17 +193,16 @@ export default function MyAgendaPage() {
 
               <button className="mt-4 md:mt-0 text-xl">
                 <Link href={s?.sessionId ? `/participants/SessionDetail1/${s.sessionId}` : "#"}>
-                  <FaArrowRight className={`${i % 2 === 0 ? "text-gray-200" : "text-red-800"}`} /> {/* set arrow color */}
+                  <FaArrowRight className={`${i % 2 === 0 ? "text-gray-200" : "text-red-800"}`} />
                 </Link>
               </button>
             </div>
           ))}
-
         </div>
       )}
 
       <DiscoverMoreSessions />
       <Image src="/images/line.png" alt="Line" width={1729} height={127} className="absolute" />
     </div>
-  );
+  )
 }

@@ -81,7 +81,7 @@ export default function Page() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await api.get("http://localhost:5000/event/allsponsors/exhibitors")
+        const res = await api.get("/event/allsponsors/exhibitors")
         const sponsors = res.data.sponsors.map((s: any) => {
           const category = s.category?.toLowerCase()
           let normalized = "silver"
@@ -250,7 +250,7 @@ export default function Page() {
                           Visit Booth
                         </button>
                       </Link>
-                      <Link href={`/participants/ExhibitorDetails/${ex.id}`}>
+                      <Link href={`/participants/ExhibitorsDetailsScreen/${ex.id}`}>
                         <button className="border border-gray-300 text-black px-6 py-2 rounded-lg hover:bg-gray-100 transition">
                           Learn More
                         </button>
