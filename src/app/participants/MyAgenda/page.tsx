@@ -1,40 +1,41 @@
-"use client";
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import { FaSearch, FaCalendarAlt, FaArrowLeft } from "react-icons/fa";
-import DiscoverMoreSessions from "../../components/DiscoverMoreSessions";
-import Link from "next/link";
-import { useSelector } from "react-redux";
-import { RootState } from "@/lib/store/store";
-import api from "@/config/api";
+"use client"
+import Image from "next/image"
+import { useEffect, useState } from "react"
+import { FaSearch, FaCalendarAlt, FaArrowLeft } from "react-icons/fa"
+import DiscoverMoreSessions from "../../components/DiscoverMoreSessions"
+import Link from "next/link"
+import { useSelector } from "react-redux"
+import { RootState } from "@/lib/store/store"
+import api from "@/config/api"
 
-const filtersList = ["Daily", "Weekly", "10 Days", "90 Days", "All Time"];
+const filtersList = ["Daily", "Weekly", "10 Days", "90 Days", "All Time"]
 
+// Helper function to parse session duration into start and end times
 const parseDuration = (duration: string) => {
-  if (!duration) return { startTime: null, endTime: null, minutes: 0 };
-  const parts = duration.split(" - ").map((p) => p.trim());
-  const start = new Date(parts[0]);
-  const end = new Date(parts[1]);
+  if (!duration) return { startTime: null, endTime: null, minutes: 0 }
+  const parts = duration.split(" - ").map((p) => p.trim())
+  const start = new Date(parts[0])
+  const end = new Date(parts[1])
   const minutes =
     isNaN(start.getTime()) || isNaN(end.getTime())
       ? 0
-      : Math.round((end.getTime() - start.getTime()) / 60000);
+      : Math.round((end.getTime() - start.getTime()) / 60000)
   return {
     startTime: isNaN(start.getTime()) ? null : start,
     endTime: isNaN(end.getTime()) ? null : end,
     minutes,
-  };
-};
+  }
+}
 
 export default function MyAgendaPage() {
-  const eventId = useSelector((state: RootState) => state.event.id);
+  const eventId = useSelector((state: RootState) => state.event.id)
   const userId = useSelector((state: RootState) => state.user.userId)
-  const [activeFilter, setActiveFilter] = useState("All Time");
-  const [searchText, setSearchText] = useState("");
-  const [allSessions, setAllSessions] = useState<any[]>([]);
-  const [filteredSessions, setFilteredSessions] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [emptyMessage, setEmptyMessage] = useState("");
+  const [activeFilter, setActiveFilter] = useState("All Time")
+  const [searchText, setSearchText] = useState("")
+  const [allSessions, setAllSessions] = useState<any[]>([])
+  const [filteredSessions, setFilteredSessions] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [emptyMessage, setEmptyMessage] = useState("")
 
 const fetchSessions = async () => {
   if (!eventId || !userId) {
@@ -47,13 +48,16 @@ const fetchSessions = async () => {
       `/participants/bookmarked-sessions/${userId}/${eventId}`
     )
 
-    // merge both arrays
-    const data = [
-      ...(res.data.liveSessions || []),
-      ...(res.data.allSessions || []),
-    ]
+    const liveSessions = res.data.liveSessions || []
+    const allSessions = res.data.allSessions || []
 
-    // parse duration into start, end, and minutes
+    const filteredAllSessions = allSessions.filter(
+      (session: any) =>
+        !liveSessions.some((live: any) => live.sessionId === session.sessionId)
+    )
+
+    const data = [...liveSessions, ...filteredAllSessions]
+
     const sessions = data.map((s: any) => {
       const { startTime, endTime, minutes } = parseDuration(s.duration || "")
       return { ...s, startTime, endTime, minutes }
@@ -74,53 +78,50 @@ const fetchSessions = async () => {
 
 
   useEffect(() => {
-    fetchSessions();
-  }, [eventId]);
+    fetchSessions()
+  }, [eventId])
 
   useEffect(() => {
-    let filtered = [...allSessions];
-    const now = new Date();
+    let filtered = [...allSessions]
+    const now = new Date()
 
     if (activeFilter === "Daily") {
       filtered = filtered.filter(
         (s) => s.startTime && s.startTime.toDateString() === now.toDateString()
-      );
+      )
     } else if (activeFilter === "Weekly") {
-      const weekStart = new Date(now);
-      weekStart.setDate(now.getDate() - now.getDay());
-      const weekEnd = new Date(weekStart);
-      weekEnd.setDate(weekStart.getDate() + 6);
+      const weekStart = new Date(now)
+      weekStart.setDate(now.getDate() - now.getDay())
+      const weekEnd = new Date(weekStart)
+      weekEnd.setDate(weekStart.getDate() + 6)
       filtered = filtered.filter(
-        (s) =>
-          s.startTime &&
-          s.startTime >= weekStart &&
-          s.startTime <= weekEnd
-      );
+        (s) => s.startTime && s.startTime >= weekStart && s.startTime <= weekEnd
+      )
     } else if (activeFilter === "10 Days") {
-      const start = new Date();
-      const end = new Date();
-      end.setDate(start.getDate() + 10);
+      const start = new Date()
+      const end = new Date()
+      end.setDate(start.getDate() + 10)
       filtered = filtered.filter(
         (s) => s.startTime && s.startTime >= start && s.startTime <= end
-      );
+      )
     } else if (activeFilter === "90 Days") {
-      const start = new Date();
-      const end = new Date();
-      end.setDate(start.getDate() + 90);
+      const start = new Date()
+      const end = new Date()
+      end.setDate(start.getDate() + 90)
       filtered = filtered.filter(
         (s) => s.startTime && s.startTime >= start && s.startTime <= end
-      );
+      )
     }
 
     if (searchText) {
       filtered = filtered.filter((s) =>
         s.sessionTitle.toLowerCase().includes(searchText.toLowerCase())
-      );
+      )
     }
 
-    setFilteredSessions(filtered);
-    if (filtered.length === 0) setEmptyMessage("No sessions found");
-  }, [activeFilter, searchText, allSessions]);
+    setFilteredSessions(filtered)
+    if (filtered.length === 0) setEmptyMessage("No sessions found")
+  }, [activeFilter, searchText, allSessions])
 
   return (
     <>
@@ -178,7 +179,7 @@ const fetchSessions = async () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {filteredSessions.map((session, index) => (
               <div
-                key={session?.sessionId ?? index}
+                key={`${session?.sessionId || "session"}-${index}`}
                 className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 flex flex-col justify-between h-[380px]"
               >
                 <div className="flex items-center justify-between">
@@ -205,15 +206,13 @@ const fetchSessions = async () => {
                 <div className="flex items-center text-xs text-gray-600 space-x-2">
                   <img
                     src={
-                      session.speakers[0]?.pic
+                      session.speakers?.[0]?.pic
                         ? `https://your-image-base-url/${session.speakers[0].pic}`
                         : "/images/img (9).png"
                     }
                     className="w-6 h-6 rounded-full object-cover"
                   />
-                  <span>
-                    {session.speakers[0]?.fullName ?? "Unknown"}
-                  </span>
+                  <span>{session.speakers?.[0]?.fullName ?? "Unknown"}</span>
                 </div>
 
                 <hr className="border-t border-gray-300" />
@@ -279,5 +278,5 @@ const fetchSessions = async () => {
         className="absolute"
       />
     </>
-  );
+  )
 }

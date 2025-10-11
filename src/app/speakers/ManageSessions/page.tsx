@@ -7,7 +7,7 @@ import Link from "next/link"
 import { useSelector } from "react-redux"
 import { RootState } from "@/lib/store/store"
 import api from "@/config/api"
-
+import Navbar from "../../components/Navbar";
 const filters = ["Daily", "Weekly", "10 Days", "90 Days", "All Time"]
 
 export default function SpeakerSessions() {
@@ -68,7 +68,11 @@ export default function SpeakerSessions() {
   }
 
   return (
+   <>
+   
+       <Navbar/>
     <div className="p-6 md:p-10 min-h-screen font-sans">
+  
       {/* Header */}
       <div className="flex flex-col items-start p-6 gap-6 w-full max-w-7xl h-24 bg-[#FFEEEE] border border-[#D4D4D4] shadow-sm rounded-3xl mb-6">
         <div className="flex flex-row items-center gap-3 w-full">
@@ -241,5 +245,6 @@ export default function SpeakerSessions() {
 
       <Image src="/images/line.png" alt="Line" width={1729} height={127} className="absolute" />
     </div>
+   </>
   )
 }

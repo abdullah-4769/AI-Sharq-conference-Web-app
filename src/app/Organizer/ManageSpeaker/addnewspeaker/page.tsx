@@ -15,7 +15,7 @@ const SetUpYourProfile: React.FC = () => {
     name: '',
     email: '',
     password: '',
-    role: 'speakers',
+    role: 'speaker',
   })
 
   const [formData, setFormData] = useState({
