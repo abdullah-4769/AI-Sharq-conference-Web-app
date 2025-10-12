@@ -16,7 +16,7 @@ import {
 import TodaysSchedule from "@/app/components/TodaysSchedule";
 import Link from "next/link";
 import api from "@/config/api";
-
+import Navbar from "../../components/Navbar";
 const filters = ["Daily", "Weekly", "10 Days", "90 Days", "All Time"];
 
 const quickAccessItems = [
@@ -84,7 +84,7 @@ export default function Dashboard() {
 
   return (
     <div className="p-2 space-y-8 bg-[#F9F9F9] min-h-screen">
-      {/* Top Bar */}
+<Navbar/>
       <div className="flex flex-wrap md:flex-nowrap justify-between items-center gap-4">
         <div className="flex bg-white border border-gray-300 rounded-md px-3 py-2 w-full md:w-[300px]">
           <FaSearch className="text-red-900 mr-2" />

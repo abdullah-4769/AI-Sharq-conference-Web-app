@@ -22,6 +22,7 @@ export default function ProfileSetup() {
 
   const [file, setFile] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
+  const [role, setRole] = useState('')
 
   // Load user data
   useEffect(() => {
@@ -35,6 +36,7 @@ export default function ProfileSetup() {
           email: user.email || '',
           file: user.file || '',
         })
+        setRole(user.role || '')
       } catch (err) {
         console.error('Error loading user data', err)
       }
@@ -43,12 +45,12 @@ export default function ProfileSetup() {
     if (userId) fetchUser()
   }, [userId])
 
-  // Handle text input changes
+  // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  // Handle file selection
+  // Handle file upload
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0]
     if (selectedFile) {
@@ -57,7 +59,7 @@ export default function ProfileSetup() {
     }
   }
 
-  // Submit form with PATCH API
+  // Save profile
   const handleSubmit = async () => {
     if (!formData.fullName || !formData.organization) return
 
@@ -71,11 +73,32 @@ export default function ProfileSetup() {
       await api.patch(`/auth/update/${userId}`, data, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
-      router.push('/participants/Home')
+
+      // Redirect based on role
+      if (role === 'speaker') {
+        router.push('/speakers/SetUpYourProfile')
+      } else if (role === 'organizer') {
+        router.push('/Organizer/Dashboard')
+      }
+      else {
+        router.push('/participants/Home')
+      }
     } catch (err) {
       console.error('Error updating profile', err)
     } finally {
       setLoading(false)
+    }
+  }
+
+  // Skip button redirect based on role
+  const handleSkip = () => {
+    if (role === 'speaker') {
+      router.push('/speakers/ManageSessions')
+    } else if (role === 'organizer') {
+        router.push('/Organizer/Dashboard')
+      }
+     else {
+      router.push('/participants/Home')
     }
   }
 
@@ -156,20 +179,20 @@ export default function ProfileSetup() {
             <button
               onClick={handleSubmit}
               disabled={loading}
-              className={`w-full h-12 text-white text-sm font-semibold rounded-lg transition ${
-                loading
+              className={`w-full h-12 text-white text-sm font-semibold rounded-lg transition ${loading
                   ? 'bg-gray-400 cursor-not-allowed'
                   : 'bg-[#9B2033] hover:bg-[#7c1a2a]'
-              }`}
+                }`}
             >
               {loading ? 'Saving...' : 'Save & Continue'}
             </button>
 
-            <Link href="/participants/Home">
-              <p className="text-sm text-center text-gray-500 cursor-pointer hover:underline">
-                Skip for now
-              </p>
-            </Link>
+            <p
+              onClick={handleSkip}
+              className="text-sm text-center text-gray-500 cursor-pointer hover:underline"
+            >
+              Skip for now
+            </p>
           </div>
         </div>
       </div>

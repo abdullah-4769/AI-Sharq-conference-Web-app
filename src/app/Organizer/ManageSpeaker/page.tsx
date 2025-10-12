@@ -8,6 +8,8 @@ import Image from 'next/image';
 import api from '@/config/api';
 import AddNewSpeaker from './addnewspeaker/page';
 import Update from './update/page';
+import { useDispatch } from 'react-redux'
+import { setSpeakerId } from '@/lib/store/features/speaker/speakerSlice'
 
 const stats = [
   { label: "Total Sessions", value: 24, change: "+2", percent: "2.5%", icon: <FaRegListAlt className="text-blue-600" />, iconBg: "bg-blue-100" },
@@ -56,6 +58,7 @@ export default function SchedulePage() {
       setLoadingDeleteId(null);
     }
   };
+const dispatch = useDispatch()
 
   const handleEdit = (id: number) => {
     setSelectedSpeakerId(id);
@@ -126,7 +129,18 @@ export default function SchedulePage() {
             <div key={speaker.id} className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200">
               <div className="flex gap-6 items-start justify-between flex-wrap md:flex-nowrap">
                 <div className="flex gap-4">
-                  <img src={`http://localhost:5000/files/${speaker.user.file}`} alt={speaker.user.name} className="w-20 h-20 rounded-full object-cover border-4 border-gray-100 shadow-sm" />
+                  <img
+                    src={
+                      speaker.user.file
+                        ? speaker.user.file.startsWith('http')
+                          ? speaker.user.file
+                          : `/files/${speaker.user.file}`
+                        : '/images/default-avatar.png'
+                    }
+                    alt={speaker.user.name}
+                    className="w-20 h-20 rounded-full object-cover border-4 border-gray-100 shadow-sm"
+                  />
+
                   <div className="flex flex-col">
                     <div className="flex items-center gap-2 text-gray-900 font-medium flex-wrap">
                       <h2 className="text-lg font-semibold">{speaker.user.name}</h2>
@@ -161,11 +175,15 @@ export default function SchedulePage() {
                     >
                       {loadingDeleteId === speaker.id ? 'Deleting...' : 'Delete'}
                     </button>
-                    <Link href={`/participants/SpeakerDetails/${speaker.id}`}>
-                      <button className="border hover:border-black text-xs px-10 py-2 rounded-md text-gray-800 hover:text-black transition font-medium">
-                        View
-                      </button>
-                    </Link>
+<Link
+  href={`/participants/SpeakerDetails/${speaker.id}`}
+  onClick={() => dispatch(setSpeakerId(speaker.id))}
+>
+  <button className="border hover:border-black text-xs px-10 py-2 rounded-md text-gray-800 hover:text-black transition font-medium">
+    View
+  </button>
+</Link>
+
                   </div>
                 </div>
               </div>

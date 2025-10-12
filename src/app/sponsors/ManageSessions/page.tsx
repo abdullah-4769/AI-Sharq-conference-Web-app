@@ -14,7 +14,8 @@ const filters = ["Daily", "Weekly", "10 Days", "90 Days", "All Time"]
 export default function SpeakerSessions() {
   const router = useRouter()
   const userId = useSelector((state: RootState) => state.user.userId)
-  const sponsorId = 1
+
+   const sponsorId = useSelector((state: RootState) => state.sponsor.sponsorId)
 
   const [events, setEvents] = useState<any[]>([])
   const [filteredEvents, setFilteredEvents] = useState<any[]>([])

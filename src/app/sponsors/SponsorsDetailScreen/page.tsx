@@ -34,23 +34,25 @@ const SponsorsDetailsScreen: React.FC = () => {
 
   return (
     <div className="relative w-full h-screen">
-      <div
-        className="absolute w-[1440px] h-[231px]  bg-cover bg-center"
-        style={{ backgroundImage: 'url(/images/building.jpg)' }}
-      >
-        <div className="absolute w-[40px] h-[40px] left-[20px] top-[20px] rounded-full flex items-center justify-center cursor-pointer">
-          <Link href="/participants/Sponsors&Exhibitors">
-            <FaArrowLeft className="text-red-800 w-[20px] h-[20px] cursor-pointer" />
-          </Link>
-        </div>
+   <div
+  className="absolute w-[1440px] h-[231px] bg-cover bg-center"
+  style={{ backgroundImage: `url(${sponsor.Pic_url || '/images/building.jpg'})` }}
+>
 
-        <div className="absolute flex flex-row justify-center items-center gap-2 left-[1149px] top-[39px] w-[211.25px] h-[37px] bg-[#FFFEEF] rounded-full px-3 py-2">
-          <FaCrown className="text-yellow-400 w-[20.25px] h-[15.75px] flex-none" />
-          <span className="text-[#282828] font-medium text-2xl leading-6 tracking-tight font-['IBM_Plex_Sans']">
-            Gold Sponsors
-          </span>
-        </div>
-      </div>
+  <div className="absolute w-[40px] h-[40px] left-[20px] top-[20px] rounded-full flex items-center justify-center cursor-pointer">
+    <Link href="/participants/Sponsors&Exhibitors">
+      <FaArrowLeft className="text-red-800 w-[20px] h-[20px] cursor-pointer" />
+    </Link>
+  </div>
+
+  <div className="absolute flex flex-row justify-center items-center gap-2 left-[1149px] top-[39px] w-[211.25px] h-[37px] bg-[#FFFEEF] rounded-full px-3 py-2">
+    <FaCrown className="text-yellow-400 w-[20.25px] h-[15.75px] flex-none" />
+    <span className="text-[#282828] font-medium text-2xl leading-6 tracking-tight font-['IBM_Plex_Sans']">
+      Gold Sponsors
+    </span>
+  </div>
+</div>
+
 
       <div
         className="absolute w-[177px] h-[177px] top-[140px]"

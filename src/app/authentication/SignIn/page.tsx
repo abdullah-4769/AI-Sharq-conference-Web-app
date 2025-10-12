@@ -9,7 +9,9 @@ import { useRouter } from 'next/navigation'
 import api from '@/config/api'
 import { useDispatch } from 'react-redux'
 import { setUserId } from '@/lib/store/features/user/userSlice'
-import { setSpeakerId } from '@/lib/store/features/speaker/speakerSlice' // added import
+import { setSpeakerId } from '@/lib/store/features/speaker/speakerSlice'
+import { setSponsorId } from "@/lib/store/features/sponsor/sponsorSilice"
+import { setExhibitorId } from "@/lib/store/features/exhibitor/exhibitorSlice"
 
 export default function SignIn() {
   const [formData, setFormData] = useState({
@@ -18,9 +20,11 @@ export default function SignIn() {
     rememberMe: false,
   })
 
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
   const dispatch = useDispatch()
 
+  // handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target
     setFormData({
@@ -29,35 +33,66 @@ export default function SignIn() {
     })
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    try {
-      const res = await api.post('/auth/login', {
-        email: formData.email,
-        password: formData.password,
-      })
 
-      const { token, user } = res.data
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault()
+  setLoading(true)
 
-      if (user && user.id) {
-        dispatch(setUserId(user.id))
+  try {
+    const res = await api.post('/auth/login', {
+      email: formData.email,
+      password: formData.password,
+    })
 
-        // handle role-based routing
-        if (user.role === 'participant') {
-          router.push('/participants/vanue')
-        } else if (user.role === 'speaker') {
-          if (user.speakerId) {
-            dispatch(setSpeakerId(user.speakerId))
-          }
-          router.push('/speakers/ManageSessions')
+    const { token, user } = res.data
+
+    if (user && user.role) {
+      if (typeof window !== 'undefined') {
+        window.localStorage.setItem('token', token || '')
+        window.localStorage.setItem('role', user.role || '')
+
+        // for non-sponsor/exhibitor roles store userId, name, picUrl
+        if (user.role !== 'sponsor' && user.role !== 'exhibitor') {
+          window.localStorage.setItem('userId', user.id?.toString() || '')
+          window.localStorage.setItem('name', user.name || '')
+          window.localStorage.setItem('picUrl', user.picUrl || user.Pic_url || '')
         } else {
-          router.push('/Organizer/Dashboard')
+          // optionally store name and pic for sponsor/exhibitor if needed
+          window.localStorage.setItem('name', user.name || '')
+          window.localStorage.setItem('picUrl', user.picUrl || user.Pic_url || '')
         }
       }
-    } catch (err) {
-      console.error('Login failed', err)
+
+      // update redux
+      if (user.role !== 'sponsor' && user.role !== 'exhibitor') {
+        dispatch(setUserId(user.id))
+      }
+      if (user.role === 'speaker' && user.speakerId) {
+        dispatch(setSpeakerId(user.speakerId))
+      }
+      if (user.role === 'sponsor' && user.sponsorId) {
+        dispatch(setSponsorId(user.sponsorId))
+      }
+      if (user.role === 'exhibitor' && user.exhibitorId) {
+        dispatch(setExhibitorId(user.exhibitorId))
+      }
+
+      // route based on role
+      if (user.role === 'participant') router.push('/participants/vanue')
+      else if (user.role === 'speaker') router.push('/speakers/ManageSessions')
+      else if (user.role === 'organizer') router.push('/Organizer/Dashboard')
+      else if (user.role === 'sponsor') router.push('/sponsors/ManageSessions')
+      else if (user.role === 'exhibitor') router.push('/Exhibitors/ManageSessions')
+      else router.push('/authentication/SignIn')
     }
+  } catch (err) {
+    console.error('Login failed', err)
+  } finally {
+    setLoading(false)
   }
+}
+
+
 
   return (
     <div className="flex gap-10 mt-10 mr-6">
@@ -138,9 +173,12 @@ export default function SignIn() {
 
           <button
             type="submit"
-            className="w-full bg-[#9B2033] rounded-lg text-base font-medium leading-6 text-white font-['IBM_Plex_Sans'] px-4 py-3"
+            disabled={loading}
+            className={`w-full rounded-lg text-base font-medium leading-6 text-white font-['IBM_Plex_Sans'] px-4 py-3 ${
+              loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#9B2033]'
+            }`}
           >
-            Sign In
+            {loading ? 'Signing In...' : 'Sign In'}
           </button>
         </form>
 

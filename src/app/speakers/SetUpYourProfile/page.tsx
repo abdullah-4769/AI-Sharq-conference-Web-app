@@ -2,24 +2,18 @@
 
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/lib/store/store'
 import Image from 'next/image'
 import api from '@/config/api'
 
-const SetUpYourProfile: React.FC = () => {
+export default function SetUpYourProfile() {
   const router = useRouter()
-  const [step, setStep] = useState(1)
+
+  // Get speaker ID from Redux store
+  const speakerId = useSelector((state: RootState) => state.speaker.speakerId)
+
   const [loading, setLoading] = useState(false)
-  const [userId, setUserId] = useState<number | null>(null)
-
-  // Default speaker ID
-  const speakerId = 12
-
-  const [userData, setUserData] = useState({
-    name: '',
-    email: '',
-    organization: '',
-    file: null as File | null,
-  })
 
   const [formData, setFormData] = useState({
     bio: '',
@@ -35,26 +29,16 @@ const SetUpYourProfile: React.FC = () => {
   const [designations, setDesignations] = useState<string[]>([])
   const [tags, setTags] = useState<string[]>([])
 
-  // Fetch speaker and prefill user info
+  // Fetch speaker data and fill form
   useEffect(() => {
+    if (!speakerId) return
+
     const fetchSpeaker = async () => {
       setLoading(true)
       try {
         const res = await api.get(`/speakers/${speakerId}`)
         const data = res.data
         console.log('Speaker API response:', data)
-
-        // Store userId for later API calls
-        if (data.userId) setUserId(data.userId)
-
-        if (data.user) {
-          setUserData({
-            name: data.user.name || '',
-            email: data.user.email || '',
-            organization: data.designations?.[0] || '',
-            file: null,
-          })
-        }
 
         setFormData({
           bio: data.bio || '',
@@ -77,23 +61,15 @@ const SetUpYourProfile: React.FC = () => {
     }
 
     fetchSpeaker()
-  }, [])
+  }, [speakerId])
 
-  const handleUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setUserData(prev => ({ ...prev, [name]: value }))
-  }
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null
-    setUserData(prev => ({ ...prev, file }))
-  }
-
+  // Handle input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
   }
 
+  // Handle designations input
   const handleOrgKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault()
@@ -105,6 +81,7 @@ const SetUpYourProfile: React.FC = () => {
     }
   }
 
+  // Handle tags input
   const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault()
@@ -119,38 +96,15 @@ const SetUpYourProfile: React.FC = () => {
   const removeDesignation = (d: string) => setDesignations(prev => prev.filter(item => item !== d))
   const removeTag = (t: string) => setTags(prev => prev.filter(item => item !== t))
 
-  // Step 1 - Update user
-  const handleUserSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!userId) {
-      console.error('No userId found')
-      return
-    }
-    setLoading(true)
-    try {
-      const formDataToSend = new FormData()
-      formDataToSend.append('name', userData.name)
-      formDataToSend.append('email', userData.email)
-      formDataToSend.append('organization', userData.organization)
-      if (userData.file) formDataToSend.append('file', userData.file)
-
-      const res = await api.patch(`/auth/update/${userId}`, formDataToSend, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      })
-      console.log('User updated:', res.data)
-      setStep(2)
-    } catch (err: any) {
-      console.error('Error updating user:', err.response?.data || err.message)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  // Step 2 - Update speaker
+  // Submit speaker update
   const handleSpeakerSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setLoading(true)
+    if (!speakerId) {
+      console.error('Speaker ID not found')
+      return
+    }
 
+    setLoading(true)
     const payload = {
       designations,
       bio: formData.bio,
@@ -169,7 +123,7 @@ const SetUpYourProfile: React.FC = () => {
     try {
       const res = await api.patch(`/speakers/${speakerId}`, payload)
       console.log('Speaker updated:', res.data)
-      router.push('/Organizer/ManageSpeaker')
+      router.push('/speakers/ManageSessions')
     } catch (err: any) {
       console.error('Error updating speaker:', err.response?.data || err.message)
     } finally {
@@ -184,59 +138,9 @@ const SetUpYourProfile: React.FC = () => {
           <Image src="/images/logo1.png" alt="Logo" width={100} height={100} />
         </div>
 
-        {loading && (
-          <p className="text-center text-gray-500 mb-6">Loading data, please wait...</p>
-        )}
+        {loading && <p className="text-center text-gray-500 mb-6">Loading data, please wait...</p>}
 
-        {!loading && step === 1 && (
-          <>
-            <h1 className="text-2xl font-medium text-gray-900 text-center mb-4">
-              Update User Information
-            </h1>
-            <form onSubmit={handleUserSubmit} className="flex flex-col gap-4">
-              <input
-                type="text"
-                name="name"
-                value={userData.name}
-                onChange={handleUserChange}
-                placeholder="Full Name"
-                className="w-full px-5 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500"
-              />
-              <input
-                type="email"
-                name="email"
-                value={userData.email}
-                onChange={handleUserChange}
-                placeholder="Email"
-                className="w-full px-5 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500"
-              />
-              <input
-                type="text"
-                name="organization"
-                value={userData.organization}
-                onChange={handleUserChange}
-                placeholder="Organization"
-                className="w-full px-5 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500"
-              />
-              <input
-                type="file"
-                name="file"
-                onChange={handleFileChange}
-                className="w-full px-5 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500"
-              />
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="py-4 bg-red-600 text-white rounded-xl hover:bg-red-700 mt-2"
-              >
-                {loading ? 'Saving...' : 'Next'}
-              </button>
-            </form>
-          </>
-        )}
-
-        {!loading && step === 2 && (
+        {!loading && (
           <>
             <h1 className="text-2xl font-medium text-gray-900 text-center mb-4">
               Update Speaker Profile
@@ -254,7 +158,10 @@ const SetUpYourProfile: React.FC = () => {
               />
               <div className="flex flex-wrap gap-2 mt-2">
                 {designations.map((d, i) => (
-                  <span key={i} className="px-3 py-1 bg-yellow-200 text-yellow-800 rounded-full flex items-center gap-2 text-sm">
+                  <span
+                    key={i}
+                    className="px-3 py-1 bg-yellow-200 text-yellow-800 rounded-full flex items-center gap-2 text-sm"
+                  >
                     {d}
                     <button type="button" onClick={() => removeDesignation(d)}>×</button>
                   </span>
@@ -273,7 +180,10 @@ const SetUpYourProfile: React.FC = () => {
               />
               <div className="flex flex-wrap gap-2 mt-2">
                 {tags.map((t, i) => (
-                  <span key={i} className="px-3 py-1 bg-green-200 text-green-800 rounded-full flex items-center gap-2 text-sm">
+                  <span
+                    key={i}
+                    className="px-3 py-1 bg-green-200 text-green-800 rounded-full flex items-center gap-2 text-sm"
+                  >
                     {t}
                     <button type="button" onClick={() => removeTag(t)}>×</button>
                   </span>
@@ -314,5 +224,3 @@ const SetUpYourProfile: React.FC = () => {
     </div>
   )
 }
-
-export default SetUpYourProfile

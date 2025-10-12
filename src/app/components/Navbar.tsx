@@ -100,33 +100,41 @@ export default function Navbar() {
         </div>
 
         {/* Avatar and Name */}
-        {!loading && (
-          <div
-            className="flex items-center gap-3 cursor-pointer"
-            onClick={() => router.push('/participants/SetUpYourProfile')}
-          >
-            <img
-              src={user.file || '/images/default-avatar.png'}
-              alt="User"
-              className="w-10 h-10 rounded-full object-cover"
-            />
-            <div className="flex flex-col leading-tight">
-              <span className="text-sm text-red-500">Welcome</span>
-              <span className="flex items-center gap-1 font-medium text-gray-800">
-                {user.name || 'User'}
-                <svg
-                  width="10"
-                  height="5"
-                  viewBox="0 0 10 5"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M0 5L5 0L10 5H0Z" fill="#414141" />
-                </svg>
-              </span>
-            </div>
-          </div>
-        )}
+     {!loading && (
+  <div
+    className="flex items-center gap-3 cursor-pointer"
+    onClick={() => {
+      const role = localStorage.getItem('role')
+      if (role === 'speaker') {
+        router.push('/speakers/viewprofile')
+      } else {
+        router.push('/participants/SetUpYourProfile')
+      }
+    }}
+  >
+    <img
+      src={user.file || '/images/default-avatar.png'}
+      alt="User"
+      className="w-10 h-10 rounded-full object-cover"
+    />
+    <div className="flex flex-col leading-tight">
+      <span className="text-sm text-red-500">Welcome</span>
+      <span className="flex items-center gap-1 font-medium text-gray-800">
+        {user.name || 'User'}
+        <svg
+          width="10"
+          height="5"
+          viewBox="0 0 10 5"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M0 5L5 0L10 5H0Z" fill="#414141" />
+        </svg>
+      </span>
+    </div>
+  </div>
+)}
+
       </div>
     </nav>
   )
