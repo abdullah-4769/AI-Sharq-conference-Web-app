@@ -3,11 +3,13 @@
 import React, { useState, useEffect } from 'react'
 import { FaUser, FaPlus } from 'react-icons/fa'
 import { useRouter } from 'next/navigation'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/lib/store/store'
 import api from '@/config/api'
 
 const EditExhibitorProfile: React.FC = () => {
   const router = useRouter()
-  const exhibitorId = typeof window !== 'undefined' ? localStorage.getItem('exhibitorId') : null
+  const exhibitorId = useSelector((state: RootState) => state.exhibitor.exhibitorId)
 
   const [formData, setFormData] = useState({
     name: '',
@@ -22,19 +24,25 @@ const EditExhibitorProfile: React.FC = () => {
     youtube: '',
   })
 
-  const [profileImage, setProfileImage] = useState<File | null>(null)
+  const [file, setFile] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
+ console.log(`exhibitors ${exhibitorId}`)
+
       if (!exhibitorId) return
       try {
         const res = await api.get(`/exhibiteros/${exhibitorId}`)
         if (res.status === 200) {
-          setFormData(res.data)
+          setFormData(prev => ({
+            ...prev,
+            ...res.data,
+            picUrl: res.data.picUrl || '',
+          }))
         }
       } catch (err) {
-        console.log('Error fetching exhibitor', err)
+        console.error('Error fetching exhibitor', err)
       }
     }
     fetchData()
@@ -49,26 +57,42 @@ const EditExhibitorProfile: React.FC = () => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setProfileImage(e.target.files[0])
-      setFormData(prev => ({ ...prev, picUrl: URL.createObjectURL(e.target.files![0]) }))
+      const selectedFile = e.target.files[0]
+      setFile(selectedFile)
+      setFormData(prev => ({ ...prev, picUrl: URL.createObjectURL(selectedFile) }))
     }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!exhibitorId) return
+
     setLoading(true)
 
     try {
-      const payload = { ...formData }
-      const response = await api.put(`/exhibiteros/${exhibitorId}`, payload)
-      if (response.status === 200) {
+      const form = new FormData()
+      Object.entries(formData).forEach(([key, value]) => {
+        form.append(key, value as string)
+      })
+      if (file) form.append('file', file)
+
+      const res = await api.patch(`/exhibiteros/${exhibitorId}`, form, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+
+      if (res.status === 200) {
         router.push('/Exhibitors/ManageSessions')
       }
     } catch (err) {
-      console.log('Error updating exhibitor', err)
+      console.error('Error updating exhibitor', err)
+    } finally {
       setLoading(false)
     }
+  }
+
+
+    const goToBooth = () => {
+    router.push('/Exhibitors/booth')
   }
 
   return (
@@ -92,7 +116,13 @@ const EditExhibitorProfile: React.FC = () => {
             >
               <FaPlus className="text-white text-lg" />
             </button>
-            <input id="profile-upload" type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
+            <input
+              id="profile-upload"
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="hidden"
+            />
           </div>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-6 w-full">
@@ -131,6 +161,15 @@ const EditExhibitorProfile: React.FC = () => {
             >
               {loading ? 'Loading...' : 'Update & Save'}
             </button>
+        
+         <button
+                type="button"
+                onClick={goToBooth}
+                className="py-4 px-6 bg-gray-800 text-white rounded-xl w-full"
+              >
+                Go to Booth
+                    </button>
+        
           </form>
         </div>
       </div>

@@ -103,14 +103,22 @@ export default function Navbar() {
      {!loading && (
   <div
     className="flex items-center gap-3 cursor-pointer"
-    onClick={() => {
-      const role = localStorage.getItem('role')
-      if (role === 'speaker') {
-        router.push('/speakers/viewprofile')
-      } else {
-        router.push('/participants/SetUpYourProfile')
-      }
-    }}
+   onClick={() => {
+  const role = localStorage.getItem('role')
+  
+  if (role === 'speaker') {
+    router.push('/speakers/viewprofile')
+  } else if (role === 'participant') {
+    router.push('/participants/SetUpYourProfile')
+  } else if (role === 'exhibitor') {
+    router.push('/Exhibitors/viewprofile')
+  } else if (role === 'sponsor') {
+    router.push('/sponsor/viewprofile')
+  } else {
+    router.push('/')
+  }
+}}
+
   >
     <img
       src={user.file || '/images/default-avatar.png'}
