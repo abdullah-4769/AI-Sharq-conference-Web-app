@@ -2,20 +2,19 @@
 
 import React, { useState, useEffect } from 'react';
 import api from '@/config/api';
-import { useRouter } from 'next/navigation';
-import { FaRobot, FaLaptop, FaMobileAlt, FaHeadphones, FaCamera, FaBox } from 'react-icons/fa';
 
+import { FaRobot, FaLaptop, FaMobileAlt, FaHeadphones, FaCamera, FaBox } from 'react-icons/fa';
+import { useRouter } from 'next/navigation'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/lib/store/store'
 const AddSponsorProduct: React.FC = () => {
   const router = useRouter();
   const [formData, setFormData] = useState({ title: '', description: '' });
-  const [sponsorId, setSponsorId] = useState<number | null>(null);
+
+  const sponsorId = useSelector((state: RootState) => state.sponsor.sponsorId)
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const storedId = localStorage.getItem('sponsorId');
-    if (storedId) setSponsorId(Number(storedId));
-  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -109,13 +108,7 @@ const AddSponsorProduct: React.FC = () => {
 
       </div>
   <div className="flex justify-center mt-4">
-  <button
-    type="button"
-    onClick={() => router.push('/sponser/representatives')}
-    className="w-full py-4 rounded-xl text-gray-900 border border-gray-300 hover:bg-gray-100"
-  >
-    Go to Representatives
-  </button>
+  
 </div>
       {products.length > 0 && (
         <div className="w-full max-w-lg flex flex-col gap-4">

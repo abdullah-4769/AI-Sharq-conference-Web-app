@@ -5,16 +5,15 @@ import api from '@/config/api'
 import { FaUser } from 'react-icons/fa'
 import Image from 'next/image'
 import { FaLinkedin, FaTwitter, FaYoutube } from 'react-icons/fa'
-
+import { useSelector } from 'react-redux'
+import { RootState } from '@/lib/store/store'
+import { useRouter } from 'next/navigation'
 const SponsorProfileView: React.FC = () => {
-    const [sponsorId, setSponsorId] = useState<number | null>(null)
+
     const [sponsor, setSponsor] = useState<any | null>(null)
     const [loading, setLoading] = useState(false)
-
-    useEffect(() => {
-        const storedId = localStorage.getItem('sponsorId')
-        if (storedId) setSponsorId(Number(storedId))
-    }, [])
+  const router = useRouter()
+  const sponsorId = useSelector((state: RootState) => state.sponsor.sponsorId)
 
     useEffect(() => {
         const fetchSponsor = async () => {

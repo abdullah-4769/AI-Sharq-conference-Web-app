@@ -268,6 +268,15 @@ const EditSponsorProfile: React.FC = () => {
                 >
                   {loading ? 'Loading...' : 'Update & Save'}
                 </button>
+             
+              <button
+                  type="button"
+                  onClick={() => router.push('/sponsors/sponsorsproducts')}
+                  className="py-4 bg-gray-100 text-red-700 border border-red-600 rounded-xl hover:bg-red-600 hover:text-white transition"
+                >
+                  Add New Service
+                </button>
+             
               </div>
             </form>
           </div>

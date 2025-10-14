@@ -8,7 +8,7 @@ import { useSelector } from "react-redux"
 import { RootState } from "@/lib/store/store"
 import api from "@/config/api"
 import { useRouter } from "next/navigation"
-import Navbar from "../../components/Navbar";
+import Navbar from "../../components/Navbar"
 
 const filters = ["Daily", "Weekly", "10 Days", "90 Days", "All Time"]
 
@@ -34,7 +34,7 @@ export default function SpeakerSessions() {
         setStats({
           total: res.data.total || 0,
           ongoing: res.data.ongoing || 0,
-          scheduled: res.data.scheduled || 0
+          scheduled: res.data.scheduled || 0,
         })
       } catch {
         setEvents([])
@@ -47,13 +47,11 @@ export default function SpeakerSessions() {
 
   useEffect(() => {
     let filtered = [...events]
-
     if (searchText) {
       filtered = filtered.filter(ev =>
-        ev.title.toLowerCase().includes(searchText.toLowerCase())
+        ev.title?.toLowerCase().includes(searchText.toLowerCase())
       )
     }
-
     const now = new Date()
     if (activeFilter === "Daily") {
       filtered = filtered.filter(ev => new Date(ev.startTime).toDateString() === now.toDateString())
@@ -75,11 +73,11 @@ export default function SpeakerSessions() {
       ninetyDaysAgo.setDate(now.getDate() - 90)
       filtered = filtered.filter(ev => new Date(ev.startTime) >= ninetyDaysAgo)
     }
-
     setFilteredEvents(filtered)
   }, [activeFilter, searchText, events])
 
   const formatTime = (time: string) => {
+    if (!time) return ""
     const date = new Date(time)
     let hours = date.getHours()
     const ampm = hours >= 12 ? "PM" : "AM"
@@ -89,6 +87,7 @@ export default function SpeakerSessions() {
   }
 
   const getDurationMinutes = (start: string, end: string) => {
+    if (!start || !end) return 0
     const startDate = new Date(start)
     const endDate = new Date(end)
     return Math.round((endDate.getTime() - startDate.getTime()) / 60000)
@@ -98,7 +97,7 @@ export default function SpeakerSessions() {
     if (count <= 1) return <span>{count}</span>
     return (
       <span className="flex items-baseline gap-1">
-        <span>{1}</span>
+        <span>1</span>
         <span className="text-sm text-green-600">+{count - 1}</span>
       </span>
     )
@@ -108,15 +107,15 @@ export default function SpeakerSessions() {
     router.push(`/participants/SessionDetail/${sessionId}`)
   }
 
+  // Added missing function to avoid runtime error
   const handleSponsorClick = () => {
-    const exhibitorId = localStorage.getItem("exhibitorId") || "2"
-    router.push(`/sponsors/SponsorsDetailScreen?sponsorId=${exhibitorId}`)
+    router.push("/Exhibitors/detail")
   }
 
   return (
     <div className="p-6 md:p-10 min-h-screen font-sans">
+      <Navbar />
 
-      <Navbar/>
       <div className="flex flex-col md:flex-row gap-4 mb-6">
         <div className="flex-1 flex items-center justify-between p-6 gap-3 h-24 bg-[#FFEEEE] border border-[#D4D4D4] shadow-sm rounded-3xl">
           <div className="flex items-center gap-3">
@@ -130,12 +129,15 @@ export default function SpeakerSessions() {
           </Link>
         </div>
 
-        <div className="flex-1 flex items-center justify-between p-6 gap-3 h-24 bg-[#FFFAEE] border border-[#D4D4D4] shadow-[0px_4px_110.3px_rgba(68,68,68,0.05)] rounded-[20px] cursor-pointer" onClick={handleSponsorClick}>
+        <div
+          className="flex-1 flex items-center justify-between p-6 gap-3 h-24 bg-[#FFFAEE] border border-[#D4D4D4] shadow-[0px_4px_110.3px_rgba(68,68,68,0.05)] rounded-[20px] cursor-pointer"
+          onClick={handleSponsorClick}
+        >
           <div className="flex items-center gap-3">
             <div className="w-[45px] h-[45px] bg-[#FEF9C3] rounded-[7.5px] flex items-center justify-center">
               <FaStar className="text-[#CA8A04] text-lg" />
             </div>
-            <h2 className="text-[18px] font-semibold text-[#9B2033]">Sponsor Detail</h2>
+            <h2 className="text-[18px] font-semibold text-[#9B2033]">Exhibitor Detail</h2>
           </div>
           <FaArrowRight className="text-[#9B2033] text-[30px] w-[30px] h-[26px]" />
         </div>
@@ -158,7 +160,11 @@ export default function SpeakerSessions() {
             <button
               key={filter}
               onClick={() => setActiveFilter(filter)}
-              className={`px-4 py-2 rounded-xl text-sm font-medium ${activeFilter === filter ? "bg-[#86002B] text-white" : "bg-white border border-gray-300 text-black"}`}
+              className={`px-4 py-2 rounded-xl text-sm font-medium ${
+                activeFilter === filter
+                  ? "bg-[#86002B] text-white"
+                  : "bg-white border border-gray-300 text-black"
+              }`}
             >
               {filter}
             </button>
@@ -171,7 +177,7 @@ export default function SpeakerSessions() {
         </div>
 
         <div>
-          <img src="/images/Frame 1000004593.png" alt="" />
+          <Image src="/images/Frame 1000004593.png" alt="" width={180} height={40} />
         </div>
       </div>
 
@@ -230,10 +236,17 @@ export default function SpeakerSessions() {
             statusColor = "text-green-600"
           }
 
-          const formattedDate = start.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })
+          const formattedDate = start.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          })
 
           return (
-            <div key={index} className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 flex flex-col justify-between h-[380px]">
+            <div
+              key={index}
+              className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 flex flex-col justify-between h-[380px]"
+            >
               <div className="flex items-center justify-between mb-2">
                 <h2 className="text-sm font-semibold text-black">{event.title}</h2>
                 {event.registrationRequired ? (
@@ -263,7 +276,9 @@ export default function SpeakerSessions() {
                       />
                     )}
                     <span className="text-xs text-gray-600">{event.speakers[0].name}</span>
-                    {event.speakers.length > 1 && <span className="text-xs text-gray-500">+{event.speakers.length - 1}</span>}
+                    {event.speakers.length > 1 && (
+                      <span className="text-xs text-gray-500">+{event.speakers.length - 1}</span>
+                    )}
                   </div>
                 ) : (
                   <span className="text-xs text-gray-500">No speakers</span>
@@ -275,9 +290,13 @@ export default function SpeakerSessions() {
               <div className="flex items-center justify-between mb-2 text-xs text-gray-600">
                 <div className="flex items-center text-xs text-gray-600">
                   <FaClock className="mr-1" />
-                  <span>{formatTime(event.startTime)} - {formatTime(event.endTime)}</span>
+                  <span>
+                    {formatTime(event.startTime)} - {formatTime(event.endTime)}
+                  </span>
                 </div>
-                <span className="px-2 py-1 rounded-xl text-xs font-semibold bg-blue-100 text-blue-700">{event.category}</span>
+                <span className="px-2 py-1 rounded-xl text-xs font-semibold bg-blue-100 text-blue-700">
+                  {event.category}
+                </span>
               </div>
 
               <div className="flex items-center justify-between text-xs text-gray-900 mb-2">

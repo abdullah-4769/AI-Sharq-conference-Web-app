@@ -6,7 +6,6 @@ import { RootState } from '@/lib/store/store'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import api from '@/config/api'
-import LiveIndicator from './LiveIndicator'
 
 export default function Navbar() {
   const router = useRouter()
@@ -19,11 +18,27 @@ export default function Navbar() {
 
   const [loading, setLoading] = useState(true)
 
-  // Load user data
   useEffect(() => {
+    const role = localStorage.getItem('role')
+
+    // If role is exhibitor or sponsor, take data from localStorage
+    if (role === 'exhibitor' || role === 'sponsor') {
+      const name = localStorage.getItem('name')
+      const file = localStorage.getItem('picUrl')
+
+      setUser({
+        name: name || 'User',
+        file: file || '/images/default-avatar.png',
+      })
+
+      setLoading(false)
+      return
+    }
+
+    // Otherwise, call user API
     const fetchUser = async () => {
       try {
-        console.log(`user id ${userId}`)
+        if (!userId) return
 
         const res = await api.get(`/admin/users/${userId}`)
         const data = res.data
@@ -39,12 +54,11 @@ export default function Navbar() {
       }
     }
 
-    if (userId) fetchUser()
+    fetchUser()
   }, [userId])
 
   return (
     <nav className="w-full bg-white shadow-md px-6 py-6 flex items-center justify-between">
-      {/* Left: Logo */}
       <div
         className="flex items-center cursor-pointer"
         onClick={() => router.push('/participants/Home')}
@@ -58,11 +72,8 @@ export default function Navbar() {
         />
       </div>
 
-      {/* Right Section */}
       <div className="flex items-center gap-6">
-        {/* <LiveIndicator /> */}
-
-        {/* Notification Icon */}
+        {/* Notifications */}
         <div
           className="relative cursor-pointer"
           onClick={() => router.push('/participants/Masseges')}
@@ -73,7 +84,7 @@ export default function Navbar() {
           <span className="absolute top-0 right-0 w-3.5 h-3.5 bg-[#234D70] rounded-full border border-white"></span>
         </div>
 
-        {/* Comment Icon */}
+        {/* Messages */}
         <div
           className="relative cursor-pointer"
           onClick={() => router.push('/participants/Messages')}
@@ -99,50 +110,50 @@ export default function Navbar() {
           <span className="absolute top-0 right-0 w-3.5 h-3.5 bg-[#234D70] rounded-full border border-white"></span>
         </div>
 
-        {/* Avatar and Name */}
-     {!loading && (
-  <div
-    className="flex items-center gap-3 cursor-pointer"
-   onClick={() => {
-  const role = localStorage.getItem('role')
-  
-  if (role === 'speaker') {
-    router.push('/speakers/viewprofile')
-  } else if (role === 'participant') {
-    router.push('/participants/SetUpYourProfile')
-  } else if (role === 'exhibitor') {
-    router.push('/Exhibitors/viewprofile')
-  } else if (role === 'sponsor') {
-    router.push('/sponsor/viewprofile')
-  } else {
-    router.push('/')
-  }
-}}
+        {/* User Info */}
+        {!loading && (
+          <div
+            className="flex items-center gap-3 cursor-pointer"
+            onClick={() => {
+              const role = localStorage.getItem('role')
 
-  >
-    <img
-      src={user.file || '/images/default-avatar.png'}
-      alt="User"
-      className="w-10 h-10 rounded-full object-cover"
-    />
-    <div className="flex flex-col leading-tight">
-      <span className="text-sm text-red-500">Welcome</span>
-      <span className="flex items-center gap-1 font-medium text-gray-800">
-        {user.name || 'User'}
-        <svg
-          width="10"
-          height="5"
-          viewBox="0 0 10 5"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M0 5L5 0L10 5H0Z" fill="#414141" />
-        </svg>
-      </span>
-    </div>
-  </div>
-)}
-
+              if (role === 'speaker') {
+                router.push('/speakers/viewprofile')
+              } else if (role === 'participant') {
+                router.push('/participants/SetUpYourProfile')
+              } else if (role === 'exhibitor') {
+                router.push('/Exhibitors/viewprofle')
+              } else if (role === 'sponsor') {
+                router.push('/sponsors/viewprofile')
+              }else if (role === 'organizer') {
+                router.push('/participants/SetUpYourProfile')
+              } else {
+                router.push('/')
+              }
+            }}
+          >
+            <img
+              src={user.file || '/images/default-avatar.png'}
+              alt="User"
+              className="w-10 h-10 rounded-full object-cover"
+            />
+            <div className="flex flex-col leading-tight">
+              <span className="text-sm text-red-500">Welcome</span>
+              <span className="flex items-center gap-1 font-medium text-gray-800">
+                {user.name || 'User'}
+                <svg
+                  width="10"
+                  height="5"
+                  viewBox="0 0 10 5"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M0 5L5 0L10 5H0Z" fill="#414141" />
+                </svg>
+              </span>
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   )

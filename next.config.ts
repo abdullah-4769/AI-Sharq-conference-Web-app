@@ -17,6 +17,11 @@ const nextConfig: NextConfig = {
         hostname: "example.com",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "al-sharq.fra1.digitaloceanspaces.com",
+        pathname: "/**",
+      },
     ],
   },
 };

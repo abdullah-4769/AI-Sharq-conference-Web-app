@@ -8,6 +8,8 @@ import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import api from '@/config/api'
 import SpeakerSession from '@/app/components/SpeakerSession'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/lib/store/store'
 
 const LiveLocation = dynamic(() => import('@/app/components/LiveLocation'), { ssr: false })
 
@@ -64,6 +66,8 @@ const socialMap: Record<string, { icon: any; color: string }> = {
 }
 
 const ExhibitorDetailsScreen: React.FC = () => {
+
+    const exhibitorId = useSelector((state: RootState) => state.exhibitor.exhibitorId)
   const [exhibitor, setExhibitor] = useState<Exhibitor | null>(null)
   const [loading, setLoading] = useState(true)
   const [mounted, setMounted] = useState(false)
@@ -72,7 +76,7 @@ const ExhibitorDetailsScreen: React.FC = () => {
 
   useEffect(() => {
     const fetchExhibitor = async () => {
-      const exhibitorId = localStorage.getItem('exhibitorId')
+   
       if (!exhibitorId) {
         setLoading(false)
         return
@@ -98,17 +102,25 @@ const ExhibitorDetailsScreen: React.FC = () => {
   return (
     <div className="relative w-full h-screen">
       {/* Header */}
-      <div className="absolute w-[1440px] h-[231px] bg-cover bg-center" style={{ backgroundImage: 'url(/images/building.jpg)' }}>
-        <div className="absolute w-[40px] h-[40px] left-[20px] top-[20px] rounded-full flex items-center justify-center cursor-pointer">
-          <Link href="/participants/Sponsors&Exhibitors">
-            <FaArrowLeft className="text-red-800 w-[20px] h-[20px]" />
-          </Link>
-        </div>
-        <div className="absolute flex flex-row justify-center items-center gap-2 left-[1149px] top-[39px] w-[211px] h-[37px] bg-[#FFFEEF] rounded-full px-3 py-2">
-          <FaShop className="text-green-400 w-[20px] h-[16px]" />
-          <span className="text-[#282828] font-medium text-2xl">Exhibitors</span>
-        </div>
-      </div>
+     {/* Header */}
+<div
+  className="absolute w-[1440px] h-[231px] bg-cover bg-center"
+  style={{
+    backgroundImage: `url(${exhibitor.picUrl || '/images/building.jpg'})`,
+  }}
+>
+  <div className="absolute w-[40px] h-[40px] left-[20px] top-[20px] rounded-full flex items-center justify-center cursor-pointer">
+    <Link href="/participants/Sponsors&Exhibitors">
+      <FaArrowLeft className="text-red-800 w-[20px] h-[20px]" />
+    </Link>
+  </div>
+
+  <div className="absolute flex flex-row justify-center items-center gap-2 left-[1149px] top-[39px] w-[211px] h-[37px] bg-[#FFFEEF] rounded-full px-3 py-2">
+    <FaShop className="text-green-400 w-[20px] h-[16px]" />
+    <span className="text-[#282828] font-medium text-2xl">Exhibitors</span>
+  </div>
+</div>
+
 
       {/* Exhibitor Circle */}
       <div className="absolute w-[177px] h-[177px] top-[140px]" style={{ left: 'calc(50% - 177px/2 - 550px)' }}>

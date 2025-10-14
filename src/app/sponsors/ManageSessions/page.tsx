@@ -27,8 +27,10 @@ export default function SpeakerSessions() {
     if (!userId) return
     const fetchEvents = async () => {
       try {
+        console.log(`sponerid ${sponsorId}`)
         const res = await api.get(`/sponsors/sponsor/${sponsorId}/sessions`)
         const data = Array.isArray(res.data.sessions) ? res.data.sessions : []
+              console.log(data)
         setEvents(data)
         setFilteredEvents(data)
         setStats({

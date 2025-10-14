@@ -7,7 +7,7 @@ import Link from "next/link"
 import { useSelector } from "react-redux"
 import { RootState } from "@/lib/store/store"
 import api from "@/config/api"
-import Navbar from "../../components/Navbar";
+
 const filters = ["Daily", "Weekly", "10 Days", "90 Days", "All Time"]
 
 export default function SpeakerSessions() {
@@ -70,7 +70,7 @@ export default function SpeakerSessions() {
   return (
    <>
    
-       <Navbar/>
+
     <div className="p-6 md:p-10 min-h-screen font-sans">
   
       {/* Header */}

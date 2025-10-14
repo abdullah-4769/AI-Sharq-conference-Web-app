@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { RootState } from "@/lib/store/store"
-import { FaCalendarAlt } from "react-icons/fa"
+import { FaCalendarAlt, FaLock, FaUnlock } from "react-icons/fa"
 import Link from "next/link"
 import api from "@/config/api"
 
@@ -39,9 +39,10 @@ export default function MyAgendaPage() {
           minutes,
           location: s.location,
           category: s.category,
+          registration: s.registration,
           speakers: (s.speakers || []).map((sp: any) => ({
             fullName: sp.name,
-            pic: sp.photo,
+            pic: sp.file,
           })),
         }
       })
@@ -77,38 +78,28 @@ export default function MyAgendaPage() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6 md:p-10">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
       {sessions.map((session, index) => (
         <div
           key={session?.sessionId ?? index}
-          className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 flex flex-col justify-between h-[380px]"
+          className="bg-white border border-gray-200 rounded-xl shadow-sm p-4 flex flex-col justify-between h-[380px]"
         >
           <div className="flex items-center justify-between">
             <h2 className="text-sm font-semibold text-black">
               {session.sessionTitle}
             </h2>
-            <span className="text-red-600 w-4 h-4 cursor-pointer hover:opacity-70 transition">
-              <svg
-                width="12"
-                height="16"
-                viewBox="0 0 12 16"
-                fill="#9B2033"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M0 1.5V15.2406C0 15.6594 0.340625 16 0.759375 16C0.915625 16 1.06875 15.9531 1.19687 15.8625L6 12.5L10.8031 15.8625C10.9313 15.9531 11.0844 16 11.2406 16C11.6594 16 12 15.6594 12 15.2406V1.5C12 0.671875 11.3281 0 10.5 0H1.5C0.671875 0 0 0.671875 0 1.5Z"
-                  stroke="#9B2033"
-                  strokeWidth="1.5"
-                />
-              </svg>
-            </span>
+            {session.registration ? (
+              <FaLock className="text-red-600 w-4 h-4" />
+            ) : (
+              <FaUnlock className="text-green-600 w-4 h-4" />
+            )}
           </div>
 
           <div className="flex items-center text-xs text-gray-600 space-x-2">
             <img
               src={
                 session.speakers[0]?.pic
-                  ? `https://your-image-base-url/${session.speakers[0].pic}`
+                  ? session.speakers[0].pic
                   : "/images/img (9).png"
               }
               className="w-6 h-6 rounded-full object-cover"

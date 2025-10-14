@@ -16,7 +16,7 @@ import {
 import TodaysSchedule from "@/app/components/TodaysSchedule";
 import Link from "next/link";
 import api from "@/config/api";
-import Navbar from "../../components/Navbar";
+
 const filters = ["Daily", "Weekly", "10 Days", "90 Days", "All Time"];
 
 const quickAccessItems = [
@@ -69,8 +69,8 @@ export default function Dashboard() {
           data.recentUsers.map((user: any) => ({
             name: user.name,
             email: user.email,
-            file: user.file,
-            Image: user.photo || "/Images/default-user.png",
+   file: user.file ? user.file : "/Images/default-user.png",
+
           }))
         );
 
@@ -84,7 +84,6 @@ export default function Dashboard() {
 
   return (
     <div className="p-2 space-y-8 bg-[#F9F9F9] min-h-screen">
-<Navbar/>
       <div className="flex flex-wrap md:flex-nowrap justify-between items-center gap-4">
         <div className="flex bg-white border border-gray-300 rounded-md px-3 py-2 w-full md:w-[300px]">
           <FaSearch className="text-red-900 mr-2" />
@@ -221,7 +220,17 @@ export default function Dashboard() {
         <div className="space-y-3">
           {participants.map((participant, index) => (
             <div key={index} className="flex items-center space-x-4 border border-gray-200 rounded-full p-3">
-              <Image src={participant.Image} alt={participant.name} width={40} height={40} className="rounded-full object-cover" />
+<img
+  src={participant.file ? participant.file : "/Images/default-user.png"}
+  alt={participant.name}
+  width={40}
+  height={40}
+  className="rounded-full object-cover"
+  style={{ width: "40px", height: "40px" }}
+/>
+
+
+
               <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 w-full text-sm text-gray-700">
                 <h3 className="font-semibold text-black">{participant.name}</h3>
 

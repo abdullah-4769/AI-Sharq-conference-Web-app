@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import TodaysSchedule from "../../components/TodaysSchedule";
 import QuickAccess from "../../components/QuickAcess";
 import ToolsAndConnections from "../../components/ToolsAndConnections";
-import Navbar from "../../components/Navbar";
+
 import Image from "next/image";
 import { FaArrowRight } from "react-icons/fa";
 import { useSelector } from "react-redux";
@@ -131,7 +131,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-gray-100">
-      <Navbar/>
+
       <div className="max-w-7xl mx-auto px-4 py-6">
 
         {loading ? (

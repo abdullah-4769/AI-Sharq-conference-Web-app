@@ -11,7 +11,11 @@ export default function Page() {
   const router = useRouter()
   const [activeFilter, setActiveFilter] = useState("Daily")
   const [participants, setParticipants] = useState<any[]>([])
-  const [stats, setStats] = useState({ totalParticipants: 0, totalBookmarks: 0, totalSessionRegistrations: 0 })
+  const [stats, setStats] = useState({
+    totalParticipants: 0,
+    totalBookmarks: 0,
+    totalSessionRegistrations: 0
+  })
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -27,7 +31,7 @@ export default function Page() {
       setStats({
         totalParticipants: data.totalParticipants || 0,
         totalBookmarks: data.totalBookmarks || 0,
-        totalSessionRegistrations: data.totalSessionRegistrations || 0,
+        totalSessionRegistrations: data.totalSessionRegistrations || 0
       })
     } catch (error) {
       console.error('Failed to fetch participants', error)
@@ -39,7 +43,6 @@ export default function Page() {
   const handleBlock = async (user: any) => {
     const confirmAction = confirm(`Are you sure you want to ${user.isBlocked ? 'unblock' : 'block'} this user?`)
     if (!confirmAction) return
-
     try {
       await api.patch('/admin/users/block', {
         id: user.id,
@@ -57,7 +60,6 @@ export default function Page() {
   const handleDelete = async (user: any) => {
     const confirmAction = confirm(`Are you sure you want to delete this user?`)
     if (!confirmAction) return
-
     try {
       await api.delete(`/admin/users/${user.id}`)
       setParticipants(prev => prev.filter(p => p.id !== user.id))
@@ -68,15 +70,15 @@ export default function Page() {
     }
   }
 
-  const statsItems = [
-    { label: "Total Participants", value: stats.totalParticipants, icon: <FaRegListAlt className="text-blue-600" />, iconBg: "bg-blue-100" },
-    { label: "Total Bookmarks", value: stats.totalBookmarks, icon: <FaBookmark className="text-yellow-600" />, iconBg: "bg-yellow-100" },
-    { label: "Registrations Requests", value: stats.totalSessionRegistrations, icon: <FaPlay className="text-green-600" />, iconBg: "bg-green-100" },
-  ]
-
   const handleView = (userId: number) => {
     router.push(`/Organizer/ManageParticipants/bookmark?userId=${userId}`)
   }
+
+  const statsItems = [
+    { label: "Total Participants", value: stats.totalParticipants, icon: <FaRegListAlt className="text-blue-600" />, iconBg: "bg-blue-100" },
+    { label: "Total Bookmarks", value: stats.totalBookmarks, icon: <FaBookmark className="text-yellow-600" />, iconBg: "bg-yellow-100" },
+    { label: "Registrations Requests", value: stats.totalSessionRegistrations, icon: <FaPlay className="text-green-600" />, iconBg: "bg-green-100" }
+  ]
 
   return (
     <div className="min-h-screen bg-[#FAFAFA] px-4 md:px-10 py-6 space-y-8 relative">
@@ -98,8 +100,7 @@ export default function Page() {
             <button
               key={filter}
               onClick={() => setActiveFilter(filter)}
-              className={`px-4 py-1 rounded-full text-sm font-medium ${activeFilter === filter ? "bg-[#86002B] text-white" : "bg-white border border-gray-300 text-gray-800"
-                }`}
+              className={`px-4 py-1 rounded-full text-sm font-medium ${activeFilter === filter ? "bg-[#86002B] text-white" : "bg-white border border-gray-300 text-gray-800"}`}
             >
               {filter}
             </button>
@@ -115,7 +116,9 @@ export default function Page() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {statsItems.map((item, idx) => (
           <div key={idx} className="flex items-center justify-between bg-white border border-gray-200 rounded-xl p-5 shadow-sm hover:shadow-md transition">
-            <div className={`w-10 h-10 rounded-md ${item.iconBg} flex items-center justify-center mr-4`}>{item.icon}</div>
+            <div className={`w-10 h-10 rounded-md ${item.iconBg} flex items-center justify-center mr-4`}>
+              {item.icon}
+            </div>
             <div className="flex-1">
               <p className="text-[22px] font-bold text-black leading-none">{item.value}</p>
               <p className="text-sm text-gray-600">{item.label}</p>
@@ -133,13 +136,20 @@ export default function Page() {
           participants.map(user => (
             <div key={user.id} className="flex items-center justify-between bg-gray-50 rounded-md p-4 shadow-sm mb-4">
               <div className="flex items-center space-x-4">
-                <img src={user.photo || '/images/default-user.png'} alt={user.name} className="w-12 h-12 rounded-full object-cover" />
+                <img
+                  src={user.file ? user.file : "/Images/default-user.png"}
+                  alt={user.name}
+                  width={40}
+                  height={40}
+                  className="rounded-full object-cover"
+                  style={{ width: "40px", height: "40px" }}
+                />
                 <div>
                   <div className="flex items-baseline space-x-2">
                     <h2 className="font-semibold text-gray-900">{user.name}</h2>
                     <h3 className="text-gray-600 text-sm">{user.organization}</h3>
                   </div>
-                  <p className="text-sm text-gray-500"> {user.email}</p>
+                  <p className="text-sm text-gray-500">{user.email}</p>
                 </div>
               </div>
               <div className="flex space-x-2">
@@ -149,18 +159,20 @@ export default function Page() {
                 >
                   Delete Account
                 </button>
-
                 <button
                   onClick={() => handleBlock(user)}
-                  className={`px-4 py-1 rounded-md border transition ${user.isBlocked
+                  className={`px-4 py-1 rounded-md border transition ${
+                    user.isBlocked
                       ? 'bg-yellow-100 text-yellow-800 border-yellow-300 hover:bg-yellow-200'
                       : 'bg-green-100 text-green-800 border-green-300 hover:bg-green-200'
-                    }`}
+                  }`}
                 >
                   {user.isBlocked ? 'Suspended' : 'Active'}
                 </button>
-
-                <button onClick={() => handleView(user.id)} className="border border-gray-300 px-4 py-1 rounded-md text-black hover:bg-gray-100 transition">
+                <button
+                  onClick={() => router.push(`/Organizer/ManageParticipants/bookmark?userId=${user.id}`)}
+                  className="border border-gray-300 px-4 py-1 rounded-md text-black hover:bg-gray-100 transition"
+                >
                   View
                 </button>
               </div>

@@ -3,7 +3,9 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { FaArrowLeft, FaSearch, FaPlay, FaRegListAlt, FaLock, FaUnlock, FaQrcode } from 'react-icons/fa'
 import api from '@/config/api'
-
+import { useRouter } from 'next/navigation'
+import { useDispatch } from 'react-redux'
+import { setEventId } from "@/lib/store/features/event/eventSlice"
 import ViewSession from './viewsession/page'
 import AddSession from './addsession/page'
 
@@ -16,6 +18,7 @@ type Speaker = {
 
 type Session = {
   id: number
+   eventId: number
   title: string
   description: string
   speakers: Speaker[]
@@ -45,7 +48,8 @@ export default function SessionsSchedule() {
   const [loadingDelete, setLoadingDelete] = useState<number | null>(null)
   const [viewSessionId, setViewSessionId] = useState<number | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
-
+  const router = useRouter()
+    const dispatch = useDispatch()
   const stats: Stat[] = [
     { label: 'Total Sessions', value: 24, change: '+2', percent: '2.5%', icon: <FaRegListAlt className="text-blue-600" />, iconBg: 'bg-blue-100' },
     { label: 'Ongoing', value: 5, change: '+1', percent: '1.2%', icon: <FaPlay className="text-green-600" />, iconBg: 'bg-green-100' },
@@ -92,6 +96,12 @@ export default function SessionsSchedule() {
       setLoadingDelete(null)
     }
   }
+const handleView = (session: Session) => {
+  localStorage.setItem('sessionId', session.id.toString())
+  dispatch(setEventId(session.eventId))
+  router.push('/Organizer/ManageSessions/sessiondetail')
+}
+
 
   return (
     <div className="p-6 md:p-10 min-h-screen font-sans bg-[#FAFAFA]">
@@ -201,7 +211,11 @@ export default function SessionsSchedule() {
                   className={`border border-gray-300 text-gray-700 hover:bg-gray-100 text-sm px-4 py-2 rounded-md w-full ${loadingDelete === s.id ? 'bg-red-200 text-red-800' : ''}`}>
                   {loadingDelete === s.id ? 'Deleting...' : 'Delete'}
                 </button>
-                <button className="border border-gray-300 text-gray-700 hover:bg-gray-100 text-sm px-4 py-2 rounded-md w-full">View</button>
+               <button
+  onClick={() => handleView(s)}
+  className="border border-gray-300 text-gray-700 hover:bg-gray-100 text-sm px-4 py-2 rounded-md w-full">
+  View
+</button>
               </div>
             </div>
           )
