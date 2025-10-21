@@ -120,13 +120,13 @@ export default function Navbar() {
               if (role === 'speaker') {
                 router.push('/speakers/viewprofile')
               } else if (role === 'participant') {
-                router.push('/participants/SetUpYourProfile')
+                router.push('/participants/view')
               } else if (role === 'exhibitor') {
                 router.push('/Exhibitors/viewprofle')
               } else if (role === 'sponsor') {
                 router.push('/sponsors/viewprofile')
               }else if (role === 'organizer') {
-                router.push('/participants/SetUpYourProfile')
+                router.push('/participants/view')
               } else {
                 router.push('/')
               }

@@ -12,6 +12,7 @@ import { setUserId } from '@/lib/store/features/user/userSlice'
 import { setSpeakerId } from '@/lib/store/features/speaker/speakerSlice'
 import { setSponsorId } from "@/lib/store/features/sponsor/sponsorSilice"
 import { setExhibitorId } from "@/lib/store/features/exhibitor/exhibitorSlice"
+import LoadingButton from './../../components/LoadingButton'
 
 export default function SignIn() {
   const [formData, setFormData] = useState({
@@ -24,7 +25,6 @@ export default function SignIn() {
   const router = useRouter()
   const dispatch = useDispatch()
 
-  // handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target
     setFormData({
@@ -33,72 +33,65 @@ export default function SignIn() {
     })
   }
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    try {
+      const res = await api.post('/auth/login', {
+        email: formData.email,
+        password: formData.password,
+      })
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault()
-  setLoading(true)
+      const { token, user } = res.data
 
-  try {
-    const res = await api.post('/auth/login', {
-      email: formData.email,
-      password: formData.password,
-    })
-
-    const { token, user } = res.data
-
-    if (user && user.role) {
-      if (typeof window !== 'undefined') {
-        window.localStorage.setItem('token', token || '')
-        window.localStorage.setItem('role', user.role || '')
-
-        // for non-sponsor/exhibitor roles store userId, name, picUrl
-        if (user.role !== 'sponsor' && user.role !== 'exhibitor') {
-          window.localStorage.setItem('userId', user.id?.toString() || '')
-          window.localStorage.setItem('name', user.name || '')
-          window.localStorage.setItem('picUrl', user.picUrl || user.Pic_url || '')
-        } else {
-          // optionally store name and pic for sponsor/exhibitor if needed
-          window.localStorage.setItem('name', user.name || '')
-          window.localStorage.setItem('picUrl', user.picUrl || user.Pic_url || '')
+      if (user && user.role) {
+        if (typeof window !== 'undefined') {
+          window.localStorage.setItem('token', token || '')
+          window.localStorage.setItem('role', user.role || '')
+          if (user.role !== 'sponsor' && user.role !== 'exhibitor') {
+            window.localStorage.setItem('userId', user.id?.toString() || '')
+            window.localStorage.setItem('name', user.name || '')
+            window.localStorage.setItem('picUrl', user.picUrl || user.Pic_url || '')
+          } else {
+            window.localStorage.setItem('name', user.name || '')
+            window.localStorage.setItem('picUrl', user.picUrl || user.Pic_url || '')
+          }
         }
-      }
 
-      // update redux
-      if (user.role !== 'sponsor' && user.role !== 'exhibitor') {
-        dispatch(setUserId(user.id))
-      }
-      if (user.role === 'speaker' && user.speakerId) {
-        dispatch(setSpeakerId(user.speakerId))
-      }
-      if (user.role === 'sponsor' && user.sponsorId) {
-        dispatch(setSponsorId(user.sponsorId))
-      }
-      if (user.role === 'exhibitor' && user.exhibitorId) {
-        dispatch(setExhibitorId(user.exhibitorId))
-      }
+        if (user.role !== 'sponsor' && user.role !== 'exhibitor') {
+          dispatch(setUserId(user.id))
+        }
+        if (user.role === 'speaker' && user.speakerId) {
+          dispatch(setSpeakerId(user.speakerId))
+        }
+        if (user.role === 'sponsor' && user.sponsorId) {
+          dispatch(setSponsorId(user.sponsorId))
+        }
+        if (user.role === 'exhibitor' && user.exhibitorId) {
+          dispatch(setExhibitorId(user.exhibitorId))
+        }
 
-      // route based on role
-      if (user.role === 'participant') router.push('/participants/vanue')
-      else if (user.role === 'speaker') router.push('/speakers/ManageSessions')
-      else if (user.role === 'organizer') router.push('/Organizer/Dashboard')
-      else if (user.role === 'sponsor') router.push('/sponsors/ManageSessions')
-      else if (user.role === 'exhibitor') router.push('/Exhibitors/ManageSessions')
-      else router.push('/authentication/SignIn')
+        if (user.role === 'participant') router.push('/participants/vanue')
+        else if (user.role === 'speaker') router.push('/speakers/ManageSessions')
+        else if (user.role === 'organizer') router.push('/Organizer/Dashboard')
+        else if (user.role === 'sponsor') router.push('/sponsors/ManageSessions')
+        else if (user.role === 'exhibitor') router.push('/Exhibitors/ManageSessions')
+        else router.push('/authentication/SignIn')
+      }
+    } catch (err) {
+      console.error('Login failed', err)
+    } finally {
+      setLoading(false)
     }
-  } catch (err) {
-    console.error('Login failed', err)
-  } finally {
-    setLoading(false)
   }
-}
-
-
 
   return (
-    <div className="flex gap-10 mt-10 mr-6">
-      <ImageComponent />
+    <div className="flex flex-col lg:flex-row gap-10 mt-10 mr-6 items-center justify-center lg:justify-start">
+      <div className="hidden lg:block">
+        <ImageComponent />
+      </div>
 
-      <div className="absolute w-[450px] max-w-full h-[800px] left-[800px] bg-white border border-gray-300 rounded-[20px] shadow-[0px_4px_110.3px_rgba(68,68,68,0.25)] p-8 flex flex-col gap-10">
+      <div className="relative w-full max-w-[450px] h-auto bg-white border border-gray-300 rounded-[20px] shadow-[0px_4px_110.3px_rgba(68,68,68,0.25)] p-8 flex flex-col gap-10">
         <div className="flex flex-col items-center mb-4">
           <Image
             src="/images/logo1.png"
@@ -113,14 +106,9 @@ const handleSubmit = async (e: React.FormEvent) => {
           </h1>
         </div>
 
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col gap-6 w-full max-w-[405px]"
-        >
+        <form onSubmit={handleSubmit} className="flex flex-col gap-6 w-full max-w-[405px]">
           <div className="flex flex-col gap-3 w-full">
-            <label className="text-base font-normal leading-6 text-[#262626] font-['IBM_Plex_Sans']">
-              Email Address*
-            </label>
+            <label className="text-base text-[#262626]">Email Address*</label>
             <div className="flex items-center gap-3 w-full border border-[#DEDEDE] rounded-lg px-4 py-3">
               <input
                 type="email"
@@ -128,16 +116,14 @@ const handleSubmit = async (e: React.FormEvent) => {
                 placeholder="Enter Your Email Address"
                 value={formData.email}
                 onChange={handleChange}
-                className="text-base font-normal leading-6 text-[#616161] font-['IBM_Plex_Sans'] border-none outline-none w-full"
+                className="text-base text-[#616161] border-none outline-none w-full"
               />
               <FaEnvelope className="w-5 h-5 text-[#9C9C9C]" />
             </div>
           </div>
 
           <div className="flex flex-col gap-3 w-full">
-            <label className="text-base font-normal leading-6 text-[#262626] font-['IBM_Plex_Sans']">
-              Password*
-            </label>
+            <label className="text-base text-[#262626]">Password*</label>
             <div className="flex items-center gap-3 w-full border border-[#DEDEDE] rounded-lg px-4 py-3">
               <input
                 type="password"
@@ -145,7 +131,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                 placeholder="Enter Your Password"
                 value={formData.password}
                 onChange={handleChange}
-                className="text-base font-normal leading-6 text-[#616161] font-['IBM_Plex_Sans'] border-none outline-none w-full"
+                className="text-base text-[#616161] border-none outline-none w-full"
               />
               <FaEyeSlash className="w-5 h-5 text-[#9C9C9C]" />
             </div>
@@ -160,60 +146,47 @@ const handleSubmit = async (e: React.FormEvent) => {
                 onChange={handleChange}
                 className="w-4 h-4 bg-white border border-[#282828] rounded"
               />
-              <label className="text-base font-normal leading-5 text-[#282828] font-['SF_Pro_Display']">
-                Remember me
-              </label>
+              <label className="text-base text-[#282828]">Remember me</label>
             </div>
             <Link href="/authentication/ForgetPassword">
-              <span className="text-base font-normal leading-5 text-[#9B2033] font-['SF_Pro_Display']">
-                Forget Password?
-              </span>
+              <span className="text-base text-[#9B2033]">Forget Password?</span>
             </Link>
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className={`w-full rounded-lg text-base font-medium leading-6 text-white font-['IBM_Plex_Sans'] px-4 py-3 ${
-              loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#9B2033]'
-            }`}
-          >
-            {loading ? 'Signing In...' : 'Sign In'}
-          </button>
+          <LoadingButton text="Sign In" loading={loading} color="bg-[#9B2033]" />
         </form>
 
         <div className="flex flex-col items-center gap-4 w-full max-w-[405px]">
           <div className="flex items-center gap-4 w-full">
             <hr className="flex-1 border border-[#546056] opacity-20" />
-            <span className="text-sm leading-5 text-[#6C7278] font-['Figtree']">
-              Or
-            </span>
+            <span className="text-sm text-[#6C7278]">Or</span>
             <hr className="flex-1 border border-[#546056] opacity-20" />
           </div>
 
-          <div className="flex gap-2 w-full">
-            <button className="flex items-center justify-center gap-2 w-1/3 border border-[#DEDEDE] rounded-lg text-base font-normal leading-6 text-[#1E1E1E] font-['IBM_Plex_Sans'] px-4 py-3">
+          <div className="flex flex-col sm:flex-row gap-2 w-full">
+            <button className="flex items-center justify-center gap-2 flex-1 border border-[#DEDEDE] rounded-lg text-base text-[#1E1E1E] px-4 py-3">
               <FaGoogle className="w-6 h-6" />
               Google
             </button>
-            <button className="flex items-center justify-center gap-2 w-1/3 border border-[#DEDEDE] rounded-lg text-base font-normal leading-6 text-[#1E1E1E] font-['IBM_Plex_Sans'] px-4 py-3">
+            <button className="flex items-center justify-center gap-2 flex-1 border border-[#DEDEDE] rounded-lg text-base text-[#1E1E1E] px-4 py-3">
               <FaFacebookF className="w-6 h-6" />
               Facebook
             </button>
-            <button className="flex items-center justify-center gap-2 w-1/3 border border-[#DEDEDE] rounded-lg text-base font-normal leading-6 text-[#1E1E1E] font-['IBM_Plex_Sans'] px-4 py-3">
+            <button className="flex items-center justify-center gap-2 flex-1 border border-[#DEDEDE] rounded-lg text-base text-[#1E1E1E] px-4 py-3">
               <FaApple className="w-6 h-6" />
               Apple
             </button>
           </div>
         </div>
 
-        <p className="text-base font-normal leading-8 text-center text-[#282828] font-['IBM_Plex_Sans']">
+        <p className="text-base text-center text-[#282828]">
           New to website?{' '}
           <a className="text-blue-600" href="/authentication/SignUp">
             Sign Up
           </a>
         </p>
       </div>
+
       <Image
         src="/images/line.png"
         alt="Logo"
@@ -221,6 +194,30 @@ const handleSubmit = async (e: React.FormEvent) => {
         height={127}
         className="absolute top-[1010px]"
       />
+
+      <style jsx>{`
+        @media (max-width: 1024px) {
+          .absolute {
+            position: static;
+          }
+        }
+        @media (max-width: 768px) {
+          .p-8 {
+            padding: 1.5rem;
+          }
+          .gap-10 {
+            gap: 2rem;
+          }
+        }
+        @media (max-width: 480px) {
+          .text-2xl {
+            font-size: 1.25rem;
+          }
+          .rounded-[20px] {
+            border-radius: 12px;
+          }
+        }
+      `}</style>
     </div>
   )
 }

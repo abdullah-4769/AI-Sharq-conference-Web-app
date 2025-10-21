@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/lib/store/store'
 import api from '@/config/api'
-
+import { FaSpinner } from 'react-icons/fa'
 const EditExhibitorProfile: React.FC = () => {
   const router = useRouter()
   const exhibitorId = useSelector((state: RootState) => state.exhibitor.exhibitorId)
@@ -90,10 +90,45 @@ const EditExhibitorProfile: React.FC = () => {
     }
   }
 
-
+interface LoadingButtonProps {
+  text: string
+  loading: boolean
+  onClick?: () => void
+  color?: string
+}
     const goToBooth = () => {
     router.push('/Exhibitors/booth')
   }
+
+
+    const goToProducts = () => {
+    router.push('/Exhibitors/product-exhibitors')
+  }
+
+
+
+
+const LoadingButton: React.FC<LoadingButtonProps> = ({
+  text,
+  loading,
+  onClick,
+  color = 'bg-red-600',
+}) => {
+  return (
+    <button
+      onClick={onClick}
+      disabled={loading}
+      className={`py-3 px-6 rounded-xl text-white flex items-center justify-center gap-2 
+        ${loading ? 'opacity-70 cursor-not-allowed' : 'hover:opacity-90'} ${color}`}
+    >
+      {loading && <FaSpinner className="animate-spin" />}
+      {loading ? 'Please wait...' : text}
+    </button>
+  )
+}
+
+
+
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50 pt-4">
@@ -162,13 +197,22 @@ const EditExhibitorProfile: React.FC = () => {
               {loading ? 'Loading...' : 'Update & Save'}
             </button>
         
-         <button
+       <div className="flex flex-col md:flex-row gap-4 w-full">
+              <button
                 type="button"
                 onClick={goToBooth}
                 className="py-4 px-6 bg-gray-800 text-white rounded-xl w-full"
               >
                 Go to Booth
-                    </button>
+              </button>
+              <button
+                type="button"
+                onClick={goToProducts}
+                className="py-4 px-6 bg-red-600 text-white rounded-xl w-full"
+              >
+                Go to Products
+              </button>
+            </div>
         
           </form>
         </div>

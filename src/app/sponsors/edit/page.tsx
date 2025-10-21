@@ -18,7 +18,7 @@ const EditSponsorProfile: React.FC = () => {
     email: '',
     phone: '',
     category: '',
-    password: '',
+    password: '', // will always stay empty unless changed
     website: '',
     linkedin: '',
     twitter: '',
@@ -35,9 +35,12 @@ const EditSponsorProfile: React.FC = () => {
       try {
         const res = await api.get(`/sponsors/${sponsorId}`)
         if (res.status === 200) {
-          setFormData(res.data)
+          const { password, ...dataWithoutPassword } = res.data
+          setFormData({ ...dataWithoutPassword, password: '' }) // never prefill password
         }
-      } catch {}
+      } catch (error) {
+        console.error(error)
+      }
     }
     fetchData()
   }, [sponsorId])
@@ -52,46 +55,53 @@ const EditSponsorProfile: React.FC = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0])
-      setFormData(prev => ({ ...prev, Pic_url: URL.createObjectURL(e.target.files![0]) }))
+      setFormData(prev => ({ ...prev, Pic_url: URL.createObjectURL(e.target.files[0]) }))
     }
   }
 
- const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault()
-  if (!sponsorId) return
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!sponsorId) return
 
-  setLoading(true)
-  const form = new FormData()
+    setLoading(true)
+    const form = new FormData()
 
-  // Append all fields except id
-  Object.keys(formData).forEach(key => {
-    if (key !== 'id') {
-      form.append(key, (formData as any)[key])
-    }
-  })
-
-  // Append file if selected
-  if (file) form.append('file', file)
-
-  try {
-    await api.patch(`/sponsors/${Number(sponsorId)}`, form, {
-      headers: { 'Content-Type': 'multipart/form-data' },
+    // Add all fields except id
+    Object.keys(formData).forEach(key => {
+      const value = (formData as any)[key]
+      if (key !== 'id' && key !== 'password') {
+        form.append(key, value || '')
+      }
     })
-    router.push('/sponsors/ManageSessions')
-  } catch (err) {
-    console.error(err)
-  } finally {
-    setLoading(false)
-  }
-}
 
+    // Only append password if user entered a new one
+    if (formData.password && formData.password.trim() !== '') {
+      form.append('password', formData.password)
+    }
+
+    // Append file if selected
+    if (file) form.append('file', file)
+
+    try {
+      await api.patch(`/sponsors/${Number(sponsorId)}`, form, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+      router.push('/sponsors/ManageSessions')
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <>
       <div className="flex justify-center items-center min-h-screen bg-gray-50 pt-4">
         <div className="bg-white border border-gray-300 rounded-2xl shadow-lg p-10 w-full max-w-7xl">
           <div className="flex flex-col items-center gap-8">
-            <h1 className="text-2xl font-medium text-gray-900 text-center">Edit Sponsor Profile</h1>
+            <h1 className="text-2xl font-medium text-gray-900 text-center">
+              Edit Sponsor Profile
+            </h1>
 
             <div className="relative">
               <div className="w-32 h-32 bg-red-100 border-4 border-white rounded-full shadow-md flex items-center justify-center overflow-hidden">
@@ -226,17 +236,16 @@ const EditSponsorProfile: React.FC = () => {
                 </div>
 
                 <div className="flex flex-col gap-1 relative md:col-span-2">
-                  <label>Password*</label>
+                  <label>New Password</label>
                   <input
                     type={showPassword ? 'text' : 'password'}
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    placeholder="Password"
+                    placeholder="Enter new password if you want to change it"
                     className="w-full px-5 py-4 border border-gray-300 rounded-xl pr-12"
-                    required
                   />
-                  {formData.password.length > 0 && (
+                  {formData.password && formData.password.length > 0 && (
                     <button
                       type="button"
                       onClick={() => setShowPassword(prev => !prev)}
@@ -268,15 +277,14 @@ const EditSponsorProfile: React.FC = () => {
                 >
                   {loading ? 'Loading...' : 'Update & Save'}
                 </button>
-             
-              <button
+
+                <button
                   type="button"
                   onClick={() => router.push('/sponsors/sponsorsproducts')}
                   className="py-4 bg-gray-100 text-red-700 border border-red-600 rounded-xl hover:bg-red-600 hover:text-white transition"
                 >
                   Add New Service
                 </button>
-             
               </div>
             </form>
           </div>

@@ -1,16 +1,19 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/lib/store/store'
 import api from '@/config/api'
 import Image from 'next/image'
-import { FaUser, FaLinkedin, FaTwitter, FaYoutube, FaFacebook } from 'react-icons/fa'
+import { FaUser, FaLinkedin, FaTwitter, FaYoutube, FaFacebook, FaQrcode } from 'react-icons/fa'
+import { QRCodeCanvas as QRCode } from 'qrcode.react'
 
 export default function SpeakerProfileView() {
   const speakerId = useSelector((state: RootState) => state.speaker.speakerId)
   const [speaker, setSpeaker] = useState<any | null>(null)
   const [loading, setLoading] = useState(false)
+  const [showQR, setShowQR] = useState(false)
+  const qrRef = useRef<HTMLCanvasElement | null>(null)
 
   useEffect(() => {
     const fetchSpeaker = async () => {
@@ -28,6 +31,17 @@ export default function SpeakerProfileView() {
     fetchSpeaker()
   }, [speakerId])
 
+  const handleDownloadQR = () => {
+    if (qrRef.current) {
+      const canvas = qrRef.current
+      const url = canvas.toDataURL('image/png')
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `speaker-${speakerId}-qr.png`
+      a.click()
+    }
+  }
+
   if (loading) {
     return <div className="flex justify-center items-center min-h-screen">Loading...</div>
   }
@@ -42,31 +56,36 @@ export default function SpeakerProfileView() {
     <>
       <div className="relative flex flex-col items-center min-h-screen bg-gray-50 p-4">
         <div className="relative bg-white border border-gray-300 rounded-2xl shadow-lg p-10 w-full max-w-6xl mb-16">
-
-          {/* Edit button */}
-          <button
-            type="button"
-            onClick={() => (window.location.href = '/participants/SetUpYourProfile')}
-            className="absolute top-4 right-4 p-2 bg-red-600 text-white rounded-full shadow hover:bg-red-700"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-4 h-4"
+          <div className="absolute top-4 right-4 flex gap-2">
+            <button
+              type="button"
+              onClick={() => (window.location.href = '/participants/SetUpYourProfile')}
+              className="p-2 bg-red-600 text-white rounded-full shadow hover:bg-red-700"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652l-9.193 9.193a4.5 4.5 0 01-1.897 1.13l-3.323.94.94-3.323a4.5 4.5 0 011.13-1.897l9.193-9.193z"
-              />
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 7.125L16.875 4.5" />
-            </svg>
-          </button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-4 h-4"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652l-9.193 9.193a4.5 4.5 0 01-1.897 1.13l-3.323.94.94-3.323a4.5 4.5 0 011.13-1.897l9.193-9.193z"
+                />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 7.125L16.875 4.5" />
+              </svg>
+            </button>
+            <button
+              onClick={() => setShowQR(true)}
+              className="p-2 bg-gray-800 text-white rounded-full shadow hover:bg-gray-900"
+            >
+              <FaQrcode className="w-4 h-4" />
+            </button>
+          </div>
 
-          {/* Profile Picture */}
           <div className="flex flex-col items-center mb-10">
             <div className="w-32 h-32 bg-red-100 border-4 border-white rounded-full shadow-md flex items-center justify-center overflow-hidden">
               {user.file ? (
@@ -78,23 +97,19 @@ export default function SpeakerProfileView() {
             <p className="text-base text-gray-900 text-center mt-2">Speaker Photo</p>
           </div>
 
-          {/* Two Column Layout */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
             <div>
               <p className="font-bold p-1">Name</p>
               <p className="px-4 py-3 border border-gray-300 rounded-xl">{user.name}</p>
             </div>
-
             <div>
               <p className="font-bold p-1">Email</p>
               <p className="px-4 py-3 border border-gray-300 rounded-xl">{user.email}</p>
             </div>
-
             <div>
               <p className="font-bold p-1">Country</p>
               <p className="px-4 py-3 border border-gray-300 rounded-xl">{speaker.country}</p>
             </div>
-
             <div>
               <p className="font-bold p-1">Website</p>
               <a
@@ -105,8 +120,6 @@ export default function SpeakerProfileView() {
                 {speaker.website}
               </a>
             </div>
-
-            {/* Designations as tags */}
             <div>
               <p className="font-bold p-1">Designations</p>
               <div className="px-4 py-3 border border-gray-300 rounded-xl flex flex-wrap gap-2">
@@ -117,8 +130,6 @@ export default function SpeakerProfileView() {
                 ))}
               </div>
             </div>
-
-            {/* Expertise as tags */}
             <div>
               <p className="font-bold p-1">Expertise</p>
               <div className="px-4 py-3 border border-gray-300 rounded-xl flex flex-wrap gap-2">
@@ -129,8 +140,6 @@ export default function SpeakerProfileView() {
                 ))}
               </div>
             </div>
-
-            {/* Tags as colored badges */}
             <div className="md:col-span-2">
               <p className="font-bold p-1">Tags</p>
               <div className="px-4 py-3 border border-gray-300 rounded-xl flex flex-wrap gap-2">
@@ -143,13 +152,11 @@ export default function SpeakerProfileView() {
             </div>
           </div>
 
-          {/* Bio single row */}
           <div className="mt-6">
             <p className="font-bold p-1">Bio</p>
             <p className="px-4 py-3 border border-gray-300 rounded-xl">{speaker.bio}</p>
           </div>
 
-          {/* Social Icons single row */}
           <div className="flex gap-6 mt-6 justify-center">
             {speaker.linkedin && (
               <a href={speaker.linkedin} target="_blank" className="text-blue-700 hover:text-blue-900 text-2xl">
@@ -175,16 +182,33 @@ export default function SpeakerProfileView() {
         </div>
       </div>
 
-      {/* Bottom Line Image */}
       <div className="w-full flex justify-center fixed bottom-0">
-        <Image
-          src="/images/line.png"
-          alt="Line"
-          width={1450}
-          height={127}
-          className="w-full max-w-screen-xl"
-        />
+        <Image src="/images/line.png" alt="Line" width={1450} height={127} className="w-full max-w-screen-xl" />
       </div>
+
+      {showQR && (
+        <div
+          onClick={() => setShowQR(false)}
+          className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50"
+        >
+          <div className="bg-white p-6 rounded-2xl shadow-lg" onClick={(e) => e.stopPropagation()}>
+            <QRCode
+              value={`${window.location.origin}/speakers/view/${speakerId}`}
+              size={180}
+              bgColor="#ffffff"
+              fgColor="#000000"
+              includeMargin={true}
+              ref={qrRef}
+            />
+            <button
+              onClick={handleDownloadQR}
+              className="mt-4 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 w-full"
+            >
+              Download QR Code
+            </button>
+          </div>
+        </div>
+      )}
     </>
   )
 }

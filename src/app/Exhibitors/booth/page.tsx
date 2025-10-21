@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/lib/store/store'
 import api from '@/config/api'
-import Navbar from "../../components/Navbar";
+
 const AddBooth: React.FC = () => {
   const router = useRouter()
   const exhibitorId = useSelector((state: RootState) => state.exhibitor.exhibitorId)
@@ -99,7 +99,6 @@ const AddBooth: React.FC = () => {
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-50 p-4 gap-6">
 
-      <Navbar/>
       <div className="bg-white border border-gray-300 rounded-2xl shadow-lg p-8 w-full max-w-md">
         <h1 className="text-2xl font-medium text-gray-900 mb-4">
           {isEditing ? 'Edit Booth' : 'Add Booth'}

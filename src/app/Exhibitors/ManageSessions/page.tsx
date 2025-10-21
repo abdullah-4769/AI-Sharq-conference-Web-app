@@ -8,7 +8,7 @@ import { useSelector } from "react-redux"
 import { RootState } from "@/lib/store/store"
 import api from "@/config/api"
 import { useRouter } from "next/navigation"
-import Navbar from "../../components/Navbar"
+
 
 const filters = ["Daily", "Weekly", "10 Days", "90 Days", "All Time"]
 
@@ -114,7 +114,7 @@ export default function SpeakerSessions() {
 
   return (
     <div className="p-6 md:p-10 min-h-screen font-sans">
-      <Navbar />
+
 
       <div className="flex flex-col md:flex-row gap-4 mb-6">
         <div className="flex-1 flex items-center justify-between p-6 gap-3 h-24 bg-[#FFEEEE] border border-[#D4D4D4] shadow-sm rounded-3xl">
